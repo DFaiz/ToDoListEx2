@@ -10,18 +10,70 @@
     tools:showIn="@layout/activity_list_node"
     tools:context="il.ac.shenkar.david.todolistex2.ListNodeActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/newTaskDesc"
-        android:hint="   Enter Task Description"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp"
-        android:layout_alignParentEnd="false"
-        android:maxLines="10" />
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="60dp"
+        android:id="@+id/linearLayout1">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:id="@+id/linearLayout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Priority:"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <RadioButton
+                android:id="@+id/lowRBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/priority_low"
+                android:layout_marginLeft="5dp"
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton
+                android:id="@+id/medRBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/priority_med"
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton
+                android:id="@+id/highRBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/priority_high"
+                android:layout_marginRight="5dp"
+                android:onClick="onRadioButtonClicked"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="60dp"
+        android:id="@+id/linearLayout3">
+
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
@@ -42,5 +94,29 @@
         android:layout_alignTop="@+id/addTaskbtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/newTaskDesc"
+        android:hint="   Enter Task Description"
+        android:maxLines="10"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_alignLeft="@+id/linearLayout3"
+        android:layout_alignStart="@+id/linearLayout3" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/newTaskNotes"
+        android:hint="     Enter Task Notes"
+        android:maxLength="100"
+        android:layout_alignBottom="@+id/linearLayout1"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_alignStart="@+id/linearLayout1" />
 
 </RelativeLayout>

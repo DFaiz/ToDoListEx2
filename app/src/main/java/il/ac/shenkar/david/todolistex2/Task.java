@@ -15,6 +15,7 @@ public class Task implements Serializable {
 
     private long taskId;
     private String description;
+    private String task_notes;
     private Boolean completed = false;
     private Boolean hasLocation = false;
     private Boolean hasDate = false;
@@ -23,23 +24,30 @@ public class Task implements Serializable {
     private Priority task_priority;
     private Boolean toDelete = false;
 
-    public Task(int id,String description)
+    public Task ()
+    {
+
+    }
+
+    public Task(int id,String description, String notes)
     {
         super();
         this.taskId=id;
         this.description = description;
+        this.task_notes = notes;
         dueDate = null;
         location = null;
-        task_priority = Priority.LOW;
+        task_priority = Priority.MEDIUM;
     }
 
-    public Task(String description)
+    public Task(String description, String notes)
     {
         super();
         this.description = description;
+        this.task_notes = notes;
         dueDate = null;
         location = null;
-        task_priority = Priority.LOW;
+        task_priority = Priority.MEDIUM;
     }
 
     public String getDescription ()
@@ -73,7 +81,6 @@ public class Task implements Serializable {
     public void setPriority(Priority priority) {
         this.task_priority = priority;
     }
-
 
     public MapCords getLocation() {
         return location;
@@ -115,7 +122,6 @@ public class Task implements Serializable {
     public void setHasDate(Boolean hasDate) {
         this.hasDate = hasDate;
     }
-
 
     public Boolean getToDelete() {
         return toDelete;

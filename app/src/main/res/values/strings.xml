@@ -3,4 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_list_node">Create New Task</string>
     <string name="string">Enter task description</string>
+    <string name="priority_prompt" translatable="false">Choose Priority</string>
+    <string name="priority_low" translatable="false">Low</string>
+    <string name="priority_med" translatable="false">Medium</string>
+    <string name="priority_high" translatable="false">High</string>
 </resources>
