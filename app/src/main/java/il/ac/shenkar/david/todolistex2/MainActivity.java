@@ -1,5 +1,6 @@
 package il.ac.shenkar.david.todolistex2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,8 +10,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import java.util.List;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    ListView list;
+    List<Task> itemList;
+    Context context = MainActivity.this;
+    TaskItemAdapter adapter;
+
+    public final int REQUEST_CODE_NEW_TASK = 1;
+    public final int REQUEST_CODE_UPDATE_TASK = 2;
+    public final int REQUEST_CODE_REMOVE_TASK = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +32,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        itemList = new ArrayList<Task>();
+        list  = (ListView)findViewById(R.id.listView);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -51,10 +68,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void toListNodeActivity (View view)
+    public void newTaskButtonClick (View view)
     {
         Intent intent = new Intent(this,ListNodeActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_CODE_NEW_TASK);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(resultCode == RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case REQUEST_CODE_NEW_TASK:
+                    Task t = (Task)data.getSerializableExtra("task");
+                    itemList.add(t);
+                    adapter =  new TaskItemAdapter(context, itemList);
+                    list.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    break;
+                default:
+                    adapter =  new TaskItemAdapter(context, itemList);
+                    list.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    break;
+            }
+        }
     }
 }

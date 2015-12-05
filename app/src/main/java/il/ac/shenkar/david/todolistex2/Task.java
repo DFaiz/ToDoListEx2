@@ -1,48 +1,45 @@
 package il.ac.shenkar.david.todolistex2;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+enum Priority {
+    LOW,MEDIUM,HIGH
+}
 
 /**
  * Created by David on 28-Nov-15.
  */
-public class Task {
+public class Task implements Serializable {
 
-    private int ID;
-    private String name;
+    private long taskId;
     private String description;
-    private Calendar taskDate; // timestamp for task
-    private double latitude; // geo location
-    private double longitude; // geo location
+    private Boolean completed = false;
+    private Boolean hasLocation = false;
+    private Boolean hasDate = false;
+    private MapCords location;
+    private Date dueDate;
+    private Priority task_priority;
+    private Boolean toDelete = false;
 
-    public Task(int id, String name, String description, double lat, double lng)
+    public Task(int id,String description)
     {
         super();
-        this.ID = id;
-        this.name = name;
+        this.taskId=id;
         this.description = description;
-        taskDate = null;
-        this.latitude = lat;
-        this.longitude = lng;
+        dueDate = null;
+        location = null;
+        task_priority = Priority.LOW;
     }
 
-    public int getId()
+    public Task(String description)
     {
-        return ID;
-    }
-
-    public void setId(int id) {
-        this.ID = id;
-    }
-
-    public String getName ()
-    {
-        return name;
-    }
-
-    public void setName (String n)
-    {
-        name = n;
+        super();
+        this.description = description;
+        dueDate = null;
+        location = null;
+        task_priority = Priority.LOW;
     }
 
     public String getDescription ()
@@ -55,40 +52,84 @@ public class Task {
         description = d;
     }
 
-    public void setDate(String date, String time)
+    public Boolean getCompleted() {
+        return completed;
+    }
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
+    public long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(long taskId) {
+        this.taskId = taskId;
+    }
+
+    public Priority getPriority() {
+        return task_priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.task_priority = priority;
+    }
+
+
+    public MapCords getLocation() {
+        return location;
+    }
+
+    public void setLocation(MapCords location) {
+        this.location = location;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate)
     {
-        String tmpDate[];
-        String tmpTime[];
-        tmpDate = date.split("/");
-        tmpTime = time.split(":");
-        taskDate = new GregorianCalendar(Integer.parseInt(tmpDate[2]), Integer.parseInt(tmpDate[1]) - 1 , Integer.parseInt(tmpDate[0]), Integer.parseInt(tmpTime[0]), Integer.parseInt(tmpTime[1]));
+        this.dueDate = dueDate;
     }
 
-    public Calendar getTaskDate()
+    public void setDueDate(String dueDate)
     {
-        return taskDate;
+        try
+        {
+            if(dueDate==null || dueDate=="")
+            {
+                setHasDate(false);
+                return;
+            }
+            Date myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(dueDate);
+            setDueDate(myDate);
+            setHasDate(true);
+        }catch(Exception e){};
     }
 
-    public void setTaskDate(Calendar taskDate)
-    {
-        this.taskDate = taskDate;
+
+    public Boolean getHasDate() {
+        return hasDate;
     }
 
-    public double getLat() {
-        return latitude;
+    public void setHasDate(Boolean hasDate) {
+        this.hasDate = hasDate;
     }
 
-    public void setLat(double lati)
-    {
-        this.latitude = lati;
+
+    public Boolean getToDelete() {
+        return toDelete;
     }
 
-    public double getLng() {
-        return longitude;
+    public void setToDelete(Boolean toDelete) {
+        this.toDelete = toDelete;
     }
 
-    public void setLng(double longi)
-    {
-        this.longitude = longi;
+    public Boolean getHasLocation() {
+        return hasLocation;
+    }
+
+    public void setHasLocation(Boolean hasLocation) {
+        this.hasLocation = hasLocation;
     }
 }
