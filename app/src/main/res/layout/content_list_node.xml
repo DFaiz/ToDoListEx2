@@ -13,16 +13,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/linearLayout1">
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="60dp"
+        android:id="@+id/linearLayout4">
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/newTaskDesc"
+            android:hint="   Enter Task Description"
+            android:maxLength="100"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
         android:id="@+id/linearLayout2">
 
         <TextView
@@ -69,9 +86,58 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="100dp"
         android:layout_marginLeft="60dp"
         android:id="@+id/linearLayout3">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="145dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/linearLayout6">
+
+        <EditText
+            android:id="@+id/taskDateEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:hint="Pick Date.."
+            />
+
+        <EditText
+            android:id="@+id/taskTimeEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+
+            android:hint="Pick Time.." >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="195dp"
+        android:layout_marginLeft="60dp"
+        android:id="@+id/linearLayout5">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/newTaskNotes"
+            android:hint="     Add Task Notes"
+            android:maxLines="10"
+            android:layout_centerHorizontal="true" />
 
     </LinearLayout>
 
@@ -80,7 +146,7 @@
         android:layout_height="wrap_content"
         android:text="Add Task"
         android:id="@+id/addTaskbtn"
-        android:layout_marginBottom="144dp"
+        android:layout_marginBottom="170dp"
         android:onClick="addTaskBtn"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
@@ -94,29 +160,5 @@
         android:layout_alignTop="@+id/addTaskbtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/newTaskDesc"
-        android:hint="   Enter Task Description"
-        android:maxLines="10"
-        android:layout_below="@+id/linearLayout3"
-        android:layout_alignLeft="@+id/linearLayout3"
-        android:layout_alignStart="@+id/linearLayout3" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/newTaskNotes"
-        android:hint="     Enter Task Notes"
-        android:maxLength="100"
-        android:layout_alignBottom="@+id/linearLayout1"
-        android:layout_alignLeft="@+id/linearLayout1"
-        android:layout_alignStart="@+id/linearLayout1" />
 
 </RelativeLayout>

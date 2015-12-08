@@ -1,5 +1,7 @@
 package il.ac.shenkar.david.todolistex2;
 
+import java.util.Calendar;
+import java.util.Date;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,9 +11,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.app.DialogFragment;
+
+import java.text.SimpleDateFormat;
 
 public class ListNodeActivity extends AppCompatActivity {
 
@@ -23,22 +29,44 @@ public class ListNodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_node);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+
+        EditText date = (EditText)findViewById(R.id.taskDateEdit);
+        date.setInputType(InputType.TYPE_NULL);
+
+        EditText time = (EditText)findViewById(R.id.taskTimeEdit);
+        time.setInputType(InputType.TYPE_NULL);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //add listener to pop up date picker
+        date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) showDatePickerDialog(v);
+            }
+        });
+
+        //add listener to pop up time picker
+        time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus)showTimePickerDialog(v);
+            }
+        });
     }
 
     public void addTaskBtn (View view)
     {
         EditText desc = (EditText)findViewById(R.id.newTaskDesc);
         EditText nts = (EditText)findViewById(R.id.newTaskNotes);
+        EditText date = (EditText)findViewById(R.id.taskDateEdit);
+        EditText time = (EditText)findViewById(R.id.taskTimeEdit);
+
+        Date myDate = null;
+
+        String strToParse = date.getText()+" "+time.getText();
+        try
+        {
+            myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(strToParse);
+        }catch(Exception e){myDate=null;};
 
        if(desc.getText().toString().matches(""))
         {
@@ -111,5 +139,15 @@ public class ListNodeActivity extends AppCompatActivity {
 
     public void onRadioButtonClicked(View view)
     {
+    }
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "timePicker");
     }
 }
