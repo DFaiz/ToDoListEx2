@@ -21,13 +21,15 @@ public class MainActivity extends AppCompatActivity {
     List<Task> itemList;
     Context context = MainActivity.this;
     TaskItemAdapter adapter;
+    DBManager dbM;
 
     public final int REQUEST_CODE_NEW_TASK = 1;
     public final int REQUEST_CODE_UPDATE_TASK = 2;
     public final int REQUEST_CODE_REMOVE_TASK = 3;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         itemList = new ArrayList<Task>();
         list  = (ListView)findViewById(R.id.listView);
 
+        dbM = DBManager.getInstance(context);
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

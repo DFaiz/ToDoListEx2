@@ -120,6 +120,8 @@ public class ListNodeActivity extends AppCompatActivity {
 
             Intent returnIntent = new Intent();
 
+            DBManager.getInstance(this).addTask(t);
+
           //  DBManager dbm = new DBManager(this);
          //   long seq_tsk_id = dbm.addTask(t);
           //  t.setTaskId(seq_tsk_id);
@@ -132,9 +134,9 @@ public class ListNodeActivity extends AppCompatActivity {
 
     public void discardBtnClick(View view)
     {
-        Intent returnIntent = new Intent();
+        Intent returnIntent = new Intent(this,MainActivity.class);
         setResult(RESULT_OK, returnIntent);
-        finish();
+        startActivity(returnIntent);
     }
 
     public void onRadioButtonClicked(View view)

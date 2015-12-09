@@ -39,7 +39,7 @@ public class DBManager extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        final String SQL_CREATE_TASKS_TABLE = "CREATE TABLE "
+       /* final String SQL_CREATE_TASKS_TABLE = "CREATE TABLE "
                 + TaskItem.TABLE_NAME + " ("
                 + TaskItem.COLUMN_NAME_TASK_ID+ " INTEGER PRIMARY KEY,"
                 + TaskItem.COLUMN_NAME_DESCRIPTION+ " TEXT NOT NULL, "
@@ -57,7 +57,7 @@ public class DBManager extends SQLiteOpenHelper
                 + TaskLocation.COLUMN_NAME_LOCATION_LAT+ " REAL, "
                 + TaskLocation.COLUMN_NAME_LOCATION_LON+ " REAL, "
                 +")";
-        db.execSQL(SQL_CREATE_LOCATIONS_TABLE);
+        db.execSQL(SQL_CREATE_LOCATIONS_TABLE);*/
     }
 
     @Override
