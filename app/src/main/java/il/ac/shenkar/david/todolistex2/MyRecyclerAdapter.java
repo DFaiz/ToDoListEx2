@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by David on 09-Dec-15.
+ * Created by David on 12-Dec-15.
  */
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.CustomViewHolder>
 {

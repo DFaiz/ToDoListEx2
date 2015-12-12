@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 /**
  * Created by David on 05-Dec-15.
  */
@@ -53,49 +52,42 @@ public class TaskItemAdapter extends BaseAdapter {
         final ViewHolder viewHold;
         Task item = (Task)getItem(position);
 
-        if(convertView == null) {
+        if(convertView == null)
+        {
             convertView = inflater.inflate(R.layout.content_list_item, null);
             viewHold = new ViewHolder();
             convertView.setTag(viewHold);
 
-            viewHold.cb = (CheckBox)convertView.findViewById(R.id.doneCheckBox);
-            viewHold.tv = (TextView)convertView.findViewById(R.id.taskDesc);
+            viewHold.tv = (TextView) convertView.findViewById(R.id.taskDesc);
+            viewHold.cb = (CheckBox) convertView.findViewById(R.id.doneCheckBox);
+
 
             viewHold.cb.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    /*
                     CheckBox cb = (CheckBox) v ;
 
                     Task item = (Task) cb.getTag();
                     item.setCompleted(cb.isChecked());
-
-                    DBHelper db = new DBHelper(context);
-                    db.updateTask(item);
-
-                    strikeThruText(viewHold,item.getCompleted());
-                    */
                 }
             });
         }
 
     else {
-            viewHold = (ViewHolder) convertView.getTag();
-
-        }
+            viewHold = (ViewHolder) convertView.getTag();}
 
         viewHold.tv = (TextView)convertView.findViewById(R.id.taskDesc);
         viewHold.tv.setText(itemList.get(position).getDescription());
         viewHold.cb = (CheckBox)convertView.findViewById(R.id.doneCheckBox);
-        //viewHold.cb.setChecked(itemList.get(position).getCompleted());
+        viewHold.cb.setChecked(itemList.get(position).getCompleted());
        // viewHold.cb.setTag(item);
 
         return convertView;
     }
 
 
-    public static class ViewHolder{
+    public static class ViewHolder
+    {
         TextView tv;
         CheckBox cb;
     }
