@@ -17,10 +17,10 @@ public class Task implements Serializable {
     private String description;
     private String task_notes;
     private Boolean completed = false;
-    private Boolean hasLocation = false;
+    private Date dueDate;
     private Boolean hasDate = false;
     private MapCords location;
-    private Date dueDate;
+    private Boolean hasLocation = false;
     private Priority task_priority;
     private Boolean toDelete = false;
 

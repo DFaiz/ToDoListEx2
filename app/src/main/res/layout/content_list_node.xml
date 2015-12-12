@@ -97,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="145dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="8dp"
         android:id="@+id/linearLayout6">
 
         <EditText
@@ -119,28 +119,17 @@
             android:ems="10"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-
-            android:hint="Pick Time.." >
-        </EditText>
+            android:hint="Pick Time.."
+        />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="195dp"
+        android:layout_marginTop="200dp"
         android:layout_marginLeft="60dp"
+        android:orientation="vertical"
         android:id="@+id/linearLayout5">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/newTaskNotes"
-            android:hint="     Add Task Notes"
-            android:maxLines="10"
-            android:layout_centerHorizontal="true" />
-
     </LinearLayout>
 
     <Button
@@ -162,5 +151,18 @@
         android:layout_alignTop="@+id/addTaskbtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/newTaskNotes"
+        android:hint="        Add Task Notes"
+        android:maxLines="10"
+        android:layout_alignTop="@+id/linearLayout5"
+        android:layout_alignLeft="@+id/linearLayout5"
+        android:layout_alignStart="@+id/linearLayout5"
+        android:layout_marginTop="24dp" />
 
 </RelativeLayout>

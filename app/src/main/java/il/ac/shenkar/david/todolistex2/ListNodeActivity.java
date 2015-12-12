@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -61,15 +62,10 @@ public class ListNodeActivity extends AppCompatActivity {
         EditText time = (EditText)findViewById(R.id.taskTimeEdit);
 
         Date myDate = null;
-
-        String strToParse = date.getText()+" "+time.getText();
-        try
-        {
-            myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(strToParse);
-        }catch(Exception e){myDate=null;};
+        String time_Date_str = null;
 
        if(desc.getText().toString().matches(""))
-        {
+       {
             new AlertDialog.Builder(this)
                     .setTitle("Fill Description")
                     .setMessage("Task description is empty.\nPlease fill task description")
@@ -81,23 +77,22 @@ public class ListNodeActivity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
-        }
-/*
+       }
+
         if(desc.getText().toString().length()==100)
         {
             new AlertDialog.Builder(this)
                     .setTitle("Fill Description")
                     .setMessage("Task description length exceeded.\nDescription can contain 100 characters max.")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which)
-                        {
+                        public void onClick(DialogInterface dialog, int which) {
                             return;
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
         }
-*/
+
         else
         {
             t = new Task(desc.getText().toString(),nts.getText().toString());
@@ -115,8 +110,19 @@ public class ListNodeActivity extends AppCompatActivity {
                         rb = (RadioButton) findViewById(R.id.highRBtn);
                         if(rb.isChecked())
                             t.setPriority(Priority.HIGH);
+                        else
+                            t.setPriority(Priority.MEDIUM);
                     }
-        }
+                }
+
+
+            time_Date_str = date.getText()+" "+time.getText();
+            try
+            {
+                myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
+                t.setDueDate(myDate);
+                t.setHasDate(true);
+            }catch(Exception e){myDate=null;};
 
             Intent returnIntent = new Intent();
 

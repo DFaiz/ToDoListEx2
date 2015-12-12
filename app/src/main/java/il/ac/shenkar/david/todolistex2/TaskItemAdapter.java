@@ -23,6 +23,7 @@ public class TaskItemAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private View.OnClickListener myClickListener;
+    private DBManager dbM;
 
     public TaskItemAdapter(Context context, List<Task> list) {
         this.itemList = list;
