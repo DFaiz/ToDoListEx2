@@ -14,4 +14,12 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <string-array name="category_array" translatable="false">
+        <item>General</item>
+        <item>Cleaning</item>
+        <item>Electricity</item>
+        <item>Computers</item>
+        <item>Other</item>
+    </string-array>
+
 </resources>

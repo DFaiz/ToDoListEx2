@@ -17,12 +17,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.app.DialogFragment;
+import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
 
 public class ListNodeActivity extends AppCompatActivity {
 
     Task t = new Task();
+    Spinner spin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +54,16 @@ public class ListNodeActivity extends AppCompatActivity {
                 if(hasFocus)showTimePickerDialog(v);
             }
         });
+
+        spin = (Spinner) findViewById(R.id.categorySpinner);
+       // spin.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+
     }
 
     public void addTaskBtn (View view)
     {
+        boolean state=true;
+
         EditText desc = (EditText)findViewById(R.id.newTaskDesc);
         EditText nts = (EditText)findViewById(R.id.newTaskNotes);
         EditText date = (EditText)findViewById(R.id.taskDateEdit);
@@ -63,6 +71,7 @@ public class ListNodeActivity extends AppCompatActivity {
 
         Date myDate = null;
         String time_Date_str = null;
+
 
        if(desc.getText().toString().matches(""))
        {
@@ -77,6 +86,7 @@ public class ListNodeActivity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
+           state = false;
        }
 
         if(desc.getText().toString().length()==100)
@@ -93,7 +103,7 @@ public class ListNodeActivity extends AppCompatActivity {
                     .show();
         }
 
-        else
+        if (state)
         {
             t = new Task(desc.getText().toString(),nts.getText().toString());
 
@@ -103,15 +113,15 @@ public class ListNodeActivity extends AppCompatActivity {
             else {
                     rb = (RadioButton) findViewById(R.id.medRBtn);
                     if(rb.isChecked())
-                        t.setPriority(Priority.MEDIUM);
+                        t.setPriority(Priority.NORMAL);
 
                     else
                     {
                         rb = (RadioButton) findViewById(R.id.highRBtn);
                         if(rb.isChecked())
-                            t.setPriority(Priority.HIGH);
+                            t.setPriority(Priority.URGENT);
                         else
-                            t.setPriority(Priority.MEDIUM);
+                            t.setPriority(Priority.NORMAL);
                     }
                 }
 
@@ -123,6 +133,28 @@ public class ListNodeActivity extends AppCompatActivity {
                 t.setDueDate(myDate);
                 t.setHasDate(true);
             }catch(Exception e){myDate=null;};
+
+            t.setTask_sts(Task_Status.WAITING);
+
+            int position = spin.getSelectedItemPosition();
+            switch(position)
+            {
+                case 0:
+                    t.setTask_catg(Category.GENERAL);
+                    break;
+                case 1:
+                    t.setTask_catg(Category.CLEANING);
+                    break;
+                case 2:
+                    t.setTask_catg(Category.ELECTRICITY);
+                    break;
+                case 3:
+                    t.setTask_catg(Category.COMPUTERS);
+                    break;
+                case 4:
+                    t.setTask_catg(Category.OTHER);
+                    break;
+            }
 
             Intent returnIntent = new Intent();
 

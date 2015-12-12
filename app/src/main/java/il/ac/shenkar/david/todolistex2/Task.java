@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-enum Priority {
-    LOW,MEDIUM,HIGH
-}
-
 /**
  * Created by David on 28-Nov-15.
  */
@@ -23,11 +19,11 @@ public class Task implements Serializable {
     private Boolean hasLocation = false;
     private Priority task_priority;
     private Boolean toDelete = false;
+    private Category task_catg;
+    private Task_Status task_sts;
 
     public Task ()
-    {
-
-    }
+    {}
 
     public Task(int id,String description, String notes)
     {
@@ -37,7 +33,8 @@ public class Task implements Serializable {
         this.task_notes = notes;
         dueDate = null;
         location = null;
-        task_priority = Priority.MEDIUM;
+        task_priority = Priority.NORMAL;
+        task_sts=Task_Status.WAITING;
     }
 
     public Task(String description, String notes)
@@ -47,7 +44,8 @@ public class Task implements Serializable {
         this.task_notes = notes;
         dueDate = null;
         location = null;
-        task_priority = Priority.MEDIUM;
+        task_priority = Priority.NORMAL;
+        task_sts=Task_Status.WAITING;
     }
 
     public String getDescription ()
@@ -137,5 +135,21 @@ public class Task implements Serializable {
 
     public void setHasLocation(Boolean hasLocation) {
         this.hasLocation = hasLocation;
+    }
+
+    public Category getTask_catg() {
+        return task_catg;
+    }
+
+    public void setTask_catg(Category task_catg) {
+        this.task_catg = task_catg;
+    }
+
+    public Task_Status getTask_sts() {
+        return task_sts;
+    }
+
+    public void setTask_sts(Task_Status task_sts) {
+        this.task_sts = task_sts;
     }
 }
