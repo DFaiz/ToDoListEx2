@@ -152,4 +152,12 @@ public class Task implements Serializable {
     public void setTask_sts(Task_Status task_sts) {
         this.task_sts = task_sts;
     }
+
+    public String getTask_notes() {
+        return task_notes;
+    }
+
+    public void setTask_notes(String task_notes) {
+        this.task_notes = task_notes;
+    }
 }

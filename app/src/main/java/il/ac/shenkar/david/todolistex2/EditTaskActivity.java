@@ -17,15 +17,19 @@ import android.widget.Toast;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-public class ListNodeActivity extends AppCompatActivity
+/**
+ * Created by David on 13-Dec-15.
+ */
+public class EditTaskActivity extends AppCompatActivity
 {
-    Task t = new Task();
+    Task edited_t;
     Spinner spin;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_node);
+        setContentView(R.layout.activity_list_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -36,6 +40,14 @@ public class ListNodeActivity extends AppCompatActivity
         time.setInputType(InputType.TYPE_NULL);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setTitle(R.string.title_activity_list_edit);
+/*
+        EditText desc = (EditText)findViewById(R.id.newTaskDesc);
+        EditText nts = (EditText)findViewById(R.id.newTaskNotes);
+
+        Date myDate = null;
+        String time_Date_str = null;
 
         //add listener to pop up date picker
         date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -52,9 +64,73 @@ public class ListNodeActivity extends AppCompatActivity
         });
 
         spin = (Spinner) findViewById(R.id.categorySpinner);
+
+        //get the intent (will determine if we in update mode)
+        Intent i = getIntent();
+        //if we have extra in our intent,its mean we on update mode
+        if(i.hasExtra("task"))
+        {
+            edited_t = (Task)i.getSerializableExtra("item");
+
+            if(edited_t.getHasDate())
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
+                date.setText(sdf.format(edited_t.getDueDate()));
+                time.setText(sdft.format(edited_t.getDueDate()));
+            }
+
+            //set priority
+            switch (edited_t.getPriority())
+            {
+                case URGENT:
+                    RadioButton hrb = (RadioButton)findViewById(R.id.highRBtn);
+                    hrb.setChecked(true);
+                    break;
+                case NORMAL:
+                    RadioButton mrb = (RadioButton)findViewById(R.id.medRBtn);
+                    mrb.setChecked(true);
+                    break;
+                case LOW:
+                    RadioButton nrb = (RadioButton)findViewById(R.id.lowRBtn);
+                    nrb.setChecked(true);
+                    break;
+            }
+
+            //set the task description
+            desc.setText(edited_t.getDescription());
+            if((edited_t.getTask_notes()!="")&&(edited_t.getTask_notes()!=null))
+            {
+                //set the task notes
+                desc.setText(edited_t.getTask_notes());
+            }
+
+            Category tmp_ctg = edited_t.getTask_catg();
+
+            switch(tmp_ctg)
+            {
+                case GENERAL:
+                    spin.setSelection(0);
+                    break;
+                case CLEANING:
+                    spin.setSelection(1);
+                    break;
+                case ELECTRICITY:
+                    spin.setSelection(2);
+                    break;
+                case COMPUTERS:
+                    spin.setSelection(3);
+                    break;
+                case OTHER:
+                    spin.setSelection(4);
+                    break;
+            }
+
+        }*/
+
     }
 
-    public void addTaskBtn (View view)
+    public void editTaskbtn (View view)
     {
         boolean state=true;
 
@@ -66,9 +142,8 @@ public class ListNodeActivity extends AppCompatActivity
         Date myDate = null;
         String time_Date_str = null;
 
-
-       if(desc.getText().toString().matches(""))
-       {
+        if(desc.getText().toString().matches(""))
+        {
             new AlertDialog.Builder(this)
                     .setTitle("Fill Description")
                     .setMessage("Task description is empty.\nPlease fill task description")
@@ -80,8 +155,8 @@ public class ListNodeActivity extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
-           state = false;
-       }
+            state = false;
+        }
 
         if(desc.getText().toString().length()==100)
         {
@@ -99,76 +174,63 @@ public class ListNodeActivity extends AppCompatActivity
                     .show();
         }
 
-        if (state)
-        {
-            t = new Task(desc.getText().toString(),nts.getText().toString());
+        if (state) {
+            edited_t = new Task(desc.getText().toString(), nts.getText().toString());
 
             RadioButton rb = (RadioButton) findViewById(R.id.lowRBtn);
-            if(rb.isChecked())
-                t.setPriority(Priority.LOW);
+            if (rb.isChecked())
+                edited_t.setPriority(Priority.LOW);
             else {
-                    rb = (RadioButton) findViewById(R.id.medRBtn);
-                    if(rb.isChecked())
-                        t.setPriority(Priority.NORMAL);
+                rb = (RadioButton) findViewById(R.id.medRBtn);
+                if (rb.isChecked())
+                    edited_t.setPriority(Priority.NORMAL);
 
+                else {
+                    rb = (RadioButton) findViewById(R.id.highRBtn);
+                    if (rb.isChecked())
+                        edited_t.setPriority(Priority.URGENT);
                     else
-                    {
-                        rb = (RadioButton) findViewById(R.id.highRBtn);
-                        if(rb.isChecked())
-                            t.setPriority(Priority.URGENT);
-                        else
-                            t.setPriority(Priority.NORMAL);
-                    }
+                        edited_t.setPriority(Priority.NORMAL);
                 }
-
-
-            time_Date_str = date.getText()+" "+time.getText();
-            try
-            {
-                myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
-                t.setDueDate(myDate);
-                t.setHasDate(true);
-            }catch(Exception e){myDate=null;}
-
-            t.setTask_sts(Task_Status.WAITING);
-
-            int position = spin.getSelectedItemPosition();
-            switch(position)
-            {
-                case 0:
-                    t.setTask_catg(Category.GENERAL);
-                    break;
-                case 1:
-                    t.setTask_catg(Category.CLEANING);
-                    break;
-                case 2:
-                    t.setTask_catg(Category.ELECTRICITY);
-                    break;
-                case 3:
-                    t.setTask_catg(Category.COMPUTERS);
-                    break;
-                case 4:
-                    t.setTask_catg(Category.OTHER);
-                    break;
             }
 
+            time_Date_str = date.getText() + " " + time.getText();
+            try {
+                myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
+                edited_t.setDueDate(myDate);
+                edited_t.setHasDate(true);
+            }catch(Exception e){myDate=null;}
+
+            edited_t.setTask_sts(Task_Status.WAITING);
+
+            int position = spin.getSelectedItemPosition();
+            switch (position) {
+                case 0:
+                    edited_t.setTask_catg(Category.GENERAL);
+                    break;
+                case 1:
+                    edited_t.setTask_catg(Category.CLEANING);
+                    break;
+                case 2:
+                    edited_t.setTask_catg(Category.ELECTRICITY);
+                    break;
+                case 3:
+                    edited_t.setTask_catg(Category.COMPUTERS);
+                    break;
+                case 4:
+                    edited_t.setTask_catg(Category.OTHER);
+                    break;
+            }
             Intent returnIntent = new Intent();
-
-           // DBManager.getInstance(this).addTask(t);
-
-          //  DBManager dbm = new DBManager(this);
-         //   long seq_tsk_id = dbm.addTask(t);
-          //  t.setTaskId(seq_tsk_id);
-
-            returnIntent.putExtra("task",t);
+            returnIntent.putExtra("task", edited_t);
             setResult(RESULT_OK, returnIntent);
             finish();
         }
     }
 
-    public void discardBtnClick(View view)
+    public void cancelTaskEdit(View view)
     {
-        Toast.makeText(this, "Task creation discarded", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Task edit discarded", Toast.LENGTH_LONG).show();
         Intent returnIntent = new Intent(this,MainActivity.class);
         setResult(RESULT_OK, returnIntent);
         startActivity(returnIntent);
@@ -187,4 +249,5 @@ public class ListNodeActivity extends AppCompatActivity
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
     }
+
 }

@@ -3,6 +3,7 @@ package il.ac.shenkar.david.todolistex2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.carrier.CarrierMessagingService;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +11,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     ListView list;
     List<Task> itemList;
@@ -36,17 +39,28 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         itemList = new ArrayList<Task>();
         list  = (ListView)findViewById(R.id.listView);
+        list.setAdapter(new TaskItemAdapter(context, itemList));
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
+
+                Task item = (Task) ((TaskItemAdapter)parent.getAdapter()).getItem(position);
+                EditTaskLongClick(view,item);
+                //Toast.makeText(context, "Long pressed to edit task", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(context, "Long press to edit task", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         dbM = DBManager.getInstance(context);
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
     @Override
@@ -74,7 +88,15 @@ public class MainActivity extends AppCompatActivity {
     public void newTaskButtonClick (View view)
     {
         Intent intent = new Intent(this,ListNodeActivity.class);
-        startActivityForResult(intent,REQUEST_CODE_NEW_TASK);
+        startActivityForResult(intent, REQUEST_CODE_NEW_TASK);
+    }
+
+    public void EditTaskLongClick (View view,Task tt)
+    {
+        Intent intent = new Intent(this,EditTaskActivity.class);
+        intent.putExtra("task", tt);
+        //Toast.makeText(context, "Long pressed to edit task", Toast.LENGTH_SHORT).show();
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_TASK);
     }
 
     @Override
@@ -98,5 +120,38 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+        //get the list
+       // list = (ListView) findViewById(R.id.listView);
+        //fill the list with tasks
+       // list.setAdapter(new TaskItemAdapter(context, itemList));
+
+      /*  list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
+
+                Toast.makeText(context, "Long pressed to edit task", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        }); */
+
+       /* list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(context, "Long press to edit task", Toast.LENGTH_SHORT).show();
+            }
+        }); */
+}
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto-generated method stub
+
     }
 }
