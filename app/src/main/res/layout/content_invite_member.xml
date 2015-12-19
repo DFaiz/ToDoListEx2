@@ -58,7 +58,7 @@
             android:layout_marginTop="20dp"
             android:hint="             mycool@emailaddress.com"
             android:inputType="textEmailAddress"
-            android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:digits="0,1,2,3,4,5,6,7,8,9,qwertzuiopasdfghjklyxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ,@,."
             android:textSize="16sp"
             android:id="@+id/editemailaddress" />
 
@@ -89,6 +89,6 @@
         android:id="@+id/Donebtn"
         android:layout_marginLeft="250dp"
         android:layout_marginTop="370dp"
-        android:onClick="onDone" />
+        android:onClick="onDonebtn" />
 
 </RelativeLayout>

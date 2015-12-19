@@ -62,7 +62,7 @@ public class signup_login extends AppCompatActivity {
         if(editTextUsername.getText().toString().length()<8)
         {
             new AlertDialog.Builder(this)
-                    .setTitle("Enter Username")
+                    .setTitle("Invalid Username")
                     .setMessage("Username must be at least 8 characters.\nPlease enter a valid Username")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -93,8 +93,23 @@ public class signup_login extends AppCompatActivity {
         if(editTextPassword.getText().toString().length()<8)
         {
             new AlertDialog.Builder(this)
-                    .setTitle("Enter Password")
+                    .setTitle("Invalid Password")
                     .setMessage("Password must be at least 8 characters.\nPlease enter a valid password")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            valid_inputs = false;
+        }
+
+        if(isAlphaNumeric(editTextPassword.getText().toString())==false)
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle("Invalid Password")
+                    .setMessage("Password must contain both letters and digits.\nPlease enter a valid password")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             return;
@@ -155,4 +170,12 @@ public class signup_login extends AppCompatActivity {
             return null;
         }
     };
+
+    public boolean isAlphaNumeric(String s){
+        String pattern= "^[a-zA-Z0-9]*$";
+        if(s.matches(pattern)){
+            return true;
+        }
+        return false;
+    }
 }
