@@ -1,5 +1,9 @@
 package il.ac.shenkar.david.todolistex2;
 
+/**
+ * Created by David on 19-Dec-15.
+ */
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +15,7 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.EditText;
 
-public class signup_login extends AppCompatActivity {
+public class Signup_Activity extends AppCompatActivity {
 
     private EditText editTextUsername;
     private EditText editTextPassword;
@@ -153,6 +157,7 @@ public class signup_login extends AppCompatActivity {
 
         if(valid_inputs)
         {
+            Globals.signed_uped=true;
             Intent returnIntent = new Intent(this,create_team.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);

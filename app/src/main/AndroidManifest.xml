@@ -25,14 +25,9 @@
                 android:value="il.ac.shenkar.david.todolistex2.MainActivity" />
         </activity>
         <activity
-            android:name=".signup_login"
+            android:name=".Signup_Activity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".create_team"
@@ -41,7 +36,20 @@
         <activity
             android:name=".invite_member"
             android:label="@string/title_activity_invite_member"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Login_activity"
+            android:label="@string/title_activity_login_activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SplashScreen"
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

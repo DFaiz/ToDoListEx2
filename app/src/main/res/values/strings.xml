@@ -11,4 +11,6 @@
     <string name="title_activity_signup_login">signup_login</string>
     <string name="title_activity_create_team">create_team</string>
     <string name="title_activity_invite_member">invite_member</string>
+    <string name="title_activity_login_activity">Login_activity</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>

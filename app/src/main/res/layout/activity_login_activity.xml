@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="il.ac.shenkar.david.todolistex2.Signup_Activity">
+    tools:context="il.ac.shenkar.david.todolistex2.Login_activity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,6 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_signup_login" />
+    <include layout="@layout/content_login_activity" />
 
 </android.support.design.widget.CoordinatorLayout>

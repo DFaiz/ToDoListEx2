@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="il.ac.shenkar.david.todolistex2.signup_login"
+    tools:context="il.ac.shenkar.david.todolistex2.Signup_Activity"
     tools:showIn="@layout/activity_signup_login">
 
     <LinearLayout
