@@ -57,7 +57,7 @@
             android:maxLength="30"
             android:layout_marginTop="30dp"
             android:hint="          Only letters and digits allowed"
-            android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:digits=" 0123456789qwertzuiopasdfghjklyxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:textSize="16sp"
             android:id="@+id/editTextteamname" />
     </LinearLayout>

@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:maxLength="30"
             android:hint="Only letters, - , _ and digits allowed"
-            android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ,-,_"
             android:textSize="16sp"
             android:id="@+id/editTextusername" />
 
