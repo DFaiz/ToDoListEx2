@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="il.ac.shenkar.david.todolistex2.create_team"
+    tools:showIn="@layout/activity_create_team">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:id="@+id/createteamLayout1">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Create Team"
+        android:id="@+id/createamView"
+        android:textSize="32sp"
+        android:layout_alignTop="@+id/createteamLayout1"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:paddingLeft="25dp"
+        android:orientation="vertical"
+        android:id="@+id/createteamLayout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Enter Team Name"
+            android:layout_marginTop="60dp"
+            android:paddingLeft="75dp"
+            android:id="@+id/teamnametextView"
+            android:layout_alignTop="@+id/createteamLayout2"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="30"
+            android:layout_marginTop="30dp"
+            android:hint="          Only letters and digits allowed"
+            android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:textSize="16sp"
+            android:id="@+id/editTextteamname" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        android:id="@+id/Exitbtn"
+        android:onClick="onExitbtn"
+        android:layout_marginTop="370dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invite Members"
+        android:id="@+id/invitemembtn"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="370dp"
+        android:onClick="onInviteMembers" />
+
+</RelativeLayout>

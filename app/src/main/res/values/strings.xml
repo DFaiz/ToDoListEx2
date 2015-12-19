@@ -8,4 +8,7 @@
     <string name="priority_low" translatable="false">Low</string>
     <string name="priority_med" translatable="false">Medium</string>
     <string name="priority_high" translatable="false">High</string>
+    <string name="title_activity_signup_login">signup_login</string>
+    <string name="title_activity_create_team">create_team</string>
+    <string name="title_activity_invite_member">invite_member</string>
 </resources>
