@@ -5,8 +5,10 @@ package il.ac.shenkar.david.todolistex2;
  */
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -63,11 +65,11 @@ public class Signup_Activity extends AppCompatActivity {
             valid_inputs = false;
         }
 
-        if(editTextUsername.getText().toString().length()<8)
+        if(editTextUsername.getText().toString().length()<5)
         {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid Username")
-                    .setMessage("Username must be at least 8 characters.\nPlease enter a valid Username")
+                    .setMessage("Username must be at least 5 characters.\nPlease enter a valid Username")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             return;
@@ -157,6 +159,8 @@ public class Signup_Activity extends AppCompatActivity {
 
         if(valid_inputs)
         {
+            SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+            sharedpreferences.edit().putBoolean("LoginState", true).apply();
             Globals.signed_uped=true;
             Intent returnIntent = new Intent(this,create_team.class);
             setResult(RESULT_OK, returnIntent);

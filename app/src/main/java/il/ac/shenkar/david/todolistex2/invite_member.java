@@ -7,6 +7,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class invite_member extends AppCompatActivity
 {
     private EditText member_email;
@@ -31,6 +35,9 @@ public class invite_member extends AppCompatActivity
     {
         member_email = (EditText) findViewById(R.id.editemailaddress);
         Intent email = new Intent(Intent.ACTION_SEND);
+
+        //List<String> list = new ArrayList<String>(Arrays.asList(member_email.getText().toString().split(" , ")));
+
         email.putExtra(Intent.EXTRA_EMAIL, new String[]{ member_email.getText().toString()});
         email.putExtra(Intent.EXTRA_SUBJECT,email_Subject );
         email.putExtra(Intent.EXTRA_TEXT,email_body );

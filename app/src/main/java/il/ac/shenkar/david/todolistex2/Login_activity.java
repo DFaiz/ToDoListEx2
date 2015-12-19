@@ -1,5 +1,6 @@
 package il.ac.shenkar.david.todolistex2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,4 +19,10 @@ public class Login_activity extends AppCompatActivity
 
     }
 
+    public void onLoginbtn (View view)
+    {
+        Intent returnIntent = new Intent(this,MainActivity.class);
+        setResult(RESULT_OK, returnIntent);
+        startActivity(returnIntent);
+    }
 }
