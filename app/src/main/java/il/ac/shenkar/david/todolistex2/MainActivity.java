@@ -126,9 +126,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
         //get the list
-       // list = (ListView) findViewById(R.id.listView);
+        // list = (ListView) findViewById(R.id.listView);
         //fill the list with tasks
-       // list.setAdapter(new TaskItemAdapter(context, itemList));
+        // list.setAdapter(new TaskItemAdapter(context, itemList));
 
       /*  list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Toast.makeText(context, "Long press to edit task", Toast.LENGTH_SHORT).show();
             }
         }); */
-}
+    }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

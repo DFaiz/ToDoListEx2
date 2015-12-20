@@ -96,7 +96,55 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="145dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="4dp"
+        android:id="@+id/linearLayout8">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+
+        android:text="Time and Date:"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/todaydatebtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Today"
+                android:layout_marginLeft="3dp"
+                android:onClick="onRadioTimeDateButtonClicked"/>
+            <RadioButton
+                android:id="@+id/tomorrowdatebtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tomorrow"
+                android:onClick="onRadioTimeDateButtonClicked"/>
+            <RadioButton
+                android:id="@+id/customdatebtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="1dp"
+                android:text="Custom"
+                android:onClick="onRadioTimeDateButtonClicked"/>
+        </RadioGroup>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
         android:layout_marginLeft="8dp"
         android:id="@+id/linearLayout6">
 
@@ -107,6 +155,7 @@
             android:inputType="date"
             android:ems="10"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:hint="Pick Date.."
             />
@@ -117,6 +166,7 @@
             android:layout_height="wrap_content"
             android:inputType="time"
             android:ems="10"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:hint="Pick Time.."
@@ -126,7 +176,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="195dp"
+        android:layout_marginTop="230dp"
         android:id="@+id/linearLayout7">
 
         <TextView
@@ -161,7 +211,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="210dp"
         android:layout_marginLeft="60dp"
         android:orientation="vertical"
         android:id="@+id/linearLayout5">

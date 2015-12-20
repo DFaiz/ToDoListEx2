@@ -14,6 +14,7 @@ import android.app.DialogFragment;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -65,7 +66,7 @@ public class ListNodeActivity extends AppCompatActivity
 
         Date myDate = null;
         String time_Date_str = null;
-
+        RadioButton rb;
 
        if(desc.getText().toString().matches(""))
        {
@@ -103,7 +104,7 @@ public class ListNodeActivity extends AppCompatActivity
         {
             t = new Task(desc.getText().toString(),nts.getText().toString());
 
-            RadioButton rb = (RadioButton) findViewById(R.id.lowRBtn);
+            rb = (RadioButton) findViewById(R.id.lowRBtn);
             if(rb.isChecked())
                 t.setPriority(Priority.LOW);
             else {
@@ -121,16 +122,56 @@ public class ListNodeActivity extends AppCompatActivity
                     }
                 }
 
-
-            time_Date_str = date.getText()+" "+time.getText();
-            try
+            rb = (RadioButton) findViewById(R.id.todaydatebtn);
+            if(rb.isChecked())
             {
-                myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
-                t.setDueDate(myDate);
-                t.setHasDate(true);
-            }catch(Exception e){myDate=null;}
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                time_Date_str = cal.getTime().toString();
+                try
+                {
+                    myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
+                    t.setDueDate(myDate);
+                    t.setHasDate(true);
+                }catch(Exception e){myDate=null;}
+            }
 
-            t.setTask_sts(Task_Status.WAITING);
+
+            else
+            {
+                rb = (RadioButton) findViewById(R.id.tomorrowdatebtn);
+                if(rb.isChecked())
+                {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DATE, 1);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    time_Date_str = cal.getTime().toString();
+                    try
+                    {
+                        myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
+                        t.setDueDate(myDate);
+                        t.setHasDate(true);
+                    }catch(Exception e){myDate=null;}
+                }
+                else
+                {
+                    rb = (RadioButton) findViewById(R.id.customdatebtn);
+                    if(rb.isChecked())
+                    {
+                        time_Date_str = date.getText()+" "+time.getText();
+                        try
+                        {
+                            myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
+                            t.setDueDate(myDate);
+                            t.setHasDate(true);
+                        }catch(Exception e){myDate=null;}
+
+                        t.setTask_sts(Task_Status.WAITING);
+                    }
+                }
+
+            }
+
 
             int position = spin.getSelectedItemPosition();
             switch(position)
@@ -176,6 +217,46 @@ public class ListNodeActivity extends AppCompatActivity
 
     public void onRadioButtonClicked(View view)
     {
+    }
+
+    public void onRadioTimeDateButtonClicked(View view)
+    {
+        RadioButton rb = (RadioButton) findViewById(R.id.todaydatebtn);
+        if(rb.isChecked())
+        {
+            EditText date = (EditText)findViewById(R.id.taskDateEdit);
+            date.setText("");
+            date.setClickable(false);
+            EditText time = (EditText)findViewById(R.id.taskTimeEdit);
+            time.setText("");
+            time.setClickable(false);
+        }
+
+        else
+        {
+           rb = (RadioButton) findViewById(R.id.tomorrowdatebtn);
+            if(rb.isChecked())
+            {
+                EditText date = (EditText)findViewById(R.id.taskDateEdit);
+                date.setText("");
+                date.setClickable(false);
+                EditText time = (EditText)findViewById(R.id.taskTimeEdit);
+                time.setText("");
+                time.setClickable(false);
+            }
+
+            else
+            {
+                rb = (RadioButton) findViewById(R.id.customdatebtn);
+                if(rb.isChecked())
+                {
+                    EditText date = (EditText)findViewById(R.id.taskDateEdit);
+                    date.setClickable(true);
+                    EditText time = (EditText)findViewById(R.id.taskTimeEdit);
+                    time.setClickable(true);
+                }
+            }
+        }
     }
 
     public void showDatePickerDialog(View v) {
