@@ -120,6 +120,7 @@
                 android:layout_weight="1"
                 android:text="Today"
                 android:layout_marginLeft="3dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:onClick="onRadioTimeDateButtonClicked"/>
             <RadioButton
                 android:id="@+id/tomorrowdatebtn"
@@ -127,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Tomorrow"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:onClick="onRadioTimeDateButtonClicked"/>
             <RadioButton
                 android:id="@+id/customdatebtn"
@@ -134,10 +136,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="1dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Custom"
                 android:onClick="onRadioTimeDateButtonClicked"/>
         </RadioGroup>
-
 
     </LinearLayout>
 

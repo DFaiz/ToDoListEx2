@@ -226,10 +226,10 @@ public class ListNodeActivity extends AppCompatActivity
         {
             EditText date = (EditText)findViewById(R.id.taskDateEdit);
             date.setText("");
-            date.setClickable(false);
+            date.setVisibility(View.GONE);
             EditText time = (EditText)findViewById(R.id.taskTimeEdit);
             time.setText("");
-            time.setClickable(false);
+            time.setVisibility(View.GONE);
         }
 
         else
@@ -239,10 +239,10 @@ public class ListNodeActivity extends AppCompatActivity
             {
                 EditText date = (EditText)findViewById(R.id.taskDateEdit);
                 date.setText("");
-                date.setClickable(false);
+                date.setVisibility(View.GONE);
                 EditText time = (EditText)findViewById(R.id.taskTimeEdit);
                 time.setText("");
-                time.setClickable(false);
+                time.setVisibility(View.GONE);
             }
 
             else
@@ -251,9 +251,9 @@ public class ListNodeActivity extends AppCompatActivity
                 if(rb.isChecked())
                 {
                     EditText date = (EditText)findViewById(R.id.taskDateEdit);
-                    date.setClickable(true);
+                    date.setVisibility(View.VISIBLE);
                     EditText time = (EditText)findViewById(R.id.taskTimeEdit);
-                    time.setClickable(true);
+                    time.setVisibility(View.VISIBLE);
                 }
             }
         }
