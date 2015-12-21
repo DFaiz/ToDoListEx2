@@ -41,16 +41,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         list  = (ListView)findViewById(R.id.listView);
         list.setAdapter(new TaskItemAdapter(context, itemList));
 
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+       /* list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
 
                 Task item = (Task) ((TaskItemAdapter)parent.getAdapter()).getItem(position);
                 EditTaskLongClick(view,item);
-                //Toast.makeText(context, "Long pressed to edit task", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
+*/
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
+
+        //get item instance from list
+        Task tt = (Task) ((TaskItemAdapter)parent.getAdapter()).getItem(position);
+
+        //start the create activity again, now for editing
+        Intent i = new Intent(getApplicationContext(),EditTaskActivity.class);
+        i.putExtra("task", tt);
+        startActivityForResult(i, REQUEST_CODE_UPDATE_TASK);
+
+        return false;
+    }});
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,8 +109,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     {
         Intent intent = new Intent(this,EditTaskActivity.class);
         intent.putExtra("task", tt);
-        //Toast.makeText(context, "Long pressed to edit task", Toast.LENGTH_SHORT).show();
-        startActivityForResult(intent, REQUEST_CODE_UPDATE_TASK);
+        //startActivityForResult(intent, REQUEST_CODE_UPDATE_TASK);
+        startActivityForResult(intent, REQUEST_CODE_NEW_TASK);
+
     }
 
     @Override
@@ -109,6 +124,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 case REQUEST_CODE_NEW_TASK:
                     Task t = (Task)data.getSerializableExtra("task");
                     itemList.add(t);
+                    adapter =  new TaskItemAdapter(context, itemList);
+                    list.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    break;
+                case REQUEST_CODE_UPDATE_TASK:
+                    Task edited_t = (Task)data.getSerializableExtra("task");
+                    itemList.add(edited_t);
                     adapter =  new TaskItemAdapter(context, itemList);
                     list.setAdapter(adapter);
                     adapter.notifyDataSetChanged();

@@ -1,47 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_list_edit"
-    tools:context="il.ac.shenkar.david.todolistex2.EditTaskActivity">
+    tools:context="il.ac.shenkar.david.todolistex2.EditTaskActivity"
+    tools:showIn="@layout/activity_edit_task">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:id="@+id/linearLayout8">
+        android:id="@+id/edittasklinearLayout1">
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="60dp"
-        android:id="@+id/linearLayout9">
+        android:layout_marginLeft="120dp"
+        android:id="@+id/edittasklinearLayout3">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Task Description"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="37dp"
+        android:layout_marginLeft="60dp"
+        android:id="@+id/edittasklinearLayout2">
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/newTaskDesc"
+            android:id="@+id/editTaskDesc"
             android:hint="   Enter Task Description"
             android:maxLength="100"/>
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        android:id="@+id/linearLayout10">
+        android:layout_marginTop="120dp"
+        android:id="@+id/edittasklinearLayout4">
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +74,7 @@
             android:layout_margin="10dp">
 
             <RadioButton
-                android:id="@+id/lowRBtn"
+                android:id="@+id/editlowRBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -67,14 +82,14 @@
                 android:layout_marginLeft="5dp"
                 android:onClick="onRadioButtonClicked"/>
             <RadioButton
-                android:id="@+id/medRBtn"
+                android:id="@+id/editmedRBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Normal"
                 android:onClick="onRadioButtonClicked"/>
             <RadioButton
-                android:id="@+id/highRBtn"
+                android:id="@+id/edithighRBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -87,47 +102,65 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="125dp"
         android:layout_marginLeft="60dp"
         android:orientation="vertical"
-        android:id="@+id/linearLayout11">
+        android:id="@+id/edittasklinearLayout5">
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="145dp"
+        android:layout_marginTop="185dp"
+        android:layout_marginLeft="110dp"
+        android:orientation="vertical"
+        android:id="@+id/edittasklinearLayout9">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Time and Date:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="215dp"
         android:layout_marginLeft="8dp"
-        android:id="@+id/linearLayout12">
+        android:id="@+id/edittasklinearLayout6">
 
         <EditText
-            android:id="@+id/taskDateEdit"
+            android:id="@+id/taskEditDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:hint="Pick Date.."
             />
 
         <EditText
-            android:id="@+id/taskTimeEdit"
+            android:id="@+id/taskEditTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="time"
             android:ems="10"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:hint="Pick Time.."
-        />
+            />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="195dp"
-        android:id="@+id/linearLayout13">
+        android:layout_marginTop="280dp"
+        android:id="@+id/edittasklinearLayout7">
 
         <TextView
             android:layout_width="wrap_content"
@@ -141,49 +174,39 @@
         <Spinner android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:entries="@array/category_array"
-            android:layout_marginTop="18dp"
             android:id="@+id/categorySpinner"
             android:textAlignment="center"/>
     </LinearLayout>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/newTaskNotes"
-        android:hint="        Add Task Notes"
-        android:maxLines="10"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="90dp"
-        android:layout_alignTop="@+id/linearLayout13" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginTop="210dp"
         android:orientation="vertical"
-        android:id="@+id/linearLayout15">
+        android:id="@+id/edittasklinearLayout8">
     </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Edited Task"
-        android:id="@+id/editTaskbtn"
+        android:text="Save Changes"
+        android:id="@+id/SaveEditedTaskbtn"
         android:layout_marginBottom="70dp"
-        android:onClick="editTaskbtn"
-        android:layout_alignParentBottom="true" />
+        android:onClick="saveChangesTaskBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/edittasklinearLayout8"
+        android:layout_alignEnd="@+id/edittasklinearLayout8" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Discard Edit"
-        android:id="@+id/cancelTaskEditbtn"
-        android:onClick="cancelTaskEdit"
+        android:text="Discard Changes"
+        android:id="@+id/discchngsTaskbtn"
+        android:onClick="discardchangesBtnClick"
         android:layout_marginBottom="70dp"
-        android:layout_marginLeft="235dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/edittasklinearLayout8"
+        android:layout_alignStart="@+id/edittasklinearLayout8" />
 
 </RelativeLayout>

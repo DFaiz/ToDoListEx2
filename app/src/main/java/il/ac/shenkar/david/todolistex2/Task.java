@@ -11,7 +11,6 @@ public class Task implements Serializable {
 
     private long taskId;
     private String description;
-    private String task_notes;
     private Boolean completed = false;
     private Date dueDate;
     private Boolean hasDate = false;
@@ -25,23 +24,21 @@ public class Task implements Serializable {
     public Task ()
     {}
 
-    public Task(int id,String description, String notes)
+    public Task(int id,String description)
     {
         super();
         this.taskId=id;
         this.description = description;
-        this.task_notes = notes;
         dueDate = null;
         location = null;
         task_priority = Priority.NORMAL;
         task_sts=Task_Status.WAITING;
     }
 
-    public Task(String description, String notes)
+    public Task(String description)
     {
         super();
         this.description = description;
-        this.task_notes = notes;
         dueDate = null;
         location = null;
         task_priority = Priority.NORMAL;
@@ -153,11 +150,4 @@ public class Task implements Serializable {
         this.task_sts = task_sts;
     }
 
-    public String getTask_notes() {
-        return task_notes;
-    }
-
-    public void setTask_notes(String task_notes) {
-        this.task_notes = task_notes;
-    }
 }

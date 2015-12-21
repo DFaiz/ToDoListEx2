@@ -24,7 +24,8 @@ public class ListNodeActivity extends AppCompatActivity
     Spinner spin;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_node);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -32,9 +33,15 @@ public class ListNodeActivity extends AppCompatActivity
 
         EditText date = (EditText)findViewById(R.id.taskDateEdit);
         date.setInputType(InputType.TYPE_NULL);
+        date = (EditText)findViewById(R.id.taskDateEdit);
+        date.setText("");
+        date.setVisibility(View.GONE);
 
         EditText time = (EditText)findViewById(R.id.taskTimeEdit);
         time.setInputType(InputType.TYPE_NULL);
+        time = (EditText)findViewById(R.id.taskTimeEdit);
+        time.setText("");
+        time.setVisibility(View.GONE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -48,11 +55,14 @@ public class ListNodeActivity extends AppCompatActivity
         //add listener to pop up time picker
         time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)showTimePickerDialog(v);
+                if (hasFocus) showTimePickerDialog(v);
             }
         });
 
         spin = (Spinner) findViewById(R.id.categorySpinner);
+
+        RadioButton rb = (RadioButton) findViewById(R.id.todaydatebtn);
+        rb.setChecked(true);
     }
 
     public void addTaskBtn (View view)
@@ -60,7 +70,6 @@ public class ListNodeActivity extends AppCompatActivity
         boolean state=true;
 
         EditText desc = (EditText)findViewById(R.id.newTaskDesc);
-        EditText nts = (EditText)findViewById(R.id.newTaskNotes);
         EditText date = (EditText)findViewById(R.id.taskDateEdit);
         EditText time = (EditText)findViewById(R.id.taskTimeEdit);
 
@@ -102,7 +111,7 @@ public class ListNodeActivity extends AppCompatActivity
 
         if (state)
         {
-            t = new Task(desc.getText().toString(),nts.getText().toString());
+            t = new Task(desc.getText().toString());
 
             rb = (RadioButton) findViewById(R.id.lowRBtn);
             if(rb.isChecked())

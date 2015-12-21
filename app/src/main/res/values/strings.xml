@@ -13,4 +13,5 @@
     <string name="title_activity_invite_member">invite_member</string>
     <string name="title_activity_login_activity">Login_activity</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_edit_task">EditTaskActivity</string>
 </resources>
