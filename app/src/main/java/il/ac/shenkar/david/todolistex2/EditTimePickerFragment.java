@@ -1,9 +1,5 @@
 package il.ac.shenkar.david.todolistex2;
 
-/**
- * Created by David on 08-Dec-15.
- */
-
 import java.util.Calendar;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -13,7 +9,10 @@ import android.text.format.DateFormat;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener
+/**
+ * Created by David on 23-Dec-15.
+ */
+public class EditTimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener
 {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -30,7 +29,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        EditText time= (EditText)getActivity().findViewById(R.id.taskTimeEdit);
+        EditText time= (EditText)getActivity().findViewById(R.id.editTaskTime);
         time.setText(hourOfDay+":"+minute);
     }
 }

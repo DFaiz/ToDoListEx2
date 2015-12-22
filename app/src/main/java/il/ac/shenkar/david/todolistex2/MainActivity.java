@@ -41,16 +41,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         list  = (ListView)findViewById(R.id.listView);
         list.setAdapter(new TaskItemAdapter(context, itemList));
 
-       /* list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
-
-                Task item = (Task) ((TaskItemAdapter)parent.getAdapter()).getItem(position);
-                EditTaskLongClick(view,item);
-                return false;
-            }
-        });
-*/
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
@@ -70,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(context, "Long press to edit task", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(context, "Long press to edit task", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -105,41 +95,63 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivityForResult(intent, REQUEST_CODE_NEW_TASK);
     }
 
-    public void EditTaskLongClick (View view,Task tt)
-    {
-        Intent intent = new Intent(this,EditTaskActivity.class);
-        intent.putExtra("task", tt);
-        //startActivityForResult(intent, REQUEST_CODE_UPDATE_TASK);
-        startActivityForResult(intent, REQUEST_CODE_NEW_TASK);
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        Task returned_task;
+
         if(resultCode == RESULT_OK)
         {
             switch (requestCode)
             {
-                case REQUEST_CODE_NEW_TASK:
-                    Task t = (Task)data.getSerializableExtra("task");
-                    itemList.add(t);
+                case REQUEST_CODE_NEW_TASK:{
+                    Toast.makeText(context, "new task returned", Toast.LENGTH_SHORT).show();
+                    returned_task = (Task)data.getSerializableExtra("task");
+                    itemList.add(returned_task);
                     adapter =  new TaskItemAdapter(context, itemList);
                     list.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                }
                     break;
                 case REQUEST_CODE_UPDATE_TASK:
-                    Task edited_t = (Task)data.getSerializableExtra("task");
-                    itemList.add(edited_t);
-                    adapter =  new TaskItemAdapter(context, itemList);
-                    list.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+                {
+                    returned_task = (Task)data.getSerializableExtra("task");
+                    if(returned_task.getToDelete())
+                    {
+                        for(int i=0;i<itemList.size();i++)
+                        {
+                            if(itemList.get(i).getTaskId()==returned_task.getTaskId())
+                            {
+                                itemList.remove(i);
+                                adapter =  new TaskItemAdapter(context, itemList);
+                                list.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for(int i=0;i<itemList.size();i++)
+                        {
+                            if(itemList.get(i).getTaskId()==returned_task.getTaskId())
+                            {
+                                itemList.set(i, returned_task);
+                                adapter =  new TaskItemAdapter(context, itemList);
+                                list.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
                     break;
+                }
+
                 default:
-                    adapter =  new TaskItemAdapter(context, itemList);
+                {
+                    adapter = new TaskItemAdapter(context, itemList);
                     list.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     break;
+                }
             }
         }
     }

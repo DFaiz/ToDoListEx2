@@ -97,13 +97,14 @@ public class EditTaskActivity extends AppCompatActivity
             }
         }
 
-        EditText date = (EditText)findViewById(R.id.taskEditDate);
+        EditText date = (EditText)findViewById(R.id.editTaskDate);
         date.setInputType(InputType.TYPE_NULL);
-        date = (EditText)findViewById(R.id.taskEditDate);
+        date = (EditText)findViewById(R.id.editTaskDate);
 
-        EditText time = (EditText)findViewById(R.id.taskEditTime);
+        EditText time = (EditText)findViewById(R.id.editTaskTime);
         time.setInputType(InputType.TYPE_NULL);
-        time = (EditText)findViewById(R.id.taskEditTime);
+        time = (EditText)findViewById(R.id.editTaskTime);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //add listener to pop up date picker
         date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -121,20 +122,18 @@ public class EditTaskActivity extends AppCompatActivity
 
         if(tastToEdit.getHasDate())
         {
-            Toast.makeText(this, "Task edit date and time", Toast.LENGTH_LONG).show();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
             date.setText(sdf.format(tastToEdit.getDueDate()));
             time.setText(sdft.format(tastToEdit.getDueDate()));
         }
-
     }
 
     public void saveChangesTaskBtn(View view)
     {
-        EditText desc = (EditText)findViewById(R.id.newTaskDesc);
-        EditText date = (EditText)findViewById(R.id.taskDateEdit);
-        EditText time = (EditText)findViewById(R.id.taskTimeEdit);
+        EditText desc = (EditText)findViewById(R.id.editTaskDesc);
+        EditText date = (EditText)findViewById(R.id.editTaskDate);
+        EditText time = (EditText)findViewById(R.id.editTaskTime);
 
         Date myDate = null;
         boolean state=true;
@@ -226,10 +225,7 @@ public class EditTaskActivity extends AppCompatActivity
             Intent returnIntent = new Intent();
 
             // DBManager.getInstance(this).addTask(t);
-
             //  DBManager dbm = new DBManager(this);
-            //   long seq_tsk_id = dbm.addTask(t);
-            //  t.setTaskId(seq_tsk_id);
 
             returnIntent.putExtra("task",tastToEdit);
             setResult(RESULT_OK, returnIntent);
@@ -239,10 +235,16 @@ public class EditTaskActivity extends AppCompatActivity
 
     public void discardchangesBtnClick(View view)
     {
-        Toast.makeText(this, "Task edit discarded", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    public void deleteTaskBtn(View view)
+    {
         Intent returnIntent = new Intent(this,MainActivity.class);
+        tastToEdit.setToDelete(true);
+        returnIntent.putExtra("task",tastToEdit);
         setResult(RESULT_OK, returnIntent);
-        startActivity(returnIntent);
+        finish();
     }
 
     public void onRadioButtonClicked(View view)
@@ -250,12 +252,12 @@ public class EditTaskActivity extends AppCompatActivity
     }
 
     public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
+        DialogFragment newFragment = new EditDatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
     }
 
     public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
+        DialogFragment newFragment = new EditTimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
     }
 

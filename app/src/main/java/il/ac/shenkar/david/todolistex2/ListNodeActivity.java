@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.app.DialogFragment;
@@ -22,6 +23,9 @@ public class ListNodeActivity extends AppCompatActivity
 {
     Task t = new Task();
     Spinner spin;
+    Spinner empolyeeSpinner;
+    int task_id=1;
+    String time_Date_str = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +65,13 @@ public class ListNodeActivity extends AppCompatActivity
 
         spin = (Spinner) findViewById(R.id.categorySpinner);
 
+        empolyeeSpinner = (Spinner) findViewById(R.id.employeeSpinner);
+        ArrayAdapter<String> empolyeeSpinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
+        empolyeeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        empolyeeSpinner.setAdapter(empolyeeSpinnerAdapter);
+        //empolyeeSpinnerAdapter.add("my name is");
+        //empolyeeSpinnerAdapter.notifyDataSetChanged();
+
         RadioButton rb = (RadioButton) findViewById(R.id.todaydatebtn);
         rb.setChecked(true);
     }
@@ -74,7 +85,6 @@ public class ListNodeActivity extends AppCompatActivity
         EditText time = (EditText)findViewById(R.id.taskTimeEdit);
 
         Date myDate = null;
-        String time_Date_str = null;
         RadioButton rb;
 
        if(desc.getText().toString().matches(""))
@@ -136,7 +146,7 @@ public class ListNodeActivity extends AppCompatActivity
             {
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                time_Date_str = cal.getTime().toString();
+                time_Date_str = sdf.format(cal.getTime());
                 try
                 {
                     myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
@@ -154,10 +164,11 @@ public class ListNodeActivity extends AppCompatActivity
                     Calendar cal = Calendar.getInstance();
                     cal.add(Calendar.DATE, 1);
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                    time_Date_str = cal.getTime().toString();
+                    time_Date_str = sdf.format(cal.getTime());
                     try
                     {
                         myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
+
                         t.setDueDate(myDate);
                         t.setHasDate(true);
                     }catch(Exception e){myDate=null;}
@@ -202,6 +213,8 @@ public class ListNodeActivity extends AppCompatActivity
                     break;
             }
 
+            t.setTaskId(task_id);
+            task_id++;
             Intent returnIntent = new Intent();
 
            // DBManager.getInstance(this).addTask(t);

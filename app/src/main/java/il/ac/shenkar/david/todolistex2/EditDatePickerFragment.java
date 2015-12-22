@@ -1,7 +1,7 @@
 package il.ac.shenkar.david.todolistex2;
 
 /**
- * Created by David on 08-Dec-15.
+ * Created by David on 23-Dec-15.
  */
 
 import android.app.DatePickerDialog;
@@ -12,7 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import java.util.Calendar;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
+public class EditDatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -31,7 +31,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet(DatePicker view, int year, int month, int day)
     {
         // Do something with the date chosen by the user
-        EditText date= (EditText)getActivity().findViewById(R.id.taskDateEdit);
+        EditText date= (EditText)getActivity().findViewById(R.id.editTaskDate);
         date.setText(day+"/"+(month+1)+"/"+year);
     }
 }
