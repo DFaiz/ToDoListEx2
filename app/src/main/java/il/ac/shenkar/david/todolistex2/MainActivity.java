@@ -13,7 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Context context = MainActivity.this;
     TaskItemAdapter adapter;
     DBManager dbM;
+
+    private TextView emptylist_txt;
 
     public final int REQUEST_CODE_NEW_TASK = 1;
     public final int REQUEST_CODE_UPDATE_TASK = 2;
@@ -42,29 +47,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         list.setAdapter(new TaskItemAdapter(context, itemList));
 
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
 
-        //get item instance from list
-        Task tt = (Task) ((TaskItemAdapter)parent.getAdapter()).getItem(position);
+                //get item instance from list
+                Task tt = (Task) ((TaskItemAdapter) parent.getAdapter()).getItem(position);
 
-        //start the create activity again, now for editing
-        Intent i = new Intent(getApplicationContext(),EditTaskActivity.class);
-        i.putExtra("task", tt);
-        startActivityForResult(i, REQUEST_CODE_UPDATE_TASK);
+                //start the create activity again, now for editing
+                Intent i = new Intent(getApplicationContext(), EditTaskActivity.class);
+                i.putExtra("task", tt);
+                startActivityForResult(i, REQUEST_CODE_UPDATE_TASK);
 
-        return false;
-    }});
+                return false;
+            }
+        });
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-             //   Toast.makeText(context, "Long press to edit task", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Long press to edit task", Toast.LENGTH_SHORT).show();
             }
         });
 
         dbM = DBManager.getInstance(context);
+        emptylist_txt = (TextView) findViewById(R.id.emptylist);
+
+        if(itemList.size()==0) {
+            emptylist_txt.setVisibility(View.VISIBLE);}
+        else
+        {
+            emptylist_txt.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

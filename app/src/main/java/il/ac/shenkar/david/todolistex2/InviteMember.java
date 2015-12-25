@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class invite_member extends AppCompatActivity
+public class InviteMember extends AppCompatActivity
 {
     private EditText member_email;
+    private EditText member_phone;
     private final String email_Subject = "Invitation to Join OTS team";
     private final String email_body = "Hi,\n\n" +
                                 "You have been invited to be a team member in an OTS Team created by me.\n" +
+                                "Your username is your email address and password is your phone number\n" +
                                 "Use this link to download and install the App from Google Play.\n\n" +
                                 "<LINK to Google Play download>\n\n" +
                                 "Best Regards,\n" +
@@ -34,6 +36,7 @@ public class invite_member extends AppCompatActivity
     public void onInviteMember (View view)
     {
         member_email = (EditText) findViewById(R.id.editemailaddress);
+        member_phone = (EditText) findViewById(R.id.memberuserphonenumber);
         Intent email = new Intent(Intent.ACTION_SEND);
 
         //List<String> list = new ArrayList<String>(Arrays.asList(member_email.getText().toString().split(" , ")));

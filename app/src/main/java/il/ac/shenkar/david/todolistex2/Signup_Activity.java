@@ -9,13 +9,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class Signup_Activity extends AppCompatActivity {
 
@@ -23,6 +26,9 @@ public class Signup_Activity extends AppCompatActivity {
     private EditText editTextPassword;
     private EditText editTextPhone;
     private String blockCharacterSet = "~#^|$%&*!";
+    private TextView usrname_title;
+    private TextView usrpswd_title;
+    private TextView usrphone_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,6 +40,37 @@ public class Signup_Activity extends AppCompatActivity {
 
         editTextUsername = (EditText) findViewById(R.id.editTextusername);
         editTextUsername.setFilters(new InputFilter[] { special_filter });
+
+        editTextUsername.setOnKeyListener(new View.OnKeyListener() {
+
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN)
+                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on Enter key press
+                    editTextUsername.clearFocus();
+                    editTextPassword.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        editTextPassword.setOnKeyListener(new View.OnKeyListener() {
+
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN)
+                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on Enter key press
+                    editTextPassword.clearFocus();
+                    editTextPhone.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     public void onExitbtn(View view)
@@ -47,6 +84,9 @@ public class Signup_Activity extends AppCompatActivity {
         editTextUsername = (EditText) findViewById(R.id.editTextusername);
         editTextPassword = (EditText) findViewById(R.id.userpsswrd);
         editTextPhone = (EditText) findViewById(R.id.userphonenumber);
+        usrname_title = (TextView) findViewById(R.id.usernametextView);
+        usrpswd_title = (TextView) findViewById(R.id.passwstextView);
+        usrphone_title = (TextView) findViewById(R.id.phonetextView);
 
         boolean valid_inputs=true;
 
@@ -62,10 +102,11 @@ public class Signup_Activity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            usrname_title.setTextColor(Color.RED);
             valid_inputs = false;
         }
 
-        if(editTextUsername.getText().toString().length()<5)
+        if((editTextUsername.getText().toString().length()<5)&&(valid_inputs))
         {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid Username")
@@ -77,6 +118,7 @@ public class Signup_Activity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            usrname_title.setTextColor(Color.RED);
             valid_inputs = false;
         }
 
@@ -93,10 +135,11 @@ public class Signup_Activity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            usrpswd_title.setTextColor(Color.RED);
             valid_inputs = false;
         }
 
-        if(editTextPassword.getText().toString().length()<8)
+        if((editTextPassword.getText().toString().length()<8)&&(valid_inputs))
         {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid Password")
@@ -108,6 +151,7 @@ public class Signup_Activity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            usrpswd_title.setTextColor(Color.RED);
             valid_inputs = false;
         }
 
@@ -123,6 +167,7 @@ public class Signup_Activity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            usrpswd_title.setTextColor(Color.RED);
             valid_inputs = false;
         }
 
@@ -139,10 +184,11 @@ public class Signup_Activity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            usrphone_title.setTextColor(Color.RED);
             valid_inputs = false;
         }
 
-        if(editTextPhone.getText().toString().length()!=10)
+        if((editTextPhone.getText().toString().length()!=10)&&(valid_inputs))
         {
             new AlertDialog.Builder(this)
                     .setTitle("Enter Phone Number")
@@ -154,6 +200,7 @@ public class Signup_Activity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            usrphone_title.setTextColor(Color.RED);
             valid_inputs = false;
         }
 
@@ -162,7 +209,7 @@ public class Signup_Activity extends AppCompatActivity {
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
             sharedpreferences.edit().putBoolean("LoginState", true).apply();
             Globals.signed_uped=true;
-            Intent returnIntent = new Intent(this,create_team.class);
+            Intent returnIntent = new Intent(this,CreateTeam.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
         }

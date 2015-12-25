@@ -9,6 +9,17 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main" tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="No Tasks to Display"
+        android:layout_marginTop="60dp"
+        android:id="@+id/emptylist"
+        android:layout_alignTop="@+id/loginLayout2"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold" />
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

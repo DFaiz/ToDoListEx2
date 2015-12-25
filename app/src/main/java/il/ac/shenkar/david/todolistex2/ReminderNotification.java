@@ -35,16 +35,5 @@ public class ReminderNotification extends BroadcastReceiver
 
         NotificationManager notificationManager =
                 (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Build notification
-       /* Notification noti = new Notification.Builder(context)
-                .setContentTitle("Time Reminder").setContentText(task.getDescription())
-                .setSmallIcon(R.drawable.tasker_launcher).setContentIntent(contentIntent)
-              //  .addAction(android.R.drawable.ic_lock_idle_alarm, "Snooze 1 hour", snoozeIntent)
-               // .addAction(R.drawable.ic_action_done, "Mark as done", doneIntent).setAutoCancel(true)
-                .build();
-        noti.defaults |= Notification.DEFAULT_SOUND;
-        noti.defaults |= Notification.DEFAULT_VIBRATE;
-        notificationManager.notify(0, noti);*/
     }
 }

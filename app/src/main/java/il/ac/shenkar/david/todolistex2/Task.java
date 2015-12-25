@@ -14,12 +14,11 @@ public class Task implements Serializable {
     private Boolean completed = false;
     private Date dueDate;
     private Boolean hasDate = false;
-    private MapCords location;
-    private Boolean hasLocation = false;
     private Priority task_priority;
     private Boolean toDelete = false;
     private Category task_catg;
     private Task_Status task_sts;
+    private Locations tsk_location;
 
     public Task ()
     {}
@@ -30,9 +29,9 @@ public class Task implements Serializable {
         this.taskId=id;
         this.description = description;
         dueDate = null;
-        location = null;
         task_priority = Priority.NORMAL;
-        task_sts=Task_Status.WAITING;
+        task_sts = Task_Status.WAITING;
+        tsk_location = Locations.Meeting_Room;
     }
 
     public Task(String description)
@@ -40,9 +39,9 @@ public class Task implements Serializable {
         super();
         this.description = description;
         dueDate = null;
-        location = null;
         task_priority = Priority.NORMAL;
         task_sts=Task_Status.WAITING;
+        tsk_location = Locations.Meeting_Room;
     }
 
     public String getDescription ()
@@ -75,14 +74,6 @@ public class Task implements Serializable {
 
     public void setPriority(Priority priority) {
         this.task_priority = priority;
-    }
-
-    public MapCords getLocation() {
-        return location;
-    }
-
-    public void setLocation(MapCords location) {
-        this.location = location;
     }
 
     public Date getDueDate() {
@@ -126,14 +117,6 @@ public class Task implements Serializable {
         this.toDelete = toDelete;
     }
 
-    public Boolean getHasLocation() {
-        return hasLocation;
-    }
-
-    public void setHasLocation(Boolean hasLocation) {
-        this.hasLocation = hasLocation;
-    }
-
     public Category getTask_catg() {
         return task_catg;
     }
@@ -150,4 +133,11 @@ public class Task implements Serializable {
         this.task_sts = task_sts;
     }
 
+    public Locations getTsk_location() {
+        return tsk_location;
+    }
+
+    public void setTsk_location(Locations tsk_location) {
+        this.tsk_location = tsk_location;
+    }
 }

@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="il.ac.shenkar.david.todolistex2.invite_member"
+    tools:context="il.ac.shenkar.david.todolistex2.InviteMember"
     tools:showIn="@layout/activity_invite_member">
 
     <LinearLayout
@@ -34,7 +34,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:paddingLeft="25dp"
         android:orientation="vertical"
         android:id="@+id/invitememberLayout2">
@@ -62,6 +62,28 @@
             android:digits="0,1,2,3,4,5,6,7,8,9,qwertzuiopasdfghjklyxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ,@,."
             android:textSize="16sp"
             android:id="@+id/editemailaddress" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Phone Number"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="85dp"
+            android:id="@+id/memberphonetextView"
+            android:layout_alignTop="@+id/invitememberLayout2"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:ems="10"
+            android:maxLength="10"
+            android:textSize="16sp"
+            android:hint="                    Only digits allowed"
+            android:id="@+id/memberuserphonenumber" />
 
         <Button
             android:layout_width="wrap_content"

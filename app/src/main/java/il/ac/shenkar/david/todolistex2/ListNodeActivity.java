@@ -1,8 +1,12 @@
 package il.ac.shenkar.david.todolistex2;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +27,7 @@ public class ListNodeActivity extends AppCompatActivity
 {
     Task t = new Task();
     Spinner spin;
+    Spinner location_spinner;
     Spinner empolyeeSpinner;
     int task_id=1;
     String time_Date_str = null;
@@ -64,6 +69,7 @@ public class ListNodeActivity extends AppCompatActivity
         });
 
         spin = (Spinner) findViewById(R.id.categorySpinner);
+        location_spinner = (Spinner) findViewById(R.id.locationSpinner);
 
         empolyeeSpinner = (Spinner) findViewById(R.id.employeeSpinner);
         ArrayAdapter<String> empolyeeSpinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
@@ -74,6 +80,9 @@ public class ListNodeActivity extends AppCompatActivity
 
         RadioButton rb = (RadioButton) findViewById(R.id.todaydatebtn);
         rb.setChecked(true);
+
+        RadioButton rbprty = (RadioButton) findViewById(R.id.medRBtn);
+        rbprty.setChecked(true);
     }
 
     public void addTaskBtn (View view)
@@ -100,13 +109,12 @@ public class ListNodeActivity extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
+           desc.setBackgroundColor(Color.RED);
            state = false;
        }
 
         if(desc.getText().toString().length()==100)
         {
-            state = false;
-
             new AlertDialog.Builder(this)
                     .setTitle("Fill Description")
                     .setMessage("Task description length exceeded.\nDescription can contain 100 characters max.")
@@ -117,6 +125,8 @@ public class ListNodeActivity extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
+            desc.setBackgroundColor(Color.RED);
+            state = false;
         }
 
         if (state)
@@ -152,6 +162,20 @@ public class ListNodeActivity extends AppCompatActivity
                     myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
                     t.setDueDate(myDate);
                     t.setHasDate(true);
+                    Intent alarmNotificationIntent = new Intent(this, ReminderNotification.class);
+                    alarmNotificationIntent.putExtra("task", t);
+
+                    PendingIntent pendingIntent =
+                            PendingIntent.getBroadcast(this, (int) task_id, alarmNotificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+                    Calendar calendar = Calendar.getInstance();
+
+                    calendar.setTimeInMillis(t.getDueDate().getTime());
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
                 }catch(Exception e){myDate=null;}
             }
 
@@ -171,6 +195,21 @@ public class ListNodeActivity extends AppCompatActivity
 
                         t.setDueDate(myDate);
                         t.setHasDate(true);
+
+                        Intent alarmNotificationIntent = new Intent(this, ReminderNotification.class);
+                        alarmNotificationIntent.putExtra("task", t);
+
+                        PendingIntent pendingIntent =
+                                PendingIntent.getBroadcast(this, (int) task_id, alarmNotificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+                        Calendar calendar = Calendar.getInstance();
+
+                        calendar.setTimeInMillis(t.getDueDate().getTime());
+
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
                     }catch(Exception e){myDate=null;}
                 }
                 else
@@ -184,14 +223,26 @@ public class ListNodeActivity extends AppCompatActivity
                             myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
                             t.setDueDate(myDate);
                             t.setHasDate(true);
+
+                            Intent alarmNotificationIntent = new Intent(this, ReminderNotification.class);
+                            alarmNotificationIntent.putExtra("task", t);
+
+                            PendingIntent pendingIntent =
+                                    PendingIntent.getBroadcast(this, (int) task_id, alarmNotificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+                            Calendar calendar = Calendar.getInstance();
+
+                            calendar.setTimeInMillis(t.getDueDate().getTime());
+
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                         }catch(Exception e){myDate=null;}
 
                         t.setTask_sts(Task_Status.WAITING);
                     }
                 }
-
             }
-
 
             int position = spin.getSelectedItemPosition();
             switch(position)
@@ -210,6 +261,26 @@ public class ListNodeActivity extends AppCompatActivity
                     break;
                 case 4:
                     t.setTask_catg(Category.OTHER);
+                    break;
+            }
+
+            position = location_spinner.getSelectedItemPosition();
+            switch(position)
+            {
+                case 0:
+                    t.setTsk_location(Locations.Meeting_Room);
+                    break;
+                case 1:
+                    t.setTsk_location(Locations.Office_245);
+                    break;
+                case 2:
+                    t.setTsk_location(Locations.Lobby);
+                    break;
+                case 3:
+                    t.setTsk_location(Locations.NOC);
+                    break;
+                case 4:
+                    t.setTsk_location(Locations.VPsoffice);
                     break;
             }
 

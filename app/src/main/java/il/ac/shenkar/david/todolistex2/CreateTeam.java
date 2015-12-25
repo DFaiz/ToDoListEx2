@@ -11,7 +11,7 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.EditText;
 
-public class create_team extends AppCompatActivity
+public class CreateTeam extends AppCompatActivity
 {
     private EditText editTextTeamname;
     private String blockCharacterSet = "~#^|$%&*!";
@@ -71,7 +71,7 @@ public class create_team extends AppCompatActivity
 
         if(valid_inputs)
         {
-            Intent returnIntent = new Intent(this,invite_member.class);
+            Intent returnIntent = new Intent(this,InviteMember.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
         }

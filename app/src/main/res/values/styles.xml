@@ -29,4 +29,12 @@
 
     </string-array>
 
+    <string-array name="rooms_array" translatable="false">
+        <item>Meeting Room</item>
+        <item>Office 245 Floor 2</item>
+        <item>Lobby</item>
+        <item>NOC</item>
+        <item>VPs office</item>
+    </string-array>
+
 </resources>

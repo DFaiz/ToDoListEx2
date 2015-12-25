@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,7 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,9 +26,10 @@ import java.util.Date;
 
 public class EditTaskActivity extends AppCompatActivity
 {
-    Task tastToEdit;
-    Spinner spin;
-    RadioButton rb;
+    private Task tastToEdit;
+    private Spinner spin;
+    private Spinner loc_spin;
+    private RadioButton rb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,13 +89,49 @@ public class EditTaskActivity extends AppCompatActivity
                 {
                     if(tsk_ctgry==Category.COMPUTERS)
                     {
-                        spin.setSelection(2);
+                        spin.setSelection(3);
                     }
                     else
                     {
                         if(tsk_ctgry==Category.OTHER)
                         {
-                            spin.setSelection(2);
+                            spin.setSelection(4);
+                        }
+                    }
+                }
+            }
+        }
+
+        loc_spin = (Spinner) findViewById(R.id.locationSpinner);
+        Locations selected_loc = tastToEdit.getTsk_location();
+
+        if(selected_loc==Locations.Meeting_Room)
+        {
+            spin.setSelection(0);
+        }
+        else
+        {
+            if(selected_loc==Locations.Office_245)
+            {
+                spin.setSelection(1);
+            }
+            else
+            {
+                if(selected_loc==Locations.Lobby)
+                {
+                    spin.setSelection(2);
+                }
+                else
+                {
+                    if(selected_loc==Locations.NOC)
+                    {
+                        spin.setSelection(3);
+                    }
+                    else
+                    {
+                        if(selected_loc==Locations.VPsoffice)
+                        {
+                            spin.setSelection(4);
                         }
                     }
                 }
@@ -134,6 +175,7 @@ public class EditTaskActivity extends AppCompatActivity
         EditText desc = (EditText)findViewById(R.id.editTaskDesc);
         EditText date = (EditText)findViewById(R.id.editTaskDate);
         EditText time = (EditText)findViewById(R.id.editTaskTime);
+        TextView desc_title = (TextView) findViewById(R.id.tskdescedit);
 
         Date myDate = null;
         boolean state=true;
@@ -153,13 +195,12 @@ public class EditTaskActivity extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
+            desc_title.setTextColor(Color.RED);
             state = false;
         }
 
         if(desc.getText().toString().length()==100)
         {
-            state = false;
-
             new AlertDialog.Builder(this)
                     .setTitle("Fill Description")
                     .setMessage("Task description length exceeded.\nDescription can contain 100 characters max.")
@@ -170,6 +211,8 @@ public class EditTaskActivity extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
+            desc_title.setTextColor(Color.RED);
+            state = false;
         }
 
         if (state)
