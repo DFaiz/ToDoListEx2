@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import il.ac.shenkar.david.todolistex2.TaskContract.TaskItem;
-import il.ac.shenkar.david.todolistex2.TaskContract.TaskLocation;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,7 +17,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 7;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -39,54 +38,131 @@ public class DBManager extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-       /* final String SQL_CREATE_TASKS_TABLE = "CREATE TABLE "
-                + TaskItem.TABLE_NAME + " ("
-                + TaskItem.COLUMN_NAME_TASK_ID+ " INTEGER PRIMARY KEY,"
-                + TaskItem.COLUMN_NAME_DESCRIPTION+ " TEXT NOT NULL, "
-                + TaskItem.COLUMN_NAME_PRIORITY+ " INTEGER, "
-                + TaskItem.COLUMN_NAME_DATE_ENABLED+ " TINYINT, "
-                + TaskItem.COLUMN_NAME_DUE_DATE+ " TEXT, "
-                + TaskItem.COLUMN_NAME_COMPLETED+ " TINYINT, "
-                + TaskItem.COLUMN_NAME_LOCATION_ENABLED+ " TINYINT "
-                +")";
+       final String SQL_CREATE_TASKS_TABLE = "CREATE TABLE "
+            + TaskItem.TABLE_NAME + " ( "
+            + TaskItem.COLUMN_NAME_TASK_ID+ " INTEGER PRIMARY KEY autoincrement,"
+            + TaskItem.COLUMN_NAME_DESCRIPTION+ " TEXT NOT NULL, "
+            + TaskItem.COLUMN_NAME_DATE_ENABLED+ " INTEGER NOT NULL, "
+            + TaskItem.COLUMN_NAME_DUE_DATE+ " TEXT NOT NULL, "
+            + TaskItem.COLUMN_NAME_PRIORITY+ " INTEGER, "
+            + TaskItem.COLUMN_NAME_COMPLETED+ " INTEGER, "
+            + TaskItem.COLUMN_NAME_LOCATION+ " TEXT NOT NULL, "
+            + TaskItem.COLUMN_NAME_CATEGORY+ " INTEGER NOT NULL, "
+            + TaskItem.COLUMN_NAME_STATUS+ " INTEGER NOT NULL "
+            + " )";
         db.execSQL(SQL_CREATE_TASKS_TABLE);
-
-        final String SQL_CREATE_LOCATIONS_TABLE = "CREATE TABLE "
-                + TaskLocation.TABLE_NAME + " ("
-                + TaskLocation.COLUMN_NAME_TASK_ID+ " INTEGER PRIMARY KEY,"
-                + TaskLocation.COLUMN_NAME_LOCATION_LAT+ " REAL, "
-                + TaskLocation.COLUMN_NAME_LOCATION_LON+ " REAL, "
-                +")";
-        db.execSQL(SQL_CREATE_LOCATIONS_TABLE);*/
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        db.execSQL("DROP TABLE IF EXISTS " + TaskLocation.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TaskItem.TABLE_NAME);
         onCreate(db);
     }
 
     public long addTask(Task task)
     {
-      /*  SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
         values.put(TaskItem.COLUMN_NAME_DESCRIPTION, task.getDescription());
-       // values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().toString());
-        values.put(TaskItem.COLUMN_NAME_PRIORITY, 3);
-        values.put(TaskItem.COLUMN_NAME_DATE_ENABLED, 0);
-        values.put(TaskItem.COLUMN_NAME_DUE_DATE, "");
-        values.put(TaskItem.COLUMN_NAME_COMPLETED, 0);
-        values.put(TaskItem.COLUMN_NAME_LOCATION_ENABLED, 0);
+        values.put(TaskItem.COLUMN_NAME_DATE_ENABLED, task.getHasDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        values.put(TaskItem.COLUMN_NAME_DUE_DATE, sdf.format(task.getDueDate()));
+        values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
+        int myInt = (task.getCompleted()) ? 1 : 0;
+        values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
+        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().toString());
+        values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
+        values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
 
         // Inserting Row
-        //long res = db.insert(TaskItem.TABLE_NAME, null, values);
-    //    db.insert(TaskItem.TABLE_NAME, null, values);
-     //   db.close(); // Closing database connection */
-        long res = 100;
-        return res;
+        long newTaskID = db.insert(TaskItem.TABLE_NAME, null, values);
+        //Closing database connection
+        db.close();
+       return  newTaskID;
+    }
+
+    public List<Task> getAllTasks ()
+    {
+        List<Task> taskList = new ArrayList<Task>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TaskItem.TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Task tsktsk = new Task();
+
+                int id = cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_TASK_ID));
+                tsktsk.setTaskId(id);
+                String desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DESCRIPTION));
+                tsktsk.setDescription(desc);
+                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_COMPLETED));
+                if(id==1)
+                    tsktsk.setCompleted(true);
+                else
+                    tsktsk.setCompleted(false);
+
+                tsktsk.setHasDate(true);
+
+                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DUE_DATE));
+                tsktsk.setDueDate(desc);
+
+                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_PRIORITY));
+                if(id==0)
+                    tsktsk.setPriority(Priority.LOW);
+                if(id==1)
+                    tsktsk.setPriority(Priority.NORMAL);
+                if (id==2)
+                    tsktsk.setPriority(Priority.URGENT);
+
+                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_LOCATION));
+                if(desc==Locations.Meeting_Room.toString())
+                    tsktsk.setTsk_location(Locations.Meeting_Room);
+
+                if(desc==Locations.Office_245.toString())
+                    tsktsk.setTsk_location(Locations.Office_245);
+
+                if(desc==Locations.Lobby.toString())
+                    tsktsk.setTsk_location(Locations.Lobby);
+
+                if(desc==Locations.NOC.toString())
+                    tsktsk.setTsk_location(Locations.NOC);
+
+                if(desc==Locations.VPsoffice.toString())
+                    tsktsk.setTsk_location(Locations.VPsoffice);
+
+                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_CATEGORY));
+                if(id==0)
+                    tsktsk.setTask_catg(Category.CLEANING);
+                if(id==1)
+                    tsktsk.setTask_catg(Category.ELECTRICITY);
+                if (id==2)
+                    tsktsk.setTask_catg(Category.COMPUTERS);
+                if (id==3)
+                    tsktsk.setTask_catg(Category.GENERAL);
+                if (id==4)
+                    tsktsk.setTask_catg(Category.OTHER);
+
+                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_STATUS));
+                if(id==0)
+                    tsktsk.setTask_sts(Task_Status.WAITING);
+                if(id==1)
+                    tsktsk.setTask_sts(Task_Status.INPROCESS);
+                if (id==2)
+                    tsktsk.setTask_sts(Task_Status.DONE);
+
+                taskList.add(tsktsk);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        // return list
+        return taskList;
     }
 }

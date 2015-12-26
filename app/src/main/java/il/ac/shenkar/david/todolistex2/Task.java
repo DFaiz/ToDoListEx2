@@ -32,6 +32,7 @@ public class Task implements Serializable {
         task_priority = Priority.NORMAL;
         task_sts = Task_Status.WAITING;
         tsk_location = Locations.Meeting_Room;
+        task_catg = Category.GENERAL;
     }
 
     public Task(String description)

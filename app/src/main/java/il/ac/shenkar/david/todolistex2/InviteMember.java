@@ -42,8 +42,8 @@ public class InviteMember extends AppCompatActivity
         //List<String> list = new ArrayList<String>(Arrays.asList(member_email.getText().toString().split(" , ")));
 
         email.putExtra(Intent.EXTRA_EMAIL, new String[]{ member_email.getText().toString()});
-        email.putExtra(Intent.EXTRA_SUBJECT,email_Subject );
-        email.putExtra(Intent.EXTRA_TEXT,email_body );
+        email.putExtra(Intent.EXTRA_SUBJECT, email_Subject);
+        email.putExtra(Intent.EXTRA_TEXT, email_body);
 
         //need this to prompts email client only
         email.setType("message/rfc822");
@@ -53,9 +53,24 @@ public class InviteMember extends AppCompatActivity
 
     public void onDonebtn (View view)
     {
-        Intent returnIntent = new Intent(this,MainActivity.class);
-        setResult(RESULT_OK, returnIntent);
-        startActivity(returnIntent);
+        Intent i = getIntent();
+        Intent returnIntent = null;
+
+        String from_act = (String)i.getSerializableExtra("from");
+
+        if(from_act.equals("from_main_activity"))
+        {
+            returnIntent = new Intent();
+            setResult(RESULT_OK, returnIntent);
+            finish();
+        }
+
+        else
+        {
+            returnIntent = new Intent(this,MainActivity.class);
+            setResult(RESULT_OK, returnIntent);
+            startActivity(returnIntent);
+        }
     }
 
     public void onExitbtn(View view)

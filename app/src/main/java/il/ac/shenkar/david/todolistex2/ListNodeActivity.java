@@ -3,12 +3,9 @@ package il.ac.shenkar.david.todolistex2;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -109,7 +106,7 @@ public class ListNodeActivity extends AppCompatActivity
                             return;
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
            desc.setBackgroundColor(Color.RED);
            state = false;
@@ -125,7 +122,7 @@ public class ListNodeActivity extends AppCompatActivity
                             return;
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
             desc.setBackgroundColor(Color.RED);
             state = false;
@@ -177,7 +174,7 @@ public class ListNodeActivity extends AppCompatActivity
                     calendar.setTimeInMillis(t.getDueDate().getTime());
 
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
+                    Toast.makeText(this, "Alarm Set", Toast.LENGTH_LONG).show();
                 }catch(Exception e){myDate=null;}
             }
 
@@ -211,7 +208,7 @@ public class ListNodeActivity extends AppCompatActivity
                         calendar.setTimeInMillis(t.getDueDate().getTime());
 
                         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
+                        Toast.makeText(this, "Alarm Set", Toast.LENGTH_LONG).show();
                     }catch(Exception e){myDate=null;}
                 }
                 else
@@ -239,7 +236,7 @@ public class ListNodeActivity extends AppCompatActivity
                             calendar.setTimeInMillis(t.getDueDate().getTime());
 
                             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
+                            Toast.makeText(this, "Alarm Set", Toast.LENGTH_LONG).show();
                         }catch(Exception e){myDate=null;}
 
                         t.setTask_sts(Task_Status.WAITING);
@@ -290,12 +287,9 @@ public class ListNodeActivity extends AppCompatActivity
             t.setTaskId(task_id);
             task_id++;
             Intent returnIntent = new Intent();
-
-           // DBManager.getInstance(this).addTask(t);
-
-          //  DBManager dbm = new DBManager(this);
-         //   long seq_tsk_id = dbm.addTask(t);
-          //  t.setTaskId(seq_tsk_id);
+            DBManager dbm = DBManager.getInstance(this);
+            long seq_tsk_id = dbm.addTask(t);
+            t.setTaskId(seq_tsk_id);
 
             returnIntent.putExtra("task",t);
             setResult(RESULT_OK, returnIntent);
@@ -305,10 +299,8 @@ public class ListNodeActivity extends AppCompatActivity
 
     public void discardBtnClick(View view)
     {
-        Toast.makeText(this, "Task creation discarded", Toast.LENGTH_LONG).show();
-        Intent returnIntent = new Intent(this,MainActivity.class);
-        setResult(RESULT_OK, returnIntent);
-        startActivity(returnIntent);
+        Toast.makeText(this, "Task Creation Discarded", Toast.LENGTH_LONG).show();
+        finish();
     }
 
     public void onRadioButtonClicked(View view)

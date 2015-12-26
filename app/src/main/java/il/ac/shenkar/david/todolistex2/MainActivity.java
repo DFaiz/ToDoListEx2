@@ -1,11 +1,10 @@
 package il.ac.shenkar.david.todolistex2;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.carrier.CarrierMessagingService;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,8 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -34,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public final int REQUEST_CODE_NEW_TASK = 1;
     public final int REQUEST_CODE_UPDATE_TASK = 2;
     public final int REQUEST_CODE_REMOVE_TASK = 3;
+    public final int REQUEST_CODE_INVITE_MEMBER = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -100,6 +98,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return true;
         }
 
+        if (id == R.id.action_manageteam)
+        {
+            Intent returnIntent = new Intent(this,InviteMember.class);
+            returnIntent.putExtra("from", "from_main_activity");
+            startActivityForResult(returnIntent, REQUEST_CODE_INVITE_MEMBER);
+        }
+
+        if (id == R.id.action_Logout)
+        {
+            Intent returnIntent = new Intent(this,Login_activity.class);
+            setResult(RESULT_OK, returnIntent);
+            startActivity(returnIntent);
+        }
+
+        if (id == R.id.action_About)
+        {
+            int versionCode = BuildConfig.VERSION_CODE;
+            String versionName = BuildConfig.VERSION_NAME;
+
+            new AlertDialog.Builder(this)
+                    .setTitle("About")
+                    .setMessage("Application version " + versionCode + "\nVersion Name " + versionName + "\n\n" + "Created by David Faizulaev")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            return;
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .show();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -119,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             switch (requestCode)
             {
                 case REQUEST_CODE_NEW_TASK:{
-                    Toast.makeText(context, "new task returned", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "New Task Added", Toast.LENGTH_SHORT).show();
                     returned_task = (Task)data.getSerializableExtra("task");
                     itemList.add(returned_task);
                     emptylist_txt = (TextView) findViewById(R.id.emptylist);
@@ -129,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     adapter.notifyDataSetChanged();
                 }
                     break;
+
                 case REQUEST_CODE_UPDATE_TASK:
                 {
                     returned_task = (Task)data.getSerializableExtra("task");
@@ -163,6 +194,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }
                         }
                     }
+                    break;
+                }
+
+                case REQUEST_CODE_INVITE_MEMBER:
+                {
+                    adapter = new TaskItemAdapter(context, itemList);
+                    list.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                     break;
                 }
 
@@ -208,5 +247,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //connect to SQLite
+        dbM = DBManager.getInstance(context);
+        //get all tasks from db
+        list  = (ListView)findViewById(R.id.listView);
+       /* itemList = dbM.getAllTasks();
+
+        //fill the list with tasks
+        list.setAdapter(new TaskItemAdapter(context, itemList));*/
     }
 }

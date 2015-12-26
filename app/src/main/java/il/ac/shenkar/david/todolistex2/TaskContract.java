@@ -11,19 +11,14 @@ public final class TaskContract
 
     public static abstract class TaskItem implements BaseColumns {
         public static final String TABLE_NAME = "TASKS";
-        public static final String COLUMN_NAME_TASK_ID = "TASKID";
+        public static final String COLUMN_NAME_TASK_ID = "taskid";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_COMPLETED = "completed";
-        public static final String COLUMN_NAME_PRIORITY = "priority";
         public static final String COLUMN_NAME_DATE_ENABLED = "dateEnable";
         public static final String COLUMN_NAME_DUE_DATE = "dueDate";
-        public static final String COLUMN_NAME_LOCATION_ENABLED = "locEnable";
-    }
-
-    public static abstract class TaskLocation implements BaseColumns {
-        public static final String TABLE_NAME = "Task_Locations";
-        public static final String COLUMN_NAME_TASK_ID = "TASKID";
-        public static final String COLUMN_NAME_LOCATION_LAT = "LATITUDE";
-        public static final String COLUMN_NAME_LOCATION_LON = "LONGITUDE";
+        public static final String COLUMN_NAME_PRIORITY = "priority";
+        public static final String COLUMN_NAME_LOCATION = "location";
+        public static final String COLUMN_NAME_CATEGORY = "tsk_category";
+        public static final String COLUMN_NAME_STATUS = "tsk_status";
     }
 }
