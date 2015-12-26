@@ -260,8 +260,7 @@
         android:text="Discard Task"
         android:id="@+id/discTaskbtn"
         android:onClick="discardBtnClick"
-        android:layout_marginBottom="20dp"
-        android:layout_alignTop="@+id/addTaskbtn" />
+        android:layout_marginBottom="20dp"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -269,7 +268,7 @@
             android:text="Add Task"
             android:id="@+id/addTaskbtn"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="120dp"
+            android:layout_marginLeft="100dp"
             android:onClick="addTaskBtn" />
     </LinearLayout>
 </RelativeLayout>

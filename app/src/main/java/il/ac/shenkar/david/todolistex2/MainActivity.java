@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             emptylist_txt.setVisibility(View.VISIBLE);}
         else
         {
-            emptylist_txt.setVisibility(View.VISIBLE);
+            emptylist_txt.setVisibility(View.GONE);
         }
     }
 
@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Toast.makeText(context, "new task returned", Toast.LENGTH_SHORT).show();
                     returned_task = (Task)data.getSerializableExtra("task");
                     itemList.add(returned_task);
+                    emptylist_txt = (TextView) findViewById(R.id.emptylist);
+                    emptylist_txt.setVisibility(View.GONE);
                     adapter =  new TaskItemAdapter(context, itemList);
                     list.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
@@ -137,6 +139,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             if(itemList.get(i).getTaskId()==returned_task.getTaskId())
                             {
                                 itemList.remove(i);
+                                emptylist_txt = (TextView) findViewById(R.id.emptylist);
+
+                                if(itemList.size()==0) {
+                                    emptylist_txt.setVisibility(View.VISIBLE);}
+
                                 adapter =  new TaskItemAdapter(context, itemList);
                                 list.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();

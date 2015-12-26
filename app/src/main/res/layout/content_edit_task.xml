@@ -23,8 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="120dp"
+        android:layout_marginLeft="100dp"
         android:id="@+id/edittasklinearLayout3">
 
         <TextView
@@ -33,13 +32,13 @@
             android:gravity="center_vertical"
             android:text="Task Description"
             android:id="@+id/tskdescedit"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="60dp"
         android:id="@+id/edittasklinearLayout2">
 
@@ -56,7 +55,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="60dp"
         android:id="@+id/edittasklinearLayout4">
 
         <TextView
@@ -66,7 +65,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="Priority:"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <RadioGroup
             android:layout_width="fill_parent"
@@ -103,7 +102,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="125dp"
+        android:layout_marginTop="100dp"
         android:layout_marginLeft="60dp"
         android:orientation="vertical"
         android:id="@+id/edittasklinearLayout5">
@@ -112,7 +111,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="185dp"
+        android:layout_marginTop="130dp"
         android:layout_marginLeft="110dp"
         android:orientation="vertical"
         android:id="@+id/edittasklinearLayout9">
@@ -128,7 +127,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="215dp"
+        android:layout_marginTop="150dp"
         android:layout_marginLeft="8dp"
         android:id="@+id/edittasklinearLayout6">
 
@@ -160,7 +159,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="210dp"
         android:id="@+id/edittasklinearLayout7">
 
         <TextView
@@ -182,7 +181,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="360dp"
+        android:layout_marginTop="260dp"
         android:id="@+id/linearLayout10">
 
         <TextView
@@ -204,10 +203,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="435dp"
+        android:layout_marginTop="300dp"
         android:orientation="vertical"
         android:id="@+id/edittasklinearLayout8">
-    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
@@ -215,30 +213,36 @@
         android:text="Delete Task"
         android:id="@+id/DeleteTaskbtn"
         android:onClick="deleteTaskBtn"
-        android:layout_marginLeft="120dp"
+        android:layout_marginLeft="100dp"
         android:layout_alignTop="@+id/edittasklinearLayout8"/>
+    </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save Changes"
-        android:id="@+id/SaveEditedTaskbtn"
-        android:layout_marginBottom="110dp"
-        android:onClick="saveChangesTaskBtn"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/edittasklinearLayout8"
-        android:layout_alignEnd="@+id/edittasklinearLayout8" />
+        android:layout_marginTop="340dp"
+        android:id="@+id/edittasklinearLayout10">
 
-    <Button
+        <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Discard Changes"
         android:id="@+id/discchngsTaskbtn"
         android:onClick="discardchangesBtnClick"
-        android:layout_marginBottom="110dp"
         android:layout_marginLeft="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/edittasklinearLayout8"
-        android:layout_alignStart="@+id/edittasklinearLayout8" />
+        android:layout_alignLeft="@+id/edittasklinearLayout10"
+        android:layout_alignStart="@+id/edittasklinearLayout10" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:layout_marginLeft="80dp"
+            android:id="@+id/SaveEditedTaskbtn"
+            android:onClick="saveChangesTaskBtn"
+            android:layout_alignRight="@+id/edittasklinearLayout10"
+            android:layout_alignEnd="@+id/edittasklinearLayout10" />
+
+    </LinearLayout>
 
 </RelativeLayout>

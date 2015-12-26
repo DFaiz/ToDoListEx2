@@ -14,6 +14,10 @@
     <receiver android:name="SnoozeReminderReceiver"/>
     <receiver android:name="DoneActionReceiver"/>
 
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="23" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

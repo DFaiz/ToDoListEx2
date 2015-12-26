@@ -3,8 +3,10 @@ package il.ac.shenkar.david.todolistex2;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -230,13 +232,14 @@ public class ListNodeActivity extends AppCompatActivity
                             PendingIntent pendingIntent =
                                     PendingIntent.getBroadcast(this, (int) task_id, alarmNotificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-                            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                            AlarmManager alarmManager = (AlarmManager)getSystemService(this.ALARM_SERVICE);
 
                             Calendar calendar = Calendar.getInstance();
 
                             calendar.setTimeInMillis(t.getDueDate().getTime());
 
                             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
                         }catch(Exception e){myDate=null;}
 
                         t.setTask_sts(Task_Status.WAITING);
