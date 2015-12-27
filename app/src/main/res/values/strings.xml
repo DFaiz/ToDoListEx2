@@ -17,4 +17,5 @@
     <string name="title_activity_login_activity">Login_activity</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_edit_task">EditTaskActivity</string>
+    <string name="title_activity_minutespicker">minutespicker</string>
 </resources>

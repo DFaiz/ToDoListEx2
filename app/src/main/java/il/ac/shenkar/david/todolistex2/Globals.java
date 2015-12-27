@@ -6,4 +6,5 @@ package il.ac.shenkar.david.todolistex2;
 public class Globals
 {
     public static boolean signed_uped = false;
+    public static int refresh_minutes = 5;
 }

@@ -161,20 +161,6 @@ public class ListNodeActivity extends AppCompatActivity
                     myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
                     t.setDueDate(myDate);
                     t.setHasDate(true);
-                    Intent alarmNotificationIntent = new Intent(this, ReminderNotification.class);
-                    alarmNotificationIntent.putExtra("task", t);
-
-                    PendingIntent pendingIntent =
-                            PendingIntent.getBroadcast(this, (int) task_id, alarmNotificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-                    AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-
-                    Calendar calendar = Calendar.getInstance();
-
-                    calendar.setTimeInMillis(t.getDueDate().getTime());
-
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                    Toast.makeText(this, "Alarm Set", Toast.LENGTH_LONG).show();
                 }catch(Exception e){myDate=null;}
             }
 
@@ -195,20 +181,6 @@ public class ListNodeActivity extends AppCompatActivity
                         t.setDueDate(myDate);
                         t.setHasDate(true);
 
-                        Intent alarmNotificationIntent = new Intent(this, ReminderNotification.class);
-                        alarmNotificationIntent.putExtra("task", t);
-
-                        PendingIntent pendingIntent =
-                                PendingIntent.getBroadcast(this, (int) task_id, alarmNotificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-                        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-
-                        Calendar calendar = Calendar.getInstance();
-
-                        calendar.setTimeInMillis(t.getDueDate().getTime());
-
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                        Toast.makeText(this, "Alarm Set", Toast.LENGTH_LONG).show();
                     }catch(Exception e){myDate=null;}
                 }
                 else

@@ -1,6 +1,7 @@
 package il.ac.shenkar.david.todolistex2;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,14 +12,16 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, NumberPicker.OnValueChangeListener {
 
     ListView list;
     List<Task> itemList;
@@ -27,11 +30,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     DBManager dbM;
 
     private TextView emptylist_txt;
+    private TextView minutes_text;
 
     public final int REQUEST_CODE_NEW_TASK = 1;
     public final int REQUEST_CODE_UPDATE_TASK = 2;
     public final int REQUEST_CODE_REMOVE_TASK = 3;
     public final int REQUEST_CODE_INVITE_MEMBER = 4;
+
+    private static Dialog minute_diag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            onAction_Settings ();
         }
 
         if (id == R.id.action_manageteam)
@@ -247,6 +253,42 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal)
+    {;}
+
+    public void onAction_Settings ()
+    {
+        final Dialog d = new Dialog(MainActivity.this);
+        d.setTitle("Select Number of Minutes for New Tasks Refresh");
+        d.setContentView(R.layout.selectminutes);
+        Button b1 = (Button) d.findViewById(R.id.setnumberofminbtn);
+        Button b2 = (Button) d.findViewById(R.id.cancelminbtn);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker);
+        np.setMaxValue(10); // max value 10
+        np.setMinValue(0);   // min value 0
+        np.setValue(Globals.refresh_minutes);
+        np.setWrapSelectorWheel(false);
+        np.setOnValueChangedListener(this);
+        b1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Globals.refresh_minutes = np.getValue();
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
     }
 
     @Override
