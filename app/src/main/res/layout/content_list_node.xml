@@ -207,29 +207,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="320dp"
         android:id="@+id/linearLayout9">
-
-        <TextView
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="Location:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <Spinner android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/rooms_array"
-            android:id="@+id/locationSpinner"
-            android:textAlignment="center"/>
+            android:text="Select Location"
+            android:id="@+id/gotoselectloc"
+            android:onClick="gotoselectloc"
+            android:layout_marginBottom="20dp"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:layout_centerInParent="true"
+            android:ellipsize="start"
+            android:gravity="center_horizontal"
+            android:id="@+id/taskLocation"
+            android:hint=""
+            android:maxLength="100"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="345dp"
+        android:layout_marginTop="370dp"
         android:id="@+id/linearLayout10">
 
         <TextView
@@ -251,7 +256,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="390dp"
+        android:layout_marginTop="450dp"
         android:id="@+id/linearLayout5">
 
     <Button
@@ -259,15 +264,13 @@
         android:layout_height="wrap_content"
         android:text="Discard Task"
         android:id="@+id/discTaskbtn"
-        android:onClick="discardBtnClick"
-        android:layout_marginBottom="20dp"/>
+        android:onClick="discardBtnClick"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Task"
             android:id="@+id/addTaskbtn"
-            android:layout_marginBottom="20dp"
             android:layout_marginLeft="100dp"
             android:onClick="addTaskBtn" />
     </LinearLayout>

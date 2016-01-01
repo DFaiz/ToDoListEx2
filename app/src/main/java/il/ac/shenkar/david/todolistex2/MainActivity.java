@@ -46,8 +46,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        dbM = DBManager.getInstance(context);
         itemList = new ArrayList<Task>();
         list  = (ListView)findViewById(R.id.listView);
+        itemList = dbM.getAllTasks();
         list.setAdapter(new TaskItemAdapter(context, itemList));
 
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        dbM = DBManager.getInstance(context);
         emptylist_txt = (TextView) findViewById(R.id.emptylist);
 
         if(itemList.size()==0) {
@@ -175,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         {
                             if(itemList.get(i).getTaskId()==returned_task.getTaskId())
                             {
+                                dbM.deleteTask(returned_task);
                                 itemList.remove(i);
                                 emptylist_txt = (TextView) findViewById(R.id.emptylist);
 
@@ -299,9 +301,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         dbM = DBManager.getInstance(context);
         //get all tasks from db
         list  = (ListView)findViewById(R.id.listView);
-       /* itemList = dbM.getAllTasks();
+        itemList = dbM.getAllTasks();
 
         //fill the list with tasks
-        list.setAdapter(new TaskItemAdapter(context, itemList));*/
+        list.setAdapter(new TaskItemAdapter(context, itemList));
     }
 }

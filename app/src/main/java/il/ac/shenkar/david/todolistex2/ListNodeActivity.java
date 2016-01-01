@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.app.DialogFragment;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -24,12 +25,15 @@ import java.text.SimpleDateFormat;
 
 public class ListNodeActivity extends AppCompatActivity
 {
-    Task t = new Task();
-    Spinner spin;
-    Spinner location_spinner;
-    Spinner empolyeeSpinner;
-    int task_id=1;
-    String time_Date_str = null;
+    private  Task t = new Task();
+    private Spinner spin;
+    private Spinner empolyeeSpinner;
+    private int task_id=1;
+    private String time_Date_str = null;
+    private Locations returned_selc_loc;
+    private EditText loc;
+
+    private static final int ACTIVITY_SELECT_LOCATION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,6 +42,9 @@ public class ListNodeActivity extends AppCompatActivity
         setContentView(R.layout.activity_list_node);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        loc = (EditText)findViewById(R.id.taskLocation);
+        loc.setClickable(false);
 
         EditText date = (EditText)findViewById(R.id.taskDateEdit);
         date.setInputType(InputType.TYPE_NULL);
@@ -68,7 +75,6 @@ public class ListNodeActivity extends AppCompatActivity
         });
 
         spin = (Spinner) findViewById(R.id.categorySpinner);
-        location_spinner = (Spinner) findViewById(R.id.locationSpinner);
 
         empolyeeSpinner = (Spinner) findViewById(R.id.employeeSpinner);
         ArrayAdapter<String> empolyeeSpinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
@@ -82,6 +88,8 @@ public class ListNodeActivity extends AppCompatActivity
 
         RadioButton rbprty = (RadioButton) findViewById(R.id.medRBtn);
         rbprty.setChecked(true);
+
+        returned_selc_loc = null;
     }
 
     public void addTaskBtn (View view)
@@ -236,26 +244,7 @@ public class ListNodeActivity extends AppCompatActivity
                     break;
             }
 
-            position = location_spinner.getSelectedItemPosition();
-            switch(position)
-            {
-                case 0:
-                    t.setTsk_location(Locations.Meeting_Room);
-                    break;
-                case 1:
-                    t.setTsk_location(Locations.Office_245);
-                    break;
-                case 2:
-                    t.setTsk_location(Locations.Lobby);
-                    break;
-                case 3:
-                    t.setTsk_location(Locations.NOC);
-                    break;
-                case 4:
-                    t.setTsk_location(Locations.VPsoffice);
-                    break;
-            }
-
+            t.setTsk_location(returned_selc_loc);
             t.setTaskId(task_id);
             task_id++;
             Intent returnIntent = new Intent();
@@ -327,5 +316,28 @@ public class ListNodeActivity extends AppCompatActivity
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
+    }
+
+    public  void gotoselectloc (View v)
+    {
+        Intent intent = new Intent(this,select_location.class);
+        startActivityForResult(intent, ACTIVITY_SELECT_LOCATION);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case ACTIVITY_SELECT_LOCATION: {
+                    returned_selc_loc = (Locations) data.getSerializableExtra("location");
+                    loc.setText(returned_selc_loc.toString());
+                    loc.setClickable(false);
+                }
+                break;
+                default:
+                    break;
+            }
+        }
     }
 }

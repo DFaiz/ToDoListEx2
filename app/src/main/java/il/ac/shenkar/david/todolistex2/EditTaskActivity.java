@@ -106,7 +106,6 @@ public class EditTaskActivity extends AppCompatActivity
 
         loc_spin = (Spinner) findViewById(R.id.locationSpinner);
         Locations selected_loc = tastToEdit.getTsk_location();
-
         if(selected_loc==Locations.Meeting_Room)
         {
             spin.setSelection(0);
@@ -183,6 +182,9 @@ public class EditTaskActivity extends AppCompatActivity
         boolean state=true;
         String time_Date_str = null;
         RadioButton rb;
+
+      //  Locations selected_loc = tastToEdit.getTsk_location();
+       // Toast.makeText(this, selected_loc.toString(), Toast.LENGTH_SHORT).show();
 
         if(desc.getText().toString().matches(""))
         {

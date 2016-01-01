@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 9;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -164,5 +164,35 @@ public class DBManager extends SQLiteOpenHelper
         db.close();
         // return list
         return taskList;
+    }
+
+    public void updateTask (Task task)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(TaskItem.COLUMN_NAME_DESCRIPTION, task.getDescription());
+        values.put(TaskItem.COLUMN_NAME_DATE_ENABLED, task.getHasDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        values.put(TaskItem.COLUMN_NAME_DUE_DATE, sdf.format(task.getDueDate()));
+        values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
+        int myInt = (task.getCompleted()) ? 1 : 0;
+        values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
+        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().toString());
+        values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
+        values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
+
+        // updating row
+        db.update(TaskItem.TABLE_NAME, values, TaskItem.COLUMN_NAME_TASK_ID + " = ?", new String[] { String.valueOf(task.getTaskId()) });
+    }
+
+    public void deleteTask (Task task)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TaskItem.TABLE_NAME, TaskItem.COLUMN_NAME_TASK_ID + " = ?",
+                new String[] { String.valueOf(task.getTaskId()) });
+        db.close();
     }
 }

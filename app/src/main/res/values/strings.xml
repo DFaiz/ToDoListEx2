@@ -18,4 +18,5 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_edit_task">EditTaskActivity</string>
     <string name="title_activity_minutespicker">minutespicker</string>
+    <string name="title_activity_select_location">select_location</string>
 </resources>
