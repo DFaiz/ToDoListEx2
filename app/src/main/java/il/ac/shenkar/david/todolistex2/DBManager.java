@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -44,9 +44,9 @@ public class DBManager extends SQLiteOpenHelper
             + TaskItem.COLUMN_NAME_DESCRIPTION+ " TEXT NOT NULL, "
             + TaskItem.COLUMN_NAME_DATE_ENABLED+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_DUE_DATE+ " TEXT NOT NULL, "
-            + TaskItem.COLUMN_NAME_PRIORITY+ " INTEGER, "
+            + TaskItem.COLUMN_NAME_PRIORITY+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_COMPLETED+ " INTEGER, "
-            + TaskItem.COLUMN_NAME_LOCATION+ " TEXT NOT NULL, "
+            + TaskItem.COLUMN_NAME_LOCATION+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_CATEGORY+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_STATUS+ " INTEGER NOT NULL "
             + " )";
@@ -73,7 +73,7 @@ public class DBManager extends SQLiteOpenHelper
         values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
         int myInt = (task.getCompleted()) ? 1 : 0;
         values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
-        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().toString());
+        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
         values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
         values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
 
@@ -179,7 +179,7 @@ public class DBManager extends SQLiteOpenHelper
         values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
         int myInt = (task.getCompleted()) ? 1 : 0;
         values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
-        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().toString());
+        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
         values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
         values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
 

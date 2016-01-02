@@ -183,9 +183,6 @@ public class EditTaskActivity extends AppCompatActivity
         String time_Date_str = null;
         RadioButton rb;
 
-      //  Locations selected_loc = tastToEdit.getTsk_location();
-       // Toast.makeText(this, selected_loc.toString(), Toast.LENGTH_SHORT).show();
-
         if(desc.getText().toString().matches(""))
         {
             new AlertDialog.Builder(this)
@@ -269,10 +266,32 @@ public class EditTaskActivity extends AppCompatActivity
                     break;
             }
 
+            loc_spin = (Spinner) findViewById(R.id.locationSpinner);
+            position = loc_spin.getSelectedItemPosition();
+            switch(position)
+            {
+                case 0:
+                    tastToEdit.setTsk_location(Locations.Meeting_Room);
+                    break;
+                case 1:
+                    tastToEdit.setTsk_location(Locations.Office_245);
+                    break;
+                case 2:
+                    tastToEdit.setTsk_location(Locations.Lobby);
+                    break;
+                case 3:
+                    tastToEdit.setTsk_location(Locations.NOC);
+                    break;
+                case 4:
+                    tastToEdit.setTsk_location(Locations.VPsoffice);
+                    break;
+            }
+
+            Toast.makeText(this, "Changes Were Saved", Toast.LENGTH_SHORT).show();
             Intent returnIntent = new Intent();
 
-            // DBManager.getInstance(this).addTask(t);
-            //  DBManager dbm = new DBManager(this);
+            DBManager dbm = DBManager.getInstance(this);
+            dbm.updateTask(tastToEdit);
 
             returnIntent.putExtra("task",tastToEdit);
             setResult(RESULT_OK, returnIntent);
@@ -282,6 +301,8 @@ public class EditTaskActivity extends AppCompatActivity
 
     public void discardchangesBtnClick(View view)
     {
+        Locations selected_loc = tastToEdit.getTsk_location();
+        //Toast.makeText(this, selected_loc.toString(), Toast.LENGTH_LONG).show();
         finish();
     }
 

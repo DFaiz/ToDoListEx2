@@ -99,6 +99,7 @@ public class ListNodeActivity extends AppCompatActivity
         EditText desc = (EditText)findViewById(R.id.newTaskDesc);
         EditText date = (EditText)findViewById(R.id.taskDateEdit);
         EditText time = (EditText)findViewById(R.id.taskTimeEdit);
+        loc = (EditText)findViewById(R.id.taskLocation);
 
         Date myDate = null;
         RadioButton rb;
@@ -133,6 +134,25 @@ public class ListNodeActivity extends AppCompatActivity
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
             desc.setBackgroundColor(Color.RED);
+            desc.requestFocus();
+            state = false;
+        }
+
+        if ((returned_selc_loc==null)&&(state))
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle("Select Location")
+                    .setMessage("Task location must be selected in order to proceed.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            desc.setBackgroundColor(Color.RED);
+            loc.requestFocus();
+            loc.setClickable(false);
             state = false;
         }
 
@@ -330,11 +350,11 @@ public class ListNodeActivity extends AppCompatActivity
         if(resultCode == RESULT_OK) {
             switch (requestCode) {
                 case ACTIVITY_SELECT_LOCATION: {
-                    returned_selc_loc = (Locations) data.getSerializableExtra("location");
-                    loc.setText(returned_selc_loc.toString());
-                    loc.setClickable(false);
+                        returned_selc_loc = (Locations) data.getSerializableExtra("location");
+                        loc.setText(returned_selc_loc.toString());
+                        loc.setClickable(false);
+                        break;
                 }
-                break;
                 default:
                     break;
             }

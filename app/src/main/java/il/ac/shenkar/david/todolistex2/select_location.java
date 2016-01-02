@@ -49,29 +49,29 @@ public class select_location extends AppCompatActivity
 
     public void doneLoc (View view)
     {
-        Locations selc_catg=null;
+        Locations selc_location=null;
         int position = location_spinner.getSelectedItemPosition();
         switch(position)
         {
             case 0:
-                selc_catg=Locations.Meeting_Room;
+                selc_location=Locations.Meeting_Room;
                 break;
             case 1:
-                selc_catg=Locations.Office_245;
+                selc_location=Locations.Office_245;
                 break;
             case 2:
-                selc_catg=Locations.Lobby;
+                selc_location=Locations.Lobby;
                 break;
             case 3:
-                selc_catg=Locations.NOC;
+                selc_location=Locations.NOC;
                 break;
             case 4:
-                selc_catg=Locations.VPsoffice;
+                selc_location=Locations.VPsoffice;
                 break;
         }
 
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("location",selc_catg);
+        returnIntent.putExtra("location",selc_location);
         setResult(RESULT_OK, returnIntent);
         finish();
     }

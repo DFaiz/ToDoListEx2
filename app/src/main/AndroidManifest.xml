@@ -61,7 +61,8 @@
         <activity
             android:name=".InviteMember"
             android:label="Invite Members Your Team"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".Login_activity"
             android:label="Login to Wiggle"
