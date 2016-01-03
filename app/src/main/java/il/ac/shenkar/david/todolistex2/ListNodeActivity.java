@@ -19,6 +19,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseObject;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -42,6 +46,10 @@ public class ListNodeActivity extends AppCompatActivity
         setContentView(R.layout.activity_list_node);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Parse.enableLocalDatastore(this);
+        //Parse.initialize(this, "aaQYWKgO1skn55Flg0vgT3SwYjpVXGxxcXd241Tw", "fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46");
+       // ParseObject.registerSubclass(Task.class);
 
         loc = (EditText)findViewById(R.id.taskLocation);
         loc.setClickable(false);
@@ -188,7 +196,6 @@ public class ListNodeActivity extends AppCompatActivity
                 {
                     myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
                     t.setDueDate(myDate);
-                    t.setHasDate(true);
                 }catch(Exception e){myDate=null;}
             }
 
@@ -207,7 +214,6 @@ public class ListNodeActivity extends AppCompatActivity
                         myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
 
                         t.setDueDate(myDate);
-                        t.setHasDate(true);
 
                     }catch(Exception e){myDate=null;}
                 }
@@ -221,7 +227,6 @@ public class ListNodeActivity extends AppCompatActivity
                         {
                             myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
                             t.setDueDate(myDate);
-                            t.setHasDate(true);
 
                             Intent alarmNotificationIntent = new Intent(this, ReminderNotification.class);
                             alarmNotificationIntent.putExtra("task", t);
@@ -272,6 +277,17 @@ public class ListNodeActivity extends AppCompatActivity
             long seq_tsk_id = dbm.addTask(t);
             t.setTaskId(seq_tsk_id);
 
+           /* ParseObject parse_task = new ParseObject("Task");
+            parse_task.put("Description",t.getDescription());
+            parse_task.put("DueDate",t.getDueDate());
+            parse_task.put("Priority",t.getPriority().ordinal());
+            position = (t.getCompleted()) ? 1 : 0;
+            parse_task.put("IsCompleted",position);
+            parse_task.put("Location",t.getTsk_location().ordinal());
+            parse_task.put("Category",t.getTask_catg().ordinal());
+            parse_task.put("Status",t.getTask_sts().ordinal());
+            parse_task.saveInBackground();
+                */
             returnIntent.putExtra("task",t);
             setResult(RESULT_OK, returnIntent);
             finish();

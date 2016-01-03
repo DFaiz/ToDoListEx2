@@ -79,6 +79,14 @@
             android:name=".select_location"
             android:label="@string/title_activity_select_location"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="aaQYWKgO1skn55Flg0vgT3SwYjpVXGxxcXd241Tw" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46" />
+
     </application>
 
 </manifest>

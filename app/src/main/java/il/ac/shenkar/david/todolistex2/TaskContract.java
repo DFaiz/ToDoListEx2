@@ -14,7 +14,6 @@ public final class TaskContract
         public static final String COLUMN_NAME_TASK_ID = "taskid";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_COMPLETED = "completed";
-        public static final String COLUMN_NAME_DATE_ENABLED = "dateEnable";
         public static final String COLUMN_NAME_DUE_DATE = "dueDate";
         public static final String COLUMN_NAME_PRIORITY = "priority";
         public static final String COLUMN_NAME_LOCATION = "location";

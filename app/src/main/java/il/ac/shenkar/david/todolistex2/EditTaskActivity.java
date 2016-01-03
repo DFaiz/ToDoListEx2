@@ -162,7 +162,7 @@ public class EditTaskActivity extends AppCompatActivity
             }
         });
 
-        if(tastToEdit.getHasDate())
+        if(tastToEdit.getDueDate()!=null)
         {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
@@ -243,7 +243,6 @@ public class EditTaskActivity extends AppCompatActivity
             {
                 myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
                 tastToEdit.setDueDate(myDate);
-                tastToEdit.setHasDate(true);
             }catch(Exception e){myDate=null;}
 
             int position = spin.getSelectedItemPosition();

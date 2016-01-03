@@ -42,7 +42,6 @@ public class DBManager extends SQLiteOpenHelper
             + TaskItem.TABLE_NAME + " ( "
             + TaskItem.COLUMN_NAME_TASK_ID+ " INTEGER PRIMARY KEY autoincrement,"
             + TaskItem.COLUMN_NAME_DESCRIPTION+ " TEXT NOT NULL, "
-            + TaskItem.COLUMN_NAME_DATE_ENABLED+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_DUE_DATE+ " TEXT NOT NULL, "
             + TaskItem.COLUMN_NAME_PRIORITY+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_COMPLETED+ " INTEGER, "
@@ -67,7 +66,6 @@ public class DBManager extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
 
         values.put(TaskItem.COLUMN_NAME_DESCRIPTION, task.getDescription());
-        values.put(TaskItem.COLUMN_NAME_DATE_ENABLED, task.getHasDate());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         values.put(TaskItem.COLUMN_NAME_DUE_DATE, sdf.format(task.getDueDate()));
         values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
@@ -107,8 +105,6 @@ public class DBManager extends SQLiteOpenHelper
                     tsktsk.setCompleted(true);
                 else
                     tsktsk.setCompleted(false);
-
-                tsktsk.setHasDate(true);
 
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DUE_DATE));
                 tsktsk.setDueDate(desc);
@@ -173,7 +169,6 @@ public class DBManager extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
 
         values.put(TaskItem.COLUMN_NAME_DESCRIPTION, task.getDescription());
-        values.put(TaskItem.COLUMN_NAME_DATE_ENABLED, task.getHasDate());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         values.put(TaskItem.COLUMN_NAME_DUE_DATE, sdf.format(task.getDueDate()));
         values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());

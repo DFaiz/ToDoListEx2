@@ -1,7 +1,9 @@
 package il.ac.shenkar.david.todolistex2;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.app.AlertDialog;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ public class Login_activity extends AppCompatActivity
     private EditText usrpwd;
     private TextView usrname_title;
     private TextView password_title;
+    private CheckBox remb_creds=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,6 +49,18 @@ public class Login_activity extends AppCompatActivity
                 return false;
             }
         });
+
+        SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+        if(sharedpreferences.getString("LoginUsr", null)!=null)
+        {
+            usrname.setText(sharedpreferences.getString("LoginUsr", null));
+            remb_creds = (CheckBox)findViewById(R.id.saveLoginInfo);
+            remb_creds.setChecked(true);
+        }
+        if(sharedpreferences.getString("LoginPswd",null)!=null)
+        {
+            usrpwd.setText(sharedpreferences.getString("LoginPswd", null));
+        }
     }
 
     public void onLoginbtn (View view)
@@ -122,6 +138,12 @@ public class Login_activity extends AppCompatActivity
 
         if(valid_inputs)
         {
+            remb_creds = (CheckBox)findViewById(R.id.saveLoginInfo);
+            if(remb_creds.isChecked()) {
+                SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+                sharedpreferences.edit().putString("LoginUsr", usrname.getText().toString()).apply();
+                sharedpreferences.edit().putString("LoginPswd", usrpwd.getText().toString()).apply();
+            }
             Intent returnIntent = new Intent(this,MainActivity.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);

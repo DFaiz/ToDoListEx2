@@ -13,7 +13,6 @@ public class Task implements Serializable {
     private String description;
     private Boolean completed = false;
     private Date dueDate;
-    private Boolean hasDate = false;
     private Priority task_priority;
     private Boolean toDelete = false;
     private Category task_catg;
@@ -92,22 +91,11 @@ public class Task implements Serializable {
         {
             if(dueDate==null || dueDate=="")
             {
-                setHasDate(false);
                 return;
             }
             Date myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(dueDate);
             setDueDate(myDate);
-            setHasDate(true);
         }catch(Exception e){};
-    }
-
-
-    public Boolean getHasDate() {
-        return hasDate;
-    }
-
-    public void setHasDate(Boolean hasDate) {
-        this.hasDate = hasDate;
     }
 
     public Boolean getToDelete() {
