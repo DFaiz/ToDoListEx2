@@ -4,8 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +43,9 @@ public class InviteMember extends AppCompatActivity
         member_email = (EditText) findViewById(R.id.editemailaddress);
         member_phone = (EditText) findViewById(R.id.memberuserphonenumber);
         Intent email = new Intent(Intent.ACTION_SEND);
+
+        String[] new_users = member_email.getText().toString().split(",");
+        addNewUsers(new_users,member_phone.getText().toString());
 
         email.putExtra(Intent.EXTRA_EMAIL, new String[]{ member_email.getText().toString()});
         email.putExtra(Intent.EXTRA_SUBJECT, email_Subject);
@@ -77,4 +85,26 @@ public class InviteMember extends AppCompatActivity
         System.exit(0);
     }
 
+    private void addNewUsers (String[] newUsers, String usrpwd)
+    {
+        ParseObject parse_otsusr = null;
+        for (String usr : newUsers)
+        {
+            parse_otsusr = new ParseObject("OTSUser");
+            parse_otsusr.put("Username", usr);
+            parse_otsusr.put("Password",usrpwd);
+            parse_otsusr.put("Email", usr);
+            parse_otsusr.put("IsManager", 1);
+            //parse_task.saveInBackground();
+            parse_otsusr.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        Log.d("sss", "should be save");
+                    } else {
+                        Log.d("trace", e.getStackTrace().toString());
+                    }
+                }
+            });
+        }
+    }
 }

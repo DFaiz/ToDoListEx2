@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.content.Intent;
 import android.os.Handler;
 
+import com.parse.Parse;
+
 public class SplashScreen extends AppCompatActivity
 {
     ImageView imageView;
@@ -24,6 +26,9 @@ public class SplashScreen extends AppCompatActivity
         setContentView(R.layout.activity_splash_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Parse.initialize(this, "aaQYWKgO1skn55Flg0vgT3SwYjpVXGxxcXd241Tw", "fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46");
+        Parse.enableLocalDatastore(this);
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/

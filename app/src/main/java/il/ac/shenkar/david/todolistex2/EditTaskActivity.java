@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,12 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.DeleteCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import org.w3c.dom.Text;
 
@@ -106,33 +113,34 @@ public class EditTaskActivity extends AppCompatActivity
 
         loc_spin = (Spinner) findViewById(R.id.locationSpinner);
         Locations selected_loc = tastToEdit.getTsk_location();
+
         if(selected_loc==Locations.Meeting_Room)
         {
-            spin.setSelection(0);
+            loc_spin.setSelection(0);
         }
         else
         {
             if(selected_loc==Locations.Office_245)
             {
-                spin.setSelection(1);
+                loc_spin.setSelection(1);
             }
             else
             {
                 if(selected_loc==Locations.Lobby)
                 {
-                    spin.setSelection(2);
+                    loc_spin.setSelection(2);
                 }
                 else
                 {
                     if(selected_loc==Locations.NOC)
                     {
-                        spin.setSelection(3);
+                        loc_spin.setSelection(3);
                     }
                     else
                     {
                         if(selected_loc==Locations.VPsoffice)
                         {
-                            spin.setSelection(4);
+                            loc_spin.setSelection(4);
                         }
                     }
                 }
@@ -300,8 +308,29 @@ public class EditTaskActivity extends AppCompatActivity
 
     public void discardchangesBtnClick(View view)
     {
-        Locations selected_loc = tastToEdit.getTsk_location();
-        //Toast.makeText(this, selected_loc.toString(), Toast.LENGTH_LONG).show();
+       Locations selected_loc = tastToEdit.getTsk_location();
+
+        if(selected_loc==null)
+        {
+            Log.d("sdadsa","loc is null");
+        }
+
+       // Log.d("dsadsdas",selected_loc.toString());
+        ParseObject parse_task = new ParseObject("OTSUser");
+        parse_task.put("Username", "a@a.com");
+        parse_task.put("Password",123456789);
+        parse_task.put("Email","a@a.com");
+        parse_task.put("IsManager", 1);
+        //parse_task.saveInBackground();
+        parse_task.saveInBackground(new SaveCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("sss","should be save");
+                } else {
+                    Log.d("trace",e.getStackTrace().toString());
+                }
+            }
+        });
         finish();
     }
 
@@ -309,6 +338,30 @@ public class EditTaskActivity extends AppCompatActivity
     {
         Intent returnIntent = new Intent(this,MainActivity.class);
         tastToEdit.setToDelete(true);
+
+        ParseObject parse_task = new ParseObject("Task");
+        parse_task.put("Description",tastToEdit.getDescription());
+        parse_task.put("DueDate",tastToEdit.getDueDate());
+        parse_task.put("Priority",tastToEdit.getPriority().ordinal());
+        int com_state = (tastToEdit.getCompleted()) ? 1 : 0;
+        parse_task.put("IsCompleted",com_state);
+        //parse_task.put("Location",tastToEdit.getTsk_location().ordinal());
+        parse_task.put("Location",0);
+        parse_task.put("Category",tastToEdit.getTask_catg().ordinal());
+        parse_task.put("Status", tastToEdit.getTask_sts().ordinal());
+        //parse_task.deleteInBackground();
+        parse_task.deleteInBackground(new DeleteCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("msg","deleted");
+                } else {
+                    Log.d("msg", "not deleted");
+                    e.printStackTrace();
+
+                }
+            }
+        });
+
         returnIntent.putExtra("task",tastToEdit);
         setResult(RESULT_OK, returnIntent);
         finish();
