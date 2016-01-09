@@ -95,13 +95,13 @@ public class InviteMember extends AppCompatActivity
             parse_otsusr.put("Password",usrpwd);
             parse_otsusr.put("Email", usr);
             parse_otsusr.put("IsManager", 1);
-            //parse_task.saveInBackground();
             parse_otsusr.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
-                        Log.d("sss", "should be save");
+                        // if null, it means the save has succeeded
+                        Log.d("addded user", "good");
                     } else {
-                        Log.d("trace", e.getStackTrace().toString());
+                        // the save call was not successful.
                     }
                 }
             });

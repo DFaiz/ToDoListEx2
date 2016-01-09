@@ -8,13 +8,21 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.app.AlertDialog;
 import android.widget.TextView;
+
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
+
+import java.util.List;
 
 public class Login_activity extends AppCompatActivity
 {
@@ -24,6 +32,8 @@ public class Login_activity extends AppCompatActivity
     private TextView password_title;
     private CheckBox remb_creds=null;
 
+    private ParseObject parse_usr = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -31,6 +41,9 @@ public class Login_activity extends AppCompatActivity
         setContentView(R.layout.activity_login_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Parse.enableLocalDatastore(this);
+        //Parse.initialize(this, "aaQYWKgO1skn55Flg0vgT3SwYjpVXGxxcXd241Tw", "fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46");
 
         usrname = (EditText)findViewById(R.id.editTextusername);
         usrpwd = (EditText)findViewById(R.id.userpsswrd);
@@ -136,6 +149,43 @@ public class Login_activity extends AppCompatActivity
             valid_inputs = false;
         }
 
+        //check is username & password exist
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
+        query.whereContains("Username", usrname.getText().toString());
+        query.whereContains("Password", usrpwd.getText().toString());
+        List<ParseObject> usrs;
+
+        try {
+            usrs = query.find();
+            if (usrs.size() == 0){
+                valid_inputs = false;
+                new AlertDialog.Builder(this)
+                        .setTitle("Invalid Credentials")
+                        .setMessage("Username or password do not exist")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();}
+            else if (usrs.size() == 1){
+                valid_inputs = true;}
+            else{
+                valid_inputs = false;
+                Log.d("login", "invalid");
+                new AlertDialog.Builder(this)
+                        .setTitle("Invalid Credentials")
+                        .setMessage("Username or password do not exist")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();}
+        } catch (ParseException e) {}
+
         if(valid_inputs)
         {
             remb_creds = (CheckBox)findViewById(R.id.saveLoginInfo);
@@ -144,9 +194,32 @@ public class Login_activity extends AppCompatActivity
                 sharedpreferences.edit().putString("LoginUsr", usrname.getText().toString()).apply();
                 sharedpreferences.edit().putString("LoginPswd", usrpwd.getText().toString()).apply();
             }
+
+           /* parse_usr = new ParseObject("OTSUser");
+            parse_usr.put("Username",usrname.getText().toString());
+            parse_usr.put("Password", usrpwd.getText().toString());
+            parse_usr.put("Email",usrname.getText().toString());
+            parse_usr.put("IsManager",1);
+            parse_usr.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // if null, it means the save has succeeded
+                        Log.d("login", "good");
+                    } else {
+                        // the save call was not successful.
+                    }
+                }
+            });
+                */
             Intent returnIntent = new Intent(this,MainActivity.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
         }
+    }
+
+    public void onExitbtn (View v)
+    {
+        finish();
+        System.exit(0);
     }
 }

@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
+import com.parse.ParseException;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +37,9 @@ public class ListNodeActivity extends AppCompatActivity
     private String time_Date_str = null;
     private Locations returned_selc_loc;
     private EditText loc;
+
+    private ParseObject parse_task=null;
+    private DBManager dbm;
 
     private static final int ACTIVITY_SELECT_LOCATION = 0;
 
@@ -268,11 +273,11 @@ public class ListNodeActivity extends AppCompatActivity
             t.setTaskId(task_id);
             task_id++;
             Intent returnIntent = new Intent();
-            DBManager dbm = DBManager.getInstance(this);
+            dbm = DBManager.getInstance(this);
             long seq_tsk_id = dbm.addTask(t);
             t.setTaskId(seq_tsk_id);
 
-            ParseObject parse_task = new ParseObject("Task");
+            parse_task = new ParseObject("Task");
             parse_task.put("Description",t.getDescription());
             parse_task.put("DueDate", t.getDueDate());
             parse_task.put("Priority",t.getPriority().ordinal());
@@ -281,9 +286,20 @@ public class ListNodeActivity extends AppCompatActivity
             parse_task.put("Location",t.getTsk_location().ordinal());
             parse_task.put("Category", t.getTask_catg().ordinal());
             parse_task.put("Status", t.getTask_sts().ordinal());
-            parse_task.saveInBackground();
+            parse_task.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // if null, it means the save has succeeded
+                        String id = parse_task.getObjectId(); // Here you go
+                        t.setParse_task_id(id);
+                        dbm.updateParseID(t);
+                    } else {
+                        // the save call was not successful.
+                    }
+                }
+            });
 
-            returnIntent.putExtra("task",t);
+            returnIntent.putExtra("task", t);
             setResult(RESULT_OK, returnIntent);
             finish();
         }

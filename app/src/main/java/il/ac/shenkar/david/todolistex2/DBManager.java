@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -41,6 +41,7 @@ public class DBManager extends SQLiteOpenHelper
        final String SQL_CREATE_TASKS_TABLE = "CREATE TABLE "
             + TaskItem.TABLE_NAME + " ( "
             + TaskItem.COLUMN_NAME_TASK_ID+ " INTEGER PRIMARY KEY autoincrement,"
+            + TaskItem.COLUMN_NAME_PARSE_TASK_ID+ " TEXT,"
             + TaskItem.COLUMN_NAME_DESCRIPTION+ " TEXT NOT NULL, "
             + TaskItem.COLUMN_NAME_DUE_DATE+ " TEXT NOT NULL, "
             + TaskItem.COLUMN_NAME_PRIORITY+ " INTEGER NOT NULL, "
@@ -65,6 +66,7 @@ public class DBManager extends SQLiteOpenHelper
 
         ContentValues values = new ContentValues();
 
+        values.put(TaskItem.COLUMN_NAME_PARSE_TASK_ID,"");
         values.put(TaskItem.COLUMN_NAME_DESCRIPTION, task.getDescription());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         values.put(TaskItem.COLUMN_NAME_DUE_DATE, sdf.format(task.getDueDate()));
@@ -98,7 +100,9 @@ public class DBManager extends SQLiteOpenHelper
 
                 int id = cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_TASK_ID));
                 tsktsk.setTaskId(id);
-                String desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DESCRIPTION));
+                String desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_PARSE_TASK_ID));
+                tsktsk.setParse_task_id(desc);
+                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DESCRIPTION));
                 tsktsk.setDescription(desc);
                 id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_COMPLETED));
                 if(id==1)
@@ -180,6 +184,16 @@ public class DBManager extends SQLiteOpenHelper
 
         // updating row
         db.update(TaskItem.TABLE_NAME, values, TaskItem.COLUMN_NAME_TASK_ID + " = ?", new String[] { String.valueOf(task.getTaskId()) });
+    }
+
+    public void updateParseID (Task tsktsk)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TaskItem.COLUMN_NAME_PARSE_TASK_ID,tsktsk.getParse_task_id());
+        // updating row
+        db.update(TaskItem.TABLE_NAME, values, TaskItem.COLUMN_NAME_TASK_ID + " = ?", new String[]{String.valueOf(tsktsk.getTaskId())});
     }
 
     public void deleteTask (Task task)

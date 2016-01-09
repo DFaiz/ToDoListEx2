@@ -10,6 +10,7 @@ import java.util.Date;
 public class Task implements Serializable {
 
     private long taskId;
+    private String parse_task_id;
     private String description;
     private Boolean completed = false;
     private Date dueDate;
@@ -28,6 +29,7 @@ public class Task implements Serializable {
         this.taskId=id;
         this.description = description;
         dueDate = null;
+        parse_task_id = null;
         task_priority = Priority.NORMAL;
         task_sts = Task_Status.WAITING;
         task_catg = Category.GENERAL;
@@ -126,5 +128,13 @@ public class Task implements Serializable {
 
     public void setTsk_location(Locations tsk_location) {
         this.tsk_location = tsk_location;
+    }
+
+    public String getParse_task_id() {
+        return parse_task_id;
+    }
+
+    public void setParse_task_id(String parse_task_id) {
+        this.parse_task_id = parse_task_id;
     }
 }

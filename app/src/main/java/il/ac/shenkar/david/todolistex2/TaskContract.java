@@ -12,6 +12,7 @@ public final class TaskContract
     public static abstract class TaskItem implements BaseColumns {
         public static final String TABLE_NAME = "TASKS";
         public static final String COLUMN_NAME_TASK_ID = "taskid";
+        public static final String COLUMN_NAME_PARSE_TASK_ID = "parse_taskid";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_COMPLETED = "completed";
         public static final String COLUMN_NAME_DUE_DATE = "dueDate";
