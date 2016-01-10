@@ -5,5 +5,5 @@ package il.ac.shenkar.david.todolistex2;
  */
 
 public enum Task_Status {
-    WAITING,INPROCESS,DONE
+    WAITING,INPROGESS,DONE
 }

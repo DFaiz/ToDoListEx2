@@ -286,6 +286,7 @@ public class ListNodeActivity extends AppCompatActivity
             parse_task.put("Location",t.getTsk_location().ordinal());
             parse_task.put("Category", t.getTask_catg().ordinal());
             parse_task.put("Status", t.getTask_sts().ordinal());
+            parse_task.put("TeamName",Globals.team_name);
             parse_task.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {

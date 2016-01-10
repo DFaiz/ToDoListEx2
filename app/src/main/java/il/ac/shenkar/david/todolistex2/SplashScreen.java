@@ -27,6 +27,10 @@ public class SplashScreen extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+
+        Globals.team_name = sharedpreferences.getString("TeamName",null);
+
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "aaQYWKgO1skn55Flg0vgT3SwYjpVXGxxcXd241Tw", "fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46");
 

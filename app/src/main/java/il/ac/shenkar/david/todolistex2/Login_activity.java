@@ -42,9 +42,6 @@ public class Login_activity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Parse.enableLocalDatastore(this);
-        //Parse.initialize(this, "aaQYWKgO1skn55Flg0vgT3SwYjpVXGxxcXd241Tw", "fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46");
-
         usrname = (EditText)findViewById(R.id.editTextusername);
         usrpwd = (EditText)findViewById(R.id.userpsswrd);
 

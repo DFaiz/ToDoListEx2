@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private TextView emptylist_txt;
     private TextView minutes_text;
+    private Task tmp_task;
 
     public final int REQUEST_CODE_NEW_TASK = 1;
     public final int REQUEST_CODE_UPDATE_TASK = 2;
@@ -52,8 +56,107 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
         dbM = DBManager.getInstance(context);
 
-        //Parse.initialize(this, "aaQYWKgO1skn55Flg0vgT3SwYjpVXGxxcXd241Tw", "fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46");
-        //Parse.enableLocalDatastore(this);
+        //check if any tasks exist in Parse DB
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
+        query.whereContains("TeamName", Globals.team_name);
+        //for team member
+        SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+        query.whereContains("Employee",sharedpreferences.getString("LoginUsr",null));
+        query.whereContains("IsCompleted","0");
+        List<ParseObject> tsks=null;
+
+        try {
+            tsks = query.find();
+            for (ParseObject tmp : tsks)
+            {
+                tmp_task = new Task();
+                tmp_task.setDescription(tmp.getString("Description"));
+
+                int position = tmp.getInt("Category");
+                switch(position)
+                {
+                    case 0:
+                        tmp_task.setTask_catg(Category.GENERAL);
+                        break;
+                    case 1:
+                        tmp_task.setTask_catg(Category.CLEANING);
+                        break;
+                    case 2:
+                        tmp_task.setTask_catg(Category.ELECTRICITY);
+                        break;
+                    case 3:
+                        tmp_task.setTask_catg(Category.COMPUTERS);
+                        break;
+                    case 4:
+                        tmp_task.setTask_catg(Category.OTHER);
+                        break;
+                }
+
+                position = tmp.getInt("Priority");
+                switch(position)
+                {
+                    case 0:
+                        tmp_task.setPriority(Priority.LOW);
+                        break;
+                    case 1:
+                        tmp_task.setPriority(Priority.NORMAL);
+                        break;
+                    case 2:
+                        tmp_task.setPriority(Priority.URGENT);
+                        break;
+                    default:
+                        tmp_task.setPriority(Priority.NORMAL);
+                        break;
+                }
+
+                position = tmp.getInt("Status");
+                switch(position)
+                {
+                    case 0:
+                        tmp_task.setTask_sts(Task_Status.WAITING);
+                        break;
+                    case 1:
+                        tmp_task.setTask_sts(Task_Status.INPROGESS);
+                        break;
+                    case 2:
+                        tmp_task.setTask_sts(Task_Status.DONE);
+                        break;
+                    default:
+                        tmp_task.setTask_sts(Task_Status.WAITING);
+                        break;
+                }
+
+                position = tmp.getInt("Location");
+                switch(position)
+                {
+                    case 0:
+                        tmp_task.setTsk_location(Locations.Meeting_Room);
+                        break;
+                    case 1:
+                        tmp_task.setTsk_location(Locations.Office_245);
+                        break;
+                    case 2:
+                        tmp_task.setTsk_location(Locations.Lobby);
+                        break;
+                    case 3:
+                        tmp_task.setTsk_location(Locations.NOC);
+                        break;
+                    case 4:
+                        tmp_task.setTsk_location(Locations.VPsoffice);
+                        break;
+                    default:
+                        tmp_task.setTsk_location(Locations.Meeting_Room);
+                        break;
+                }
+
+                tmp_task.setDueDate(tmp.getDate("DueDate"));
+                tmp_task.setParse_task_id(tmp.getObjectId());
+
+                long seq_tsk_id = dbM.addTask(tmp_task);
+                tmp_task.setTaskId(seq_tsk_id);
+                dbM.updateParseID(tmp_task);
+            }
+        } catch (ParseException e) {}
 
         itemList = new ArrayList<Task>();
         list  = (ListView)findViewById(R.id.listView);

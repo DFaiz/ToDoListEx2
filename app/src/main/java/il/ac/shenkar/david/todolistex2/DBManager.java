@@ -153,7 +153,7 @@ public class DBManager extends SQLiteOpenHelper
                 if(id==0)
                     tsktsk.setTask_sts(Task_Status.WAITING);
                 if(id==1)
-                    tsktsk.setTask_sts(Task_Status.INPROCESS);
+                    tsktsk.setTask_sts(Task_Status.INPROGESS);
                 if (id==2)
                     tsktsk.setTask_sts(Task_Status.DONE);
 

@@ -7,4 +7,5 @@ public class Globals
 {
     public static boolean signed_uped = false;
     public static int refresh_minutes = 5;
+    public static String team_name = null;
 }
