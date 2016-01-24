@@ -21,12 +21,14 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.parse.ParseException;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class ListNodeActivity extends AppCompatActivity
 {
@@ -42,6 +44,7 @@ public class ListNodeActivity extends AppCompatActivity
     private DBManager dbm;
 
     private static final int ACTIVITY_SELECT_LOCATION = 0;
+    private ParseObject team_members = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -88,8 +91,22 @@ public class ListNodeActivity extends AppCompatActivity
         ArrayAdapter<String> empolyeeSpinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
         empolyeeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         empolyeeSpinner.setAdapter(empolyeeSpinnerAdapter);
+
+        //check is username & password exist
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
+        query.whereContains("TeamName", Globals.team_name);
+        List<ParseObject> usrs=null;
+
+        try {
+            usrs = query.find();
+            for (int i = 0; i < usrs.size(); i++)
+            {
+                empolyeeSpinnerAdapter.add(usrs.get(i).getString("UserName"));
+            }
+        } catch (ParseException e) {}
+
         //empolyeeSpinnerAdapter.add("my name is");
-        //empolyeeSpinnerAdapter.notifyDataSetChanged();
+        empolyeeSpinnerAdapter.notifyDataSetChanged();
 
         RadioButton rb = (RadioButton) findViewById(R.id.todaydatebtn);
         rb.setChecked(true);

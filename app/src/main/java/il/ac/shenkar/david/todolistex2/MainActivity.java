@@ -59,10 +59,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //check if any tasks exist in Parse DB
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
         query.whereContains("TeamName", Globals.team_name);
-        //for team member
-        SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
-        query.whereContains("Employee",sharedpreferences.getString("LoginUsr",null));
         query.whereContains("IsCompleted","0");
+        if(Globals.IsManager==false)
+        {
+            SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+            query.whereContains("Employee",sharedpreferences.getString("LoginUsr",null));
+        }
+
         List<ParseObject> tsks=null;
 
         try {
