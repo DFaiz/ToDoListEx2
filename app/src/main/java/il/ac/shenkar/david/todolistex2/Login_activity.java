@@ -76,6 +76,8 @@ public class Login_activity extends AppCompatActivity
     public void onLoginbtn (View view)
     {
         boolean valid_inputs=true;
+        List<ParseObject> usrs = null;
+
         usrname = (EditText)findViewById(R.id.editTextusername);
         usrpwd = (EditText)findViewById(R.id.userpsswrd);
         usrname_title = (TextView)findViewById(R.id.usernametextView);
@@ -150,7 +152,6 @@ public class Login_activity extends AppCompatActivity
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
         query.whereContains("Username", usrname.getText().toString());
         query.whereContains("Password", usrpwd.getText().toString());
-        List<ParseObject> usrs;
 
         try {
             usrs = query.find();
@@ -192,22 +193,13 @@ public class Login_activity extends AppCompatActivity
                 sharedpreferences.edit().putString("LoginPswd", usrpwd.getText().toString()).apply();
             }
 
-           /* parse_usr = new ParseObject("OTSUser");
-            parse_usr.put("Username",usrname.getText().toString());
-            parse_usr.put("Password", usrpwd.getText().toString());
-            parse_usr.put("Email",usrname.getText().toString());
-            parse_usr.put("IsManager",1);
-            parse_usr.saveInBackground(new SaveCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-                        // if null, it means the save has succeeded
-                        Log.d("login", "good");
-                    } else {
-                        // the save call was not successful.
-                    }
-                }
-            });
-                */
+            if(usrs.get(0).getNumber("IsManager")==1)
+            {
+                Globals.IsManager=true;
+            }
+            else
+                Globals.IsManager=false;
+
             Intent returnIntent = new Intent(this,MainActivity.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);

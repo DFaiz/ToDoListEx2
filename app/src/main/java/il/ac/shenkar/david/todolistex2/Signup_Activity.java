@@ -15,10 +15,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 public class Signup_Activity extends AppCompatActivity {
 
@@ -204,14 +211,61 @@ public class Signup_Activity extends AppCompatActivity {
             valid_inputs = false;
         }
 
+        //check is username & password exist
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
+        query.whereContains("Username", editTextUsername.getText().toString());
+        List<ParseObject> usrs=null;
+
+        try {
+            usrs = query.find();
+
+            if (usrs.size() == 0){
+                valid_inputs = false;
+                new AlertDialog.Builder(this)
+                        .setTitle("Invalid Credentials")
+                        .setMessage("Username or password do not exist")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();}
+            else if (usrs.size() == 1){
+                valid_inputs = true;}
+            else{
+                valid_inputs = false;
+                Log.d("login", "invalid");
+                new AlertDialog.Builder(this)
+                        .setTitle("Invalid Credentials")
+                        .setMessage("Username or password do not exist")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();}
+        } catch (ParseException e) {}
+
         if(valid_inputs)
         {
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
             sharedpreferences.edit().putBoolean("LoginState", true).apply();
             Globals.signed_uped=true;
-            Intent returnIntent = new Intent(this,CreateTeam.class);
-            setResult(RESULT_OK, returnIntent);
-            startActivity(returnIntent);
+
+            if(usrs.get(0).getNumber("IsManager")==1)
+            {
+                Intent returnIntent = new Intent(this,CreateTeam.class);
+                setResult(RESULT_OK, returnIntent);
+                startActivity(returnIntent);
+            }
+            else
+            {
+                Intent returnIntent = new Intent(this,MainActivity.class);
+                setResult(RESULT_OK, returnIntent);
+                startActivity(returnIntent);
+            }
         }
     }
 

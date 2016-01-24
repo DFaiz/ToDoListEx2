@@ -22,12 +22,14 @@ public class InviteMember extends AppCompatActivity
     private EditText member_phone;
     private final String email_Subject = "Invitation to Join Team OTS";
     private final String email_body = "Hi,\n\n" +
-                                "You have been invited to be a team member in an OTS Team created by me.\n" +
+                                "You have been invited to be a team member in an OTS Team " + Globals.team_name + " created by me.\n" +
                                 "Your username is your email address and password is your phone number\n" +
                                 "Use this link to download and install the App from Google Play.\n\n" +
                                 "<LINK to Google Play download>\n\n" +
                                 "Best Regards,\n" +
                                 "You OTS Manager.";
+
+    private ParseObject parse_usr = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,6 +48,26 @@ public class InviteMember extends AppCompatActivity
 
         String[] new_users = member_email.getText().toString().split(",");
         addNewUsers(new_users,member_phone.getText().toString());
+
+        for (String str_usrname : new_users)
+        {
+            parse_usr = new ParseObject("OTSUser");
+            parse_usr.put("Username",str_usrname);
+            parse_usr.put("Password", member_phone.getText().toString());
+            parse_usr.put("Email",str_usrname);
+            parse_usr.put("IsManager",0);
+            parse_usr.put("TeamName",Globals.team_name);
+            parse_usr.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // if null, it means the save has succeeded
+                        Log.d("new team member created", "good");
+                    } else {
+                        // the save call was not successful.
+                    }
+                }
+            });
+        }
 
         email.putExtra(Intent.EXTRA_EMAIL, new String[]{ member_email.getText().toString()});
         email.putExtra(Intent.EXTRA_SUBJECT, email_Subject);
