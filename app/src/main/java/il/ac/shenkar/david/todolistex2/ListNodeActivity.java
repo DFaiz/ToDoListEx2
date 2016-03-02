@@ -24,8 +24,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.parse.ParseException;
+import com.parse.FindCallback;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -41,6 +44,7 @@ public class ListNodeActivity extends AppCompatActivity
     private EditText loc;
 
     private ParseObject parse_task=null;
+    private List<String> team_memebers=null;
     private DBManager dbm;
 
     private static final int ACTIVITY_SELECT_LOCATION = 0;
@@ -95,17 +99,25 @@ public class ListNodeActivity extends AppCompatActivity
         //check is username & password exist
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
         query.whereContains("TeamName", Globals.team_name);
-        List<ParseObject> usrs=null;
+        query.whereEqualTo("IsManager",0);
 
-        try {
-            usrs = query.find();
-            for (int i = 0; i < usrs.size(); i++)
-            {
-                empolyeeSpinnerAdapter.add(usrs.get(i).getString("UserName"));
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> usrs, ParseException e) {
+                if (e == null) {
+
+                    team_memebers = new ArrayList<String>(usrs.size());
+                    for (ParseObject prso:usrs) {
+                        team_memebers.add(new String(prso.getString("Username")));
+                    }
+                } else {//handle the error
+                }
             }
-        } catch (ParseException e) {}
+        });
 
-        //empolyeeSpinnerAdapter.add("my name is");
+        for (String str:team_memebers)
+        {
+            empolyeeSpinnerAdapter.add(str);
+        }
         empolyeeSpinnerAdapter.notifyDataSetChanged();
 
         RadioButton rb = (RadioButton) findViewById(R.id.todaydatebtn);

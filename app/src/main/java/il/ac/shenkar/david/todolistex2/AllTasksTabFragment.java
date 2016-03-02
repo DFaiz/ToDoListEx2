@@ -5,14 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 /**
- * Created by David on 25-Dec-15.
+ * Created by David on 02-Mar-16.
  */
-public class WaitingTasksFragment extends Fragment
+public class AllTasksTabFragment extends Fragment
 {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.waitingtaskstab, container, false);
+        return inflater.inflate(R.layout.all_tasks, container, false);
     }
 }

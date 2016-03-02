@@ -20,5 +20,7 @@ public final class TaskContract
         public static final String COLUMN_NAME_LOCATION = "location";
         public static final String COLUMN_NAME_CATEGORY = "tsk_category";
         public static final String COLUMN_NAME_STATUS = "tsk_status";
+        public static final String COLUMN_NAME_EMPLOYEE = "employee";
+        public static final String COLUMN_NAME_TEAM = "team_name";
     }
 }

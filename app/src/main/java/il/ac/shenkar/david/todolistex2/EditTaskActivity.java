@@ -345,11 +345,13 @@ public class EditTaskActivity extends AppCompatActivity
         parse_task.put("Priority",tastToEdit.getPriority().ordinal());
         int com_state = (tastToEdit.getCompleted()) ? 1 : 0;
         parse_task.put("IsCompleted",com_state);
-        //parse_task.put("Location",tastToEdit.getTsk_location().ordinal());
-        parse_task.put("Location",0);
+        parse_task.put("Location",tastToEdit.getTsk_location().ordinal());
+
         parse_task.put("Category",tastToEdit.getTask_catg().ordinal());
         parse_task.put("Status", tastToEdit.getTask_sts().ordinal());
-        //parse_task.deleteInBackground();
+        parse_task.put("TeamName",Globals.team_name);
+        parse_task.put("Employee",tastToEdit.getEmp_name());
+
         parse_task.deleteInBackground(new DeleteCallback() {
             public void done(ParseException e) {
                 if (e == null) {

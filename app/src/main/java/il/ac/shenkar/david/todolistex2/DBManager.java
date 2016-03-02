@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 14;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -48,7 +48,9 @@ public class DBManager extends SQLiteOpenHelper
             + TaskItem.COLUMN_NAME_COMPLETED+ " INTEGER, "
             + TaskItem.COLUMN_NAME_LOCATION+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_CATEGORY+ " INTEGER NOT NULL, "
-            + TaskItem.COLUMN_NAME_STATUS+ " INTEGER NOT NULL "
+            + TaskItem.COLUMN_NAME_STATUS+ " INTEGER NOT NULL, "
+            + TaskItem.COLUMN_NAME_EMPLOYEE+ " TEXT NOT NULL, "
+            + TaskItem.COLUMN_NAME_TEAM+ " TEXT NOT NULL "
             + " )";
         db.execSQL(SQL_CREATE_TASKS_TABLE);
     }
@@ -76,6 +78,8 @@ public class DBManager extends SQLiteOpenHelper
         values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
         values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
         values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
+        values.put(TaskItem.COLUMN_NAME_EMPLOYEE, task.getEmp_name());
+        values.put(TaskItem.COLUMN_NAME_TEAM, Globals.team_name);
 
         // Inserting Row
         long newTaskID = db.insert(TaskItem.TABLE_NAME, null, values);
@@ -157,6 +161,9 @@ public class DBManager extends SQLiteOpenHelper
                 if (id==2)
                     tsktsk.setTask_sts(Task_Status.DONE);
 
+                desc = (cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_EMPLOYEE)));
+                tsktsk.setEmp_name(desc);
+
                 taskList.add(tsktsk);
             } while (cursor.moveToNext());
         }
@@ -181,6 +188,7 @@ public class DBManager extends SQLiteOpenHelper
         values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
         values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
         values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
+        values.put(TaskItem.COLUMN_NAME_EMPLOYEE, task.getEmp_name());
 
         // updating row
         db.update(TaskItem.TABLE_NAME, values, TaskItem.COLUMN_NAME_TASK_ID + " = ?", new String[] { String.valueOf(task.getTaskId()) });

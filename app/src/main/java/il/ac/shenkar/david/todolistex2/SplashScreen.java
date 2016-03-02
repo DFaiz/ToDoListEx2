@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.content.Intent;
 import android.os.Handler;
@@ -28,7 +29,6 @@ public class SplashScreen extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
-
         Globals.team_name = sharedpreferences.getString("TeamName",null);
 
         Parse.enableLocalDatastore(this);

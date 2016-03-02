@@ -20,6 +20,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private static Dialog minute_diag;
 
+    private List<ParseObject> tsks=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -59,14 +62,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //check if any tasks exist in Parse DB
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
         query.whereContains("TeamName", Globals.team_name);
-        query.whereContains("IsCompleted","0");
+        query.whereEqualTo("IsCompleted",0);
+
         if(Globals.IsManager==false)
         {
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
             query.whereContains("Employee",sharedpreferences.getString("LoginUsr",null));
         }
-
-        List<ParseObject> tsks=null;
 
         try {
             tsks = query.find();
@@ -154,12 +156,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 tmp_task.setDueDate(tmp.getDate("DueDate"));
                 tmp_task.setParse_task_id(tmp.getObjectId());
-
+                tmp_task.setEmp_name(tmp.getString("Employee"));
                 long seq_tsk_id = dbM.addTask(tmp_task);
                 tmp_task.setTaskId(seq_tsk_id);
                 dbM.updateParseID(tmp_task);
             }
         } catch (ParseException e) {}
+
 
         itemList = new ArrayList<Task>();
         list  = (ListView)findViewById(R.id.listView);

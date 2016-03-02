@@ -19,6 +19,7 @@ public class Task implements Serializable {
     private Category task_catg;
     private Task_Status task_sts;
     private Locations tsk_location;
+    private String emp_name;
 
     public Task ()
     {}
@@ -33,6 +34,7 @@ public class Task implements Serializable {
         task_priority = Priority.NORMAL;
         task_sts = Task_Status.WAITING;
         task_catg = Category.GENERAL;
+        emp_name = null;
     }
 
     public Task(String description)
@@ -136,5 +138,13 @@ public class Task implements Serializable {
 
     public void setParse_task_id(String parse_task_id) {
         this.parse_task_id = parse_task_id;
+    }
+
+    public String getEmp_name() {
+        return emp_name;
+    }
+
+    public void setEmp_name(String emp_name) {
+        this.emp_name = emp_name;
     }
 }

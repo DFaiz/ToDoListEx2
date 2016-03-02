@@ -19,4 +19,5 @@
     <string name="title_activity_edit_task">EditTaskActivity</string>
     <string name="title_activity_minutespicker">minutespicker</string>
     <string name="title_activity_select_location">select_location</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

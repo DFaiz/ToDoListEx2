@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by David on 25-Dec-15.
+ * Created by David on 02-Mar-16.
  */
-public class AllTasksFragment extends Fragment
+public class WaitingTasksTabFragment extends Fragment
 {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.alltaskstab, container, false);
+        return inflater.inflate(R.layout.all_tasks, container, false);
     }
 }
