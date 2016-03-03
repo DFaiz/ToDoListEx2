@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public final int REQUEST_CODE_UPDATE_TASK = 2;
     public final int REQUEST_CODE_REMOVE_TASK = 3;
     public final int REQUEST_CODE_INVITE_MEMBER = 4;
+    public final int REQUEST_CODE_EMP_VIEW_TASK = 5;
 
     private static Dialog minute_diag;
 
@@ -67,7 +70,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(Globals.IsManager==false)
         {
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
-            query.whereContains("Employee",sharedpreferences.getString("LoginUsr",null));
+            query.whereContains("Employee", sharedpreferences.getString("LoginUsr", null));
+
+            //if not manager disable action button
+            FloatingActionButton fbtn = (FloatingActionButton) findViewById(R.id.fab);
+            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fbtn.getLayoutParams();
+            p.setBehavior(null); //should disable default animations
+            p.setAnchorId(View.NO_ID); //should let you set visibility
+            fbtn.setLayoutParams(p);
+            fbtn.setVisibility(View.GONE);
         }
 
         try {
@@ -163,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         } catch (ParseException e) {}
 
-
         itemList = new ArrayList<Task>();
         list  = (ListView)findViewById(R.id.listView);
         itemList = dbM.getAllTasks();
@@ -179,8 +189,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //start the create activity again, now for editing
                 Intent i = new Intent(getApplicationContext(), EditTaskActivity.class);
                 i.putExtra("task", tt);
-                startActivityForResult(i, REQUEST_CODE_UPDATE_TASK);
-
+                if(Globals.IsManager==true)
+                {
+                    startActivityForResult(i, REQUEST_CODE_UPDATE_TASK);
+                }
+                if(Globals.IsManager==true)
+                {
+                    startActivityForResult(i, REQUEST_CODE_EMP_VIEW_TASK);
+                }
                 return false;
             }
         });
@@ -330,6 +346,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     break;
                 }
 
+                case REQUEST_CODE_EMP_VIEW_TASK:
+                {
+                    returned_task = (Task)data.getSerializableExtra("task");
+                    for(int i=0;i<itemList.size();i++)
+                    {
+                        if(itemList.get(i).getTaskId()==returned_task.getTaskId())
+                        {
+                            itemList.set(i, returned_task);
+                            adapter =  new TaskItemAdapter(context, itemList);
+                            list.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+
                 default:
                 {
                     adapter = new TaskItemAdapter(context, itemList);
@@ -344,28 +375,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
-        //get the list
-        // list = (ListView) findViewById(R.id.listView);
-        //fill the list with tasks
-        // list.setAdapter(new TaskItemAdapter(context, itemList));
-
-      /*  list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
-
-                Toast.makeText(context, "Long pressed to edit task", Toast.LENGTH_SHORT).show();
-
-                return false;
-            }
-        }); */
-
-       /* list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Toast.makeText(context, "Long press to edit task", Toast.LENGTH_SHORT).show();
-            }
-        }); */
     }
 
     @Override

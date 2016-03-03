@@ -24,6 +24,7 @@ import com.parse.DeleteCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.w3c.dom.Text;
@@ -31,6 +32,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class EditTaskActivity extends AppCompatActivity
 {
@@ -38,6 +40,8 @@ public class EditTaskActivity extends AppCompatActivity
     private Spinner spin;
     private Spinner loc_spin;
     private RadioButton rb;
+    private TextView emp;
+    private List<ParseObject> tsks=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +59,7 @@ public class EditTaskActivity extends AppCompatActivity
         tastToEdit = (Task)i.getSerializableExtra("task");
 
         EditText desc = (EditText)findViewById(R.id.editTaskDesc);
+
         desc.setText(tastToEdit.getDescription());
 
         Priority prty = tastToEdit.getPriority();
@@ -177,6 +182,9 @@ public class EditTaskActivity extends AppCompatActivity
             date.setText(sdf.format(tastToEdit.getDueDate()));
             time.setText(sdft.format(tastToEdit.getDueDate()));
         }
+
+        emp = (TextView)findViewById(R.id.employeeassignedname);
+        emp.append(" "+tastToEdit.getEmp_name());
     }
 
     public void saveChangesTaskBtn(View view)
@@ -300,6 +308,37 @@ public class EditTaskActivity extends AppCompatActivity
             DBManager dbm = DBManager.getInstance(this);
             dbm.updateTask(tastToEdit);
 
+            //update the task in Parse
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
+            query.whereContains("objectID", tastToEdit.getParse_task_id());
+
+            try {
+                tsks = query.find();
+                for (ParseObject tmp : tsks)
+                {
+                    tmp.put("Description",tastToEdit.getDescription());
+                    tmp.put("DueDate", tastToEdit.getDueDate());
+                    tmp.put("Priority",tastToEdit.getPriority().ordinal());
+                    position = (tastToEdit.getCompleted()) ? 1 : 0;
+                    tmp.put("IsCompleted",position);
+                    tmp.put("Location",tastToEdit.getTsk_location().ordinal());
+                    tmp.put("Category", tastToEdit.getTask_catg().ordinal());
+                    tmp.put("Status",tastToEdit.getTask_sts().ordinal());
+                    tmp.put("Employee",tastToEdit.getEmp_name());
+                    tmp.saveInBackground(new SaveCallback() {
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                // if null, it means the save has succeeded
+
+                            } else {
+                                // the save call was not successful.
+                            }
+                        }
+                    });
+                    tmp.saveInBackground();
+                }
+            } catch (ParseException e) {}
+
             returnIntent.putExtra("task",tastToEdit);
             setResult(RESULT_OK, returnIntent);
             finish();
@@ -308,29 +347,6 @@ public class EditTaskActivity extends AppCompatActivity
 
     public void discardchangesBtnClick(View view)
     {
-       Locations selected_loc = tastToEdit.getTsk_location();
-
-        if(selected_loc==null)
-        {
-            Log.d("sdadsa","loc is null");
-        }
-
-       // Log.d("dsadsdas",selected_loc.toString());
-        ParseObject parse_task = new ParseObject("OTSUser");
-        parse_task.put("Username", "a@a.com");
-        parse_task.put("Password",123456789);
-        parse_task.put("Email","a@a.com");
-        parse_task.put("IsManager", 1);
-        //parse_task.saveInBackground();
-        parse_task.saveInBackground(new SaveCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("sss","should be save");
-                } else {
-                    Log.d("trace",e.getStackTrace().toString());
-                }
-            }
-        });
         finish();
     }
 

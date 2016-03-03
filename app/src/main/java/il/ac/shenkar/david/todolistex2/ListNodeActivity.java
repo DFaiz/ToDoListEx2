@@ -48,7 +48,6 @@ public class ListNodeActivity extends AppCompatActivity
     private DBManager dbm;
 
     private static final int ACTIVITY_SELECT_LOCATION = 0;
-    private ParseObject team_members = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -299,6 +298,7 @@ public class ListNodeActivity extends AppCompatActivity
             }
 
             t.setTsk_location(returned_selc_loc);
+            t.setEmp_name("");
             t.setTaskId(task_id);
             task_id++;
             Intent returnIntent = new Intent();
@@ -316,6 +316,7 @@ public class ListNodeActivity extends AppCompatActivity
             parse_task.put("Category", t.getTask_catg().ordinal());
             parse_task.put("Status", t.getTask_sts().ordinal());
             parse_task.put("TeamName",Globals.team_name);
+            parse_task.put("Employee",t.getEmp_name());
             parse_task.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
