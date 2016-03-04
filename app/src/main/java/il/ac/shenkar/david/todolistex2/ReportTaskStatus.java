@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -96,10 +97,16 @@ public class ReportTaskStatus extends AppCompatActivity
 
         try {
             tsks = query.find();
-            for (ParseObject tmp : tsks)
-            {
-                tmp.put("Status",tastToEdit.getTask_sts().ordinal());
-                tmp.saveInBackground();
+            if(tsks.size()>1)
+                Log.w("tsks","multiple results returned");
+            if(tsks.size()==0)
+                Log.w("tsks","no results");
+            if(tsks.size()==1){
+                for (ParseObject tmp : tsks)
+                {
+                    tmp.put("Status",tastToEdit.getTask_sts().ordinal());
+                    tmp.saveInBackground();
+                }
             }
         } catch (ParseException e) {}
 

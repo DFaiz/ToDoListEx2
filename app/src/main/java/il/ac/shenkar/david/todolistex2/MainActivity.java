@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             fbtn.setVisibility(View.GONE);
         }
 
+        itemList = new ArrayList<Task>();
+        list  = (ListView)findViewById(R.id.listView);
+
         try {
             tsks = query.find();
             for (ParseObject tmp : tsks)
@@ -168,14 +171,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 tmp_task.setDueDate(tmp.getDate("DueDate"));
                 tmp_task.setParse_task_id(tmp.getObjectId());
                 tmp_task.setEmp_name(tmp.getString("Employee"));
-                long seq_tsk_id = dbM.addTask(tmp_task);
+              /*  long seq_tsk_id = dbM.addTask(tmp_task);
                 tmp_task.setTaskId(seq_tsk_id);
-                dbM.updateParseID(tmp_task);
+                dbM.updateParseID(tmp_task);*/
+                syncTaskList(tmp_task);
             }
         } catch (ParseException e) {}
 
-        itemList = new ArrayList<Task>();
-        list  = (ListView)findViewById(R.id.listView);
         itemList = dbM.getAllTasks();
         list.setAdapter(new TaskItemAdapter(context, itemList));
 
@@ -431,5 +433,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //fill the list with tasks
         list.setAdapter(new TaskItemAdapter(context, itemList));
+    }
+
+    private void syncTaskList (Task tmp_task)
+    {
+        boolean result = false;
+        dbM = DBManager.getInstance(context);
+        result = dbM.ifTaskExists(tmp_task.getParse_task_id());
+
+        if(result==true)
+        {
+            dbM.updateTask(tmp_task);
+        }
+        else
+        {
+            long seq_tsk_id = dbM.addTask(tmp_task);
+            tmp_task.setTaskId(seq_tsk_id);
+            dbM.updateParseID(tmp_task);
+        }
     }
 }

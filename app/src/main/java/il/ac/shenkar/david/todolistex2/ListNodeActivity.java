@@ -44,7 +44,8 @@ public class ListNodeActivity extends AppCompatActivity
     private EditText loc;
 
     private ParseObject parse_task=null;
-    private List<String> team_memebers=null;
+    private final List<String> team_memebers = new ArrayList<>();
+    private ArrayAdapter<String> empolyeeSpinnerAdapter;
     private DBManager dbm;
 
     private static final int ACTIVITY_SELECT_LOCATION = 0;
@@ -91,16 +92,31 @@ public class ListNodeActivity extends AppCompatActivity
         spin = (Spinner) findViewById(R.id.categorySpinner);
 
         empolyeeSpinner = (Spinner) findViewById(R.id.employeeSpinner);
-        ArrayAdapter<String> empolyeeSpinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
+        empolyeeSpinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
         empolyeeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         empolyeeSpinner.setAdapter(empolyeeSpinnerAdapter);
 
         //check is username & password exist
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
         query.whereContains("TeamName", Globals.team_name);
-        query.whereEqualTo("IsManager",0);
+        query.whereEqualTo("IsManager", 0);
 
         query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> usrs, ParseException e) {
+                if (e == null) {
+                    for (ParseObject prso : usrs) {
+                        team_memebers.add(new String(prso.getString("Username")));
+                    }
+                    for (final String str:team_memebers)
+                    {
+                        empolyeeSpinnerAdapter.add(str);
+                    }
+                } else {//handle the error
+                }
+            }
+        });
+
+      /*  query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> usrs, ParseException e) {
                 if (e == null) {
 
@@ -108,6 +124,7 @@ public class ListNodeActivity extends AppCompatActivity
                     for (ParseObject prso:usrs) {
                         team_memebers.add(new String(prso.getString("Username")));
                     }
+
                 } else {//handle the error
                 }
             }
@@ -116,7 +133,7 @@ public class ListNodeActivity extends AppCompatActivity
         for (String str:team_memebers)
         {
             empolyeeSpinnerAdapter.add(str);
-        }
+        }*/
         empolyeeSpinnerAdapter.notifyDataSetChanged();
 
         RadioButton rb = (RadioButton) findViewById(R.id.todaydatebtn);

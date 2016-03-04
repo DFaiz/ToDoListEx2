@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -209,7 +209,20 @@ public class DBManager extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TaskItem.TABLE_NAME, TaskItem.COLUMN_NAME_TASK_ID + " = ?",
-                new String[] { String.valueOf(task.getTaskId()) });
+                new String[]{String.valueOf(task.getTaskId())});
         db.close();
+    }
+
+    public boolean ifTaskExists (String parseTaskID)
+    {
+        // Select Task Query
+        String selectQuery = "SELECT * FROM " + TaskItem.TABLE_NAME + " WHERE " + TaskItem.COLUMN_NAME_PARSE_TASK_ID + " =?";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(parseTaskID)},null);
+        if(cursor.getCount()>0)
+            return true;
+        else
+            return false;
     }
 }
