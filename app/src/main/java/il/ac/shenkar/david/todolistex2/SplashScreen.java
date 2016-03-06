@@ -32,6 +32,7 @@ public class SplashScreen extends AppCompatActivity
        /* sharedpreferences.edit().clear();
         sharedpreferences.edit().commit();*/
         Globals.team_name = sharedpreferences.getString("TeamName",null);
+        Globals.refresh_minutes = sharedpreferences.getInt("RefreshInterval",5);
 
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "aaQYWKgO1skn55Flg0vgT3SwYjpVXGxxcXd241Tw", "fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46");
