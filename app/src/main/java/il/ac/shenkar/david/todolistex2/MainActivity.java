@@ -64,13 +64,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //check if any tasks exist in Parse DB
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
-        query.whereContains("TeamName", Globals.team_name);
+        query.whereEqualTo("TeamName", Globals.team_name);
         query.whereEqualTo("IsCompleted",0);
 
         if(Globals.IsManager==false)
         {
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
-            query.whereContains("Employee", sharedpreferences.getString("LoginUsr", null));
+            query.whereEqualTo("Employee", sharedpreferences.getString("LoginUsr", null));
 
             //if not manager disable action button
             FloatingActionButton fbtn = (FloatingActionButton) findViewById(R.id.fab);
@@ -188,15 +188,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //get item instance from list
                 Task tt = (Task) ((TaskItemAdapter) parent.getAdapter()).getItem(position);
 
-                //start the create activity again, now for editing
-                Intent i = new Intent(getApplicationContext(), EditTaskActivity.class);
-                i.putExtra("task", tt);
                 if(Globals.IsManager==true)
                 {
+                    //start the create activity again, now for editing
+                    Intent i = new Intent(getApplicationContext(), EditTaskActivity.class);
+                    i.putExtra("task", tt);
                     startActivityForResult(i, REQUEST_CODE_UPDATE_TASK);
                 }
-                if(Globals.IsManager==true)
+                if(Globals.IsManager==false)
                 {
+                    //start the create activity again, now for editing
+                    Intent i = new Intent(getApplicationContext(), ReportTaskStatus.class);
+                    i.putExtra("task", tt);
                     startActivityForResult(i, REQUEST_CODE_EMP_VIEW_TASK);
                 }
                 return false;

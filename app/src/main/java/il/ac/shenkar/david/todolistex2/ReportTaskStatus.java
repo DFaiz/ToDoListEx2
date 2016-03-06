@@ -10,10 +10,12 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ReportTaskStatus extends AppCompatActivity
@@ -43,10 +45,18 @@ public class ReportTaskStatus extends AppCompatActivity
         label.append(" "+tastToEdit.getPriority().toString());
 
         label = (TextView)findViewById(R.id.locationlabel);
-        label.append(" " + tastToEdit.getTsk_location().toString());
+//        label.append(" " + tastToEdit.getTsk_location().toString());
+        label.append(" " + "Somewhere");
 
         label = (TextView)findViewById(R.id.duetimelabel);
-        label.append(" " + tastToEdit.getDueDate().toString());
+
+        if(tastToEdit.getDueDate()!=null)
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
+            label.append(" " + (sdf.format(tastToEdit.getDueDate())));
+            label.append(" " + (sdft.format(tastToEdit.getDueDate())));
+        }
 
         Task_Status tsk_stts = tastToEdit.getTask_sts();
 
@@ -93,23 +103,20 @@ public class ReportTaskStatus extends AppCompatActivity
 
         //update the task in Parse
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
-        query.whereContains("objectID", tastToEdit.getParse_task_id());
-
-        try {
-            tsks = query.find();
-            if(tsks.size()>1)
-                Log.w("tsks","multiple results returned");
-            if(tsks.size()==0)
-                Log.w("tsks","no results");
-            if(tsks.size()==1){
-                for (ParseObject tmp : tsks)
-                {
-                    tmp.put("Status",tastToEdit.getTask_sts().ordinal());
-                    tmp.saveInBackground();
+        query.whereEqualTo("objectId", tastToEdit.getParse_task_id());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    for (ParseObject tmp : objects)
+                    {
+                        tmp.put("Status",tastToEdit.getTask_sts().ordinal());
+                        tmp.saveInBackground();
+                    }
+                } else {
+                    // error
                 }
             }
-        } catch (ParseException e) {}
-
+        });
 
         returnIntent.putExtra("task",tastToEdit);
         setResult(RESULT_OK, returnIntent);
@@ -119,5 +126,9 @@ public class ReportTaskStatus extends AppCompatActivity
     public void discardstatuschangesBtnClick(View view)
     {
         finish();
+    }
+
+    public void onRadioButtonClicked(View view)
+    {
     }
 }

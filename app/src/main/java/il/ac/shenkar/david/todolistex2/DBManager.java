@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 17;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -185,7 +185,7 @@ public class DBManager extends SQLiteOpenHelper
         values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
         int myInt = (task.getCompleted()) ? 1 : 0;
         values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
-        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
+        //values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
         values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
         values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
         values.put(TaskItem.COLUMN_NAME_EMPLOYEE, task.getEmp_name());

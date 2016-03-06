@@ -35,7 +35,7 @@ import java.util.List;
 
 public class ListNodeActivity extends AppCompatActivity
 {
-    private  Task t = new Task();
+    private Task t = new Task();
     private Spinner spin;
     private Spinner empolyeeSpinner;
     private int task_id=1;
@@ -116,24 +116,6 @@ public class ListNodeActivity extends AppCompatActivity
             }
         });
 
-      /*  query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> usrs, ParseException e) {
-                if (e == null) {
-
-                    team_memebers = new ArrayList<String>(usrs.size());
-                    for (ParseObject prso:usrs) {
-                        team_memebers.add(new String(prso.getString("Username")));
-                    }
-
-                } else {//handle the error
-                }
-            }
-        });
-
-        for (String str:team_memebers)
-        {
-            empolyeeSpinnerAdapter.add(str);
-        }*/
         empolyeeSpinnerAdapter.notifyDataSetChanged();
 
         RadioButton rb = (RadioButton) findViewById(R.id.todaydatebtn);
@@ -156,6 +138,7 @@ public class ListNodeActivity extends AppCompatActivity
 
         Date myDate = null;
         RadioButton rb;
+        String emp_name;
 
        if(desc.getText().toString().matches(""))
        {
@@ -313,9 +296,15 @@ public class ListNodeActivity extends AppCompatActivity
                     t.setTask_catg(Category.OTHER);
                     break;
             }
-
+            if(returned_selc_loc==null)
+            {
+                Log.w("sdas","null");
+            }
             t.setTsk_location(returned_selc_loc);
-            t.setEmp_name("");
+            empolyeeSpinner = (Spinner) findViewById(R.id.employeeSpinner);
+            emp_name = empolyeeSpinner.getSelectedItem().toString();
+            t.setEmp_name(emp_name);
+
             t.setTaskId(task_id);
             task_id++;
             Intent returnIntent = new Intent();
@@ -424,11 +413,12 @@ public class ListNodeActivity extends AppCompatActivity
     {
         if(resultCode == RESULT_OK) {
             switch (requestCode) {
-                case ACTIVITY_SELECT_LOCATION: {
-                        returned_selc_loc = (Locations) data.getSerializableExtra("location");
-                        loc.setText(returned_selc_loc.toString());
-                        loc.setClickable(false);
-                        break;
+                case ACTIVITY_SELECT_LOCATION:
+                {
+                    returned_selc_loc = (Locations) data.getSerializableExtra("location");
+                    loc.setText(returned_selc_loc.toString());
+                    loc.setClickable(false);
+                    break;
                 }
                 default:
                     break;

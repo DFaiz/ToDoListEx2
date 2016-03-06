@@ -22,7 +22,7 @@ public class InviteMember extends AppCompatActivity
     private EditText member_phone;
     private final String email_Subject = "Invitation to Join Team OTS";
     private final String email_body = "Hi,\n\n" +
-                                "You have been invited to be a team member in an OTS Team " + Globals.team_name + " created by me.\n" +
+                                "You have been invited to be a team member in an OTS Team ->" + Globals.team_name + " created by me.\n" +
                                 "Your username is your email address and password is your phone number\n" +
                                 "Use this link to download and install the App from Google Play.\n\n" +
                                 "<LINK to Google Play download>\n\n" +
@@ -49,7 +49,7 @@ public class InviteMember extends AppCompatActivity
         String[] new_users = member_email.getText().toString().split(",");
         addNewUsers(new_users,member_phone.getText().toString());
 
-        for (String str_usrname : new_users)
+      /*  for (String str_usrname : new_users)
         {
             parse_usr = new ParseObject("OTSUser");
             parse_usr.put("Username",str_usrname);
@@ -68,7 +68,7 @@ public class InviteMember extends AppCompatActivity
                 }
             });
         }
-
+*/
         email.putExtra(Intent.EXTRA_EMAIL, new String[]{ member_email.getText().toString()});
         email.putExtra(Intent.EXTRA_SUBJECT, email_Subject);
         email.putExtra(Intent.EXTRA_TEXT, email_body);
@@ -103,8 +103,21 @@ public class InviteMember extends AppCompatActivity
 
     public void onExitbtn(View view)
     {
-        finish();
-        System.exit(0);
+        Intent i = getIntent();
+        Intent returnIntent = null;
+
+        String from_act = (String)i.getSerializableExtra("from");
+        if(from_act.equals("from_main_activity"))
+        {
+            returnIntent = new Intent();
+            setResult(RESULT_OK, returnIntent);
+            finish();
+        }
+
+        else
+        {
+            System.exit(0);
+        }
     }
 
     private void addNewUsers (String[] newUsers, String usrpwd)
@@ -117,6 +130,7 @@ public class InviteMember extends AppCompatActivity
             parse_otsusr.put("Password",usrpwd);
             parse_otsusr.put("Email", usr);
             parse_otsusr.put("IsManager", 1);
+            parse_usr.put("TeamName",Globals.team_name);
             parse_otsusr.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {

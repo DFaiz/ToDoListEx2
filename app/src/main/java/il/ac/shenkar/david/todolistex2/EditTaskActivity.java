@@ -118,15 +118,20 @@ public class EditTaskActivity extends AppCompatActivity
 
         loc_spin = (Spinner) findViewById(R.id.locationSpinner);
         Locations selected_loc = tastToEdit.getTsk_location();
-
+        if(selected_loc==null)
+        {
+            Log.w("sdas","null");
+        }
         if(selected_loc==Locations.Meeting_Room)
         {
+            Log.w("sdas",selected_loc.toString());
             loc_spin.setSelection(0);
         }
         else
         {
             if(selected_loc==Locations.Office_245)
             {
+                Log.w("sdas",selected_loc.toString());
                 loc_spin.setSelection(1);
             }
             else
@@ -361,7 +366,7 @@ public class EditTaskActivity extends AppCompatActivity
         parse_task.put("Priority",tastToEdit.getPriority().ordinal());
         int com_state = (tastToEdit.getCompleted()) ? 1 : 0;
         parse_task.put("IsCompleted",com_state);
-        parse_task.put("Location",tastToEdit.getTsk_location().ordinal());
+        parse_task.put("Location", tastToEdit.getTsk_location().ordinal());
 
         parse_task.put("Category",tastToEdit.getTask_catg().ordinal());
         parse_task.put("Status", tastToEdit.getTask_sts().ordinal());

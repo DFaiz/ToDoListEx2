@@ -150,8 +150,8 @@ public class Login_activity extends AppCompatActivity
 
         //check is username & password exist
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
-        query.whereContains("Username", usrname.getText().toString());
-        query.whereContains("Password", usrpwd.getText().toString());
+        query.whereEqualTo("Username", usrname.getText().toString());
+        query.whereEqualTo("Password", usrpwd.getText().toString());
 
         try {
             usrs = query.find();
@@ -159,7 +159,7 @@ public class Login_activity extends AppCompatActivity
                 valid_inputs = false;
                 new AlertDialog.Builder(this)
                         .setTitle("Invalid Credentials")
-                        .setMessage("Username or password do not exist")
+                        .setMessage("Username or password incorrect")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 return;
@@ -174,7 +174,7 @@ public class Login_activity extends AppCompatActivity
                 Log.d("login", "invalid");
                 new AlertDialog.Builder(this)
                         .setTitle("Invalid Credentials")
-                        .setMessage("Username or password do not exist")
+                        .setMessage("Username or password incorrect")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 return;
@@ -196,9 +196,12 @@ public class Login_activity extends AppCompatActivity
             if(usrs.get(0).getNumber("IsManager")==1)
             {
                 Globals.IsManager=true;
+                Globals.team_name=usrs.get(0).getString("TeamName");
             }
-            else
-                Globals.IsManager=false;
+            else {
+                Globals.IsManager = false;
+                Globals.team_name=usrs.get(0).getString("TeamName");
+            }
 
             Intent returnIntent = new Intent(this,MainActivity.class);
             setResult(RESULT_OK, returnIntent);
