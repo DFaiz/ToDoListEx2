@@ -52,25 +52,8 @@ public class select_location extends AppCompatActivity
     {
         Locations selc_location=null;
         int position = location_spinner.getSelectedItemPosition();
-        switch(position)
-        {
-            case 0:
-                selc_location=Locations.Meeting_Room;
-                break;
-            case 1:
-                selc_location=Locations.Office_245;
-                break;
-            case 2:
-                selc_location=Locations.Lobby;
-                break;
-            case 3:
-                selc_location=Locations.NOC;
-                break;
-            case 4:
-                selc_location=Locations.VPsoffice;
-                break;
-        }
 
+        Globals.temp=position;
         Intent returnIntent = new Intent();
         returnIntent.putExtra("location",selc_location);
         setResult(RESULT_OK, returnIntent);

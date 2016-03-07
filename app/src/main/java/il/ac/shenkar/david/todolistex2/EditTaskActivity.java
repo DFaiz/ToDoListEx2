@@ -358,6 +358,9 @@ public class EditTaskActivity extends AppCompatActivity
     public void deleteTaskBtn(View view)
     {
         Intent returnIntent = new Intent(this,MainActivity.class);
+        Intent i = getIntent();
+
+        tastToEdit = (Task)i.getSerializableExtra("task");
         tastToEdit.setToDelete(true);
 
         ParseObject parse_task = new ParseObject("Task");

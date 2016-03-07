@@ -40,7 +40,7 @@ public class ListNodeActivity extends AppCompatActivity
     private Spinner empolyeeSpinner;
     private int task_id=1;
     private String time_Date_str = null;
-    private Locations returned_selc_loc;
+    private Locations returned_selc_loc=null;
     private EditText loc;
 
     private ParseObject parse_task=null;
@@ -60,6 +60,7 @@ public class ListNodeActivity extends AppCompatActivity
 
         loc = (EditText)findViewById(R.id.taskLocation);
         loc.setClickable(false);
+        returned_selc_loc = Locations.Meeting_Room;
 
         EditText date = (EditText)findViewById(R.id.taskDateEdit);
         date.setInputType(InputType.TYPE_NULL);
@@ -296,10 +297,6 @@ public class ListNodeActivity extends AppCompatActivity
                     t.setTask_catg(Category.OTHER);
                     break;
             }
-            if(returned_selc_loc==null)
-            {
-                Log.w("sdas","null");
-            }
             t.setTsk_location(returned_selc_loc);
             empolyeeSpinner = (Spinner) findViewById(R.id.employeeSpinner);
             emp_name = empolyeeSpinner.getSelectedItem().toString();
@@ -402,22 +399,50 @@ public class ListNodeActivity extends AppCompatActivity
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
-    public  void gotoselectloc (View v)
+    public void gotoselectloc (View v)
     {
         Intent intent = new Intent(this,select_location.class);
         startActivityForResult(intent, ACTIVITY_SELECT_LOCATION);
     }
 
-    @Override
+//    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if(resultCode == RESULT_OK) {
             switch (requestCode) {
                 case ACTIVITY_SELECT_LOCATION:
                 {
-                    returned_selc_loc = (Locations) data.getSerializableExtra("location");
+                    /*returned_selc_loc = (Locations) data.getSerializableExtra("location");
                     loc.setText(returned_selc_loc.toString());
-                    loc.setClickable(false);
+                    loc.setClickable(false);*/
+                    switch(Globals.temp)
+                    {
+                        case 0:
+                            returned_selc_loc=Locations.Meeting_Room;
+                            loc.setText(returned_selc_loc.toString());
+                            loc.setClickable(false);
+                            break;
+                        case 1:
+                            returned_selc_loc=Locations.Office_245;
+                            loc.setText(returned_selc_loc.toString());
+                            loc.setClickable(false);
+                            break;
+                        case 2:
+                            returned_selc_loc=Locations.Lobby;
+                            loc.setText(returned_selc_loc.toString());
+                            loc.setClickable(false);
+                            break;
+                        case 3:
+                            returned_selc_loc=Locations.NOC;
+                            loc.setText(returned_selc_loc.toString());
+                            loc.setClickable(false);
+                            break;
+                        case 4:
+                            returned_selc_loc=Locations.VPsoffice;
+                            loc.setText(returned_selc_loc.toString());
+                            loc.setClickable(false);
+                            break;
+                    }
                     break;
                 }
                 default:

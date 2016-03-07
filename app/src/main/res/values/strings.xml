@@ -4,6 +4,7 @@
     <string name="action_manageteam">Manage Team</string>
     <string name="action_Logout">Logout</string>
     <string name="action_About">About</string>
+    <string name="action_refresh">Refresh</string>
     <string name="title_activity_list_node">Create New Task</string>
     <string name="title_activity_list_edit">Edit Task</string>
     <string name="string">Enter task description</string>

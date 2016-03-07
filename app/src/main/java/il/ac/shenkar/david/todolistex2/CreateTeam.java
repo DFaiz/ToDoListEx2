@@ -112,6 +112,7 @@ public class CreateTeam extends AppCompatActivity
 
             parse_team_name = new ParseObject("Teams");
             parse_team_name.put("TeamName",Globals.team_name);
+            parse_team_name.put("TeamManager",sharedpreferences.getString("LoginUsr", null));
             parse_team_name.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {

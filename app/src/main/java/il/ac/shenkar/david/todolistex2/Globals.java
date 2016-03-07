@@ -9,4 +9,5 @@ public class Globals
     public static int refresh_minutes = 5;
     public static String team_name = null;
     public static boolean IsManager = false;
+    public static int temp = -1;
 }

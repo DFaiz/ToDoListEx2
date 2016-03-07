@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.app.AlertDialog;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -199,6 +200,14 @@ public class Login_activity extends AppCompatActivity
                 Globals.team_name=usrs.get(0).getString("TeamName");
             }
             else {
+                //check is username & password exist
+                query = new ParseQuery<ParseObject>("Teams");
+                query.whereEqualTo("TeamName", Globals.team_name);
+                try {
+                    usrs = query.find();
+                    Toast.makeText(this, "You have been added to Team: " + usrs.get(0).getString("TeamName") +" by\n" +
+                            usrs.get(0).get("TeamManager"), Toast.LENGTH_LONG).show();
+                } catch (ParseException e) {}
                 Globals.IsManager = false;
                 Globals.team_name=usrs.get(0).getString("TeamName");
             }

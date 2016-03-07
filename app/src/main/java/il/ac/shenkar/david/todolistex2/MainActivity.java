@@ -253,6 +253,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             startActivityForResult(returnIntent, REQUEST_CODE_INVITE_MEMBER);
         }
 
+        if (id == R.id.action_refresh)
+        {
+            checkForUpdate();
+        }
+
         if (id == R.id.action_Logout)
         {
             Intent returnIntent = new Intent(this,Login_activity.class);
@@ -404,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button b2 = (Button) d.findViewById(R.id.cancelminbtn);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker);
         np.setMaxValue(10); // max value 10
-        np.setMinValue(0);   // min value 0
+        np.setMinValue(1);   // min value 0
         np.setValue(Globals.refresh_minutes);
         np.setWrapSelectorWheel(false);
         np.setOnValueChangedListener(this);
@@ -458,6 +463,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             long seq_tsk_id = dbM.addTask(tmp_task);
             tmp_task.setTaskId(seq_tsk_id);
             dbM.updateParseID(tmp_task);
+            final Task tsktmp = tmp_task;
+
+            if(Globals.IsManager==false) {
+                new AlertDialog.Builder(this)
+                        .setTitle("New Task")
+                        .setMessage("You've Received a New Task")
+                        .setPositiveButton("View Task", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //start the create activity again, now for editing
+                                Intent i = new Intent(getApplicationContext(), ReportTaskStatus.class);
+                                i.putExtra("task", tsktmp);
+                                startActivityForResult(i, REQUEST_CODE_EMP_VIEW_TASK);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
         }
     }
 
