@@ -22,4 +22,30 @@
     <string name="title_activity_select_location">select_location</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_report_task_status">ReportTaskStatus</string>
+    <string-array name="sort_array" translatable="false">
+        <item>Time</item>
+        <item>Priority</item>
+        <item>Waiting</item>
+        <item>In Progress</item>
+        <item>Done</item>
+    </string-array>
+    <string-array name="category_array" translatable="false">
+        <item>General</item>
+        <item>Cleaning</item>
+        <item>Electricity</item>
+        <item>Computers</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="employee_array" translatable="false">
+
+    </string-array>
+
+    <string-array name="rooms_array" translatable="false">
+        <item>Meeting Room</item>
+        <item>Office 245 Floor 2</item>
+        <item>Lobby</item>
+        <item>NOC</item>
+        <item>VPs office</item>
+    </string-array>
 </resources>

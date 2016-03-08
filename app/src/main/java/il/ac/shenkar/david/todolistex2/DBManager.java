@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by David on 05-Dec-15.
@@ -92,7 +93,7 @@ public class DBManager extends SQLiteOpenHelper
     {
         List<Task> taskList = new ArrayList<Task>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TaskItem.TABLE_NAME;
+        String selectQuery = "SELECT  * FROM " + TaskItem.TABLE_NAME + " ORDER BY " + TaskItem.COLUMN_NAME_DUE_DATE + " DESC ";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -181,6 +182,110 @@ public class DBManager extends SQLiteOpenHelper
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(Task_Status.WAITING.ordinal())},null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Task tsktsk = new Task();
+
+                int id = cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_TASK_ID));
+                tsktsk.setTaskId(id);
+                String desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_PARSE_TASK_ID));
+                tsktsk.setParse_task_id(desc);
+                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DESCRIPTION));
+                tsktsk.setDescription(desc);
+                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_COMPLETED));
+                if(id==1)
+                    tsktsk.setCompleted(true);
+                else
+                    tsktsk.setCompleted(false);
+
+                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DUE_DATE));
+                tsktsk.setDueDate(desc);
+
+                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_PRIORITY));
+                if(id==0)
+                    tsktsk.setPriority(Priority.LOW);
+                if(id==1)
+                    tsktsk.setPriority(Priority.NORMAL);
+                if (id==2)
+                    tsktsk.setPriority(Priority.URGENT);
+
+                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_LOCATION));
+                if(desc==Locations.Meeting_Room.toString())
+                    tsktsk.setTsk_location(Locations.Meeting_Room);
+
+                if(desc==Locations.Office_245.toString())
+                    tsktsk.setTsk_location(Locations.Office_245);
+
+                if(desc==Locations.Lobby.toString())
+                    tsktsk.setTsk_location(Locations.Lobby);
+
+                if(desc==Locations.NOC.toString())
+                    tsktsk.setTsk_location(Locations.NOC);
+
+                if(desc==Locations.VPsoffice.toString())
+                    tsktsk.setTsk_location(Locations.VPsoffice);
+
+                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_CATEGORY));
+                if(id==0)
+                    tsktsk.setTask_catg(Category.CLEANING);
+                if(id==1)
+                    tsktsk.setTask_catg(Category.ELECTRICITY);
+                if (id==2)
+                    tsktsk.setTask_catg(Category.COMPUTERS);
+                if (id==3)
+                    tsktsk.setTask_catg(Category.GENERAL);
+                if (id==4)
+                    tsktsk.setTask_catg(Category.OTHER);
+
+                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_STATUS));
+                if(id==0)
+                    tsktsk.setTask_sts(Task_Status.WAITING);
+                if(id==1)
+                    tsktsk.setTask_sts(Task_Status.INPROGESS);
+                if (id==2)
+                    tsktsk.setTask_sts(Task_Status.DONE);
+
+                desc = (cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_EMPLOYEE)));
+                tsktsk.setEmp_name(desc);
+
+                taskList.add(tsktsk);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        // return list
+        return taskList;
+    }
+
+    public List<Task> getSortedTasks (Sorting srt_code)
+    {
+        List<Task> taskList = new ArrayList<Task>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = null;
+        Cursor cursor = null;
+        // Select sorted tasks Query
+        if(srt_code.ordinal()>=Sorting.WAITING.ordinal())
+        {
+            selectQuery = "SELECT  * FROM " + TaskItem.TABLE_NAME + " WHERE " + TaskItem.COLUMN_NAME_STATUS + " =?";
+            if(srt_code==Sorting.WAITING){
+                cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(Task_Status.WAITING.ordinal())},null);}
+            if(srt_code==Sorting.INPROGESS){
+                cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(Task_Status.INPROGESS.ordinal())},null);}
+            if(srt_code==Sorting.DONE){
+                cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(Task_Status.DONE.ordinal())},null);
+            }
+
+        }
+        else
+        {
+            if(srt_code.ordinal()==Sorting.PRIORITY.ordinal())
+            {
+                selectQuery = "SELECT  * FROM " + TaskItem.TABLE_NAME + " ORDER BY " + TaskItem.COLUMN_NAME_PRIORITY + " DESC ";
+                cursor = db.rawQuery(selectQuery,null);
+            }
+        }
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
