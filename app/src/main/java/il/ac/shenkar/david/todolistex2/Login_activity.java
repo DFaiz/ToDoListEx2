@@ -78,6 +78,7 @@ public class Login_activity extends AppCompatActivity
     {
         boolean valid_inputs=true;
         List<ParseObject> usrs = null;
+        String curr_usrname=null;
 
         usrname = (EditText)findViewById(R.id.editTextusername);
         usrpwd = (EditText)findViewById(R.id.userpsswrd);
@@ -190,6 +191,11 @@ public class Login_activity extends AppCompatActivity
             remb_creds = (CheckBox)findViewById(R.id.saveLoginInfo);
             if(remb_creds.isChecked()) {
                 SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+                curr_usrname = sharedpreferences.getString("LoginUsr", null);
+                if((curr_usrname.equals(usrname.getText().toString()))==false)
+                {
+                    Globals.diffusr=true;
+                }
                 sharedpreferences.edit().putString("LoginUsr", usrname.getText().toString()).apply();
                 sharedpreferences.edit().putString("LoginPswd", usrpwd.getText().toString()).apply();
             }

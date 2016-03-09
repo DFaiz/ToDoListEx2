@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
         dbM = DBManager.getInstance(context);
 
+        if(Globals.diffusr)
+        {
+            dbM.clearDB ();
+        }
+
         //check if any tasks exist in Parse DB
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
         query.whereEqualTo("TeamName", Globals.team_name);

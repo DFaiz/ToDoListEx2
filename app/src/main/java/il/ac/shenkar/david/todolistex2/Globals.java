@@ -10,5 +10,6 @@ public class Globals
     public static String team_name = null;
     public static boolean IsManager = false;
     public static int temp = -1;
-    public static int last_sort=0;
+    public static int last_sort = 0;
+    public static boolean diffusr = false;
 }

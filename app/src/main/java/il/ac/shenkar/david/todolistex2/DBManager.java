@@ -18,7 +18,7 @@ import android.util.Log;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 18;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -97,91 +97,6 @@ public class DBManager extends SQLiteOpenHelper
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Task tsktsk = new Task();
-
-                int id = cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_TASK_ID));
-                tsktsk.setTaskId(id);
-                String desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_PARSE_TASK_ID));
-                tsktsk.setParse_task_id(desc);
-                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DESCRIPTION));
-                tsktsk.setDescription(desc);
-                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_COMPLETED));
-                if(id==1)
-                    tsktsk.setCompleted(true);
-                else
-                    tsktsk.setCompleted(false);
-
-                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DUE_DATE));
-                tsktsk.setDueDate(desc);
-
-                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_PRIORITY));
-                if(id==0)
-                    tsktsk.setPriority(Priority.LOW);
-                if(id==1)
-                    tsktsk.setPriority(Priority.NORMAL);
-                if (id==2)
-                    tsktsk.setPriority(Priority.URGENT);
-
-                desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_LOCATION));
-                if(desc==Locations.Meeting_Room.toString())
-                    tsktsk.setTsk_location(Locations.Meeting_Room);
-
-                if(desc==Locations.Office_245.toString())
-                    tsktsk.setTsk_location(Locations.Office_245);
-
-                if(desc==Locations.Lobby.toString())
-                    tsktsk.setTsk_location(Locations.Lobby);
-
-                if(desc==Locations.NOC.toString())
-                    tsktsk.setTsk_location(Locations.NOC);
-
-                if(desc==Locations.VPsoffice.toString())
-                    tsktsk.setTsk_location(Locations.VPsoffice);
-
-                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_CATEGORY));
-                if(id==0)
-                    tsktsk.setTask_catg(Category.CLEANING);
-                if(id==1)
-                    tsktsk.setTask_catg(Category.ELECTRICITY);
-                if (id==2)
-                    tsktsk.setTask_catg(Category.COMPUTERS);
-                if (id==3)
-                    tsktsk.setTask_catg(Category.GENERAL);
-                if (id==4)
-                    tsktsk.setTask_catg(Category.OTHER);
-
-                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_STATUS));
-                if(id==0)
-                    tsktsk.setTask_sts(Task_Status.WAITING);
-                if(id==1)
-                    tsktsk.setTask_sts(Task_Status.INPROGESS);
-                if (id==2)
-                    tsktsk.setTask_sts(Task_Status.DONE);
-
-                desc = (cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_EMPLOYEE)));
-                tsktsk.setEmp_name(desc);
-
-                taskList.add(tsktsk);
-            } while (cursor.moveToNext());
-        }
-
-        db.close();
-        // return list
-        return taskList;
-    }
-
-    public List<Task> getWaitingTasks ()
-    {
-        List<Task> taskList = new ArrayList<Task>();
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TaskItem.TABLE_NAME + " WHERE " + TaskItem.COLUMN_NAME_STATUS + " =?";;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(Task_Status.WAITING.ordinal())},null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -409,10 +324,17 @@ public class DBManager extends SQLiteOpenHelper
         String selectQuery = "SELECT * FROM " + TaskItem.TABLE_NAME + " WHERE " + TaskItem.COLUMN_NAME_PARSE_TASK_ID + " =?";
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(parseTaskID)},null);
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(parseTaskID)}, null);
         if(cursor.getCount()>0)
             return true;
         else
             return false;
+    }
+
+    public void clearDB ()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TaskItem.TABLE_NAME);
+        onCreate(db);
     }
 }
