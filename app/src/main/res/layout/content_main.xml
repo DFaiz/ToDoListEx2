@@ -12,7 +12,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
+        android:id="@+id/MainActivitylinearLayout3">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:paddingRight="8dp"
+        android:text=""
+        android:id="@+id/totalTask"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:id="@+id/MainActivitylinearLayout">
 
         <TextView
@@ -30,6 +46,7 @@
             android:id="@+id/sortSpinner"
             android:gravity="center"
             android:textAlignment="center"/>
+
     </LinearLayout>
 
     <LinearLayout

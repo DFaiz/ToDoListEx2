@@ -17,7 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
-public class select_location extends AppCompatActivity
+public class SelectLocation extends AppCompatActivity
 {
     private static final int ACTIVITY_RESULT_QR_DRDROID = 0;
 
@@ -50,7 +50,7 @@ public class select_location extends AppCompatActivity
 
     public void doneLoc (View view)
     {
-        Locations selc_location=null;
+        Location selc_location=null;
         int position = location_spinner.getSelectedItemPosition();
 
         Globals.temp=position;

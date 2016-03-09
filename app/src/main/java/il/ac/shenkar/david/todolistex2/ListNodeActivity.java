@@ -40,7 +40,7 @@ public class ListNodeActivity extends AppCompatActivity
     private Spinner empolyeeSpinner;
     private int task_id=1;
     private String time_Date_str = null;
-    private Locations returned_selc_loc=null;
+    private Location returned_selc_loc=null;
     private EditText loc;
 
     private ParseObject parse_task=null;
@@ -60,7 +60,7 @@ public class ListNodeActivity extends AppCompatActivity
 
         loc = (EditText)findViewById(R.id.taskLocation);
         loc.setClickable(false);
-        returned_selc_loc = Locations.Meeting_Room;
+        returned_selc_loc = Location.Meeting_Room;
 
         EditText date = (EditText)findViewById(R.id.taskDateEdit);
         date.setInputType(InputType.TYPE_NULL);
@@ -401,7 +401,7 @@ public class ListNodeActivity extends AppCompatActivity
 
     public void gotoselectloc (View v)
     {
-        Intent intent = new Intent(this,select_location.class);
+        Intent intent = new Intent(this,SelectLocation.class);
         startActivityForResult(intent, ACTIVITY_SELECT_LOCATION);
     }
 
@@ -418,27 +418,27 @@ public class ListNodeActivity extends AppCompatActivity
                     switch(Globals.temp)
                     {
                         case 0:
-                            returned_selc_loc=Locations.Meeting_Room;
+                            returned_selc_loc=Location.Meeting_Room;
                             loc.setText(returned_selc_loc.toString());
                             loc.setClickable(false);
                             break;
                         case 1:
-                            returned_selc_loc=Locations.Office_245;
+                            returned_selc_loc=Location.Office_245;
                             loc.setText(returned_selc_loc.toString());
                             loc.setClickable(false);
                             break;
                         case 2:
-                            returned_selc_loc=Locations.Lobby;
+                            returned_selc_loc=Location.Lobby;
                             loc.setText(returned_selc_loc.toString());
                             loc.setClickable(false);
                             break;
                         case 3:
-                            returned_selc_loc=Locations.NOC;
+                            returned_selc_loc=Location.NOC;
                             loc.setText(returned_selc_loc.toString());
                             loc.setClickable(false);
                             break;
                         case 4:
-                            returned_selc_loc=Locations.VPsoffice;
+                            returned_selc_loc=Location.VPsoffice;
                             loc.setText(returned_selc_loc.toString());
                             loc.setClickable(false);
                             break;

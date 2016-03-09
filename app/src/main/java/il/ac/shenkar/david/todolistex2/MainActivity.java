@@ -34,6 +34,9 @@ import com.parse.ParseQuery;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, NumberPicker.OnValueChangeListener {
 
@@ -45,7 +48,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private TextView emptylist_txt;
     private TextView minutes_text;
+    private TextView total_tasks_text;
     private Task tmp_task;
+    private Timer refresh_timer;
+    private TimerTask timer_task;
 
     public final int REQUEST_CODE_NEW_TASK = 1;
     public final int REQUEST_CODE_UPDATE_TASK = 2;
@@ -73,9 +79,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
         dbM = DBManager.getInstance(context);
 
+        total_tasks_text = (TextView) findViewById(R.id.totalTask);
+
         if(Globals.diffusr)
         {
-            dbM.clearDB ();
+            dbM.clearDB();
         }
 
         //check if any tasks exist in Parse DB
@@ -158,31 +166,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 position = tmp.getInt("Location");
                 switch (position) {
                     case 0:
-                        tmp_task.setTsk_location(Locations.Meeting_Room);
+                        tmp_task.setTsk_location(Location.Meeting_Room);
                         break;
                     case 1:
-                        tmp_task.setTsk_location(Locations.Office_245);
+                        tmp_task.setTsk_location(Location.Office_245);
                         break;
                     case 2:
-                        tmp_task.setTsk_location(Locations.Lobby);
+                        tmp_task.setTsk_location(Location.Lobby);
                         break;
                     case 3:
-                        tmp_task.setTsk_location(Locations.NOC);
+                        tmp_task.setTsk_location(Location.NOC);
                         break;
                     case 4:
-                        tmp_task.setTsk_location(Locations.VPsoffice);
+                        tmp_task.setTsk_location(Location.VPsoffice);
                         break;
                     default:
-                        tmp_task.setTsk_location(Locations.Meeting_Room);
+                        tmp_task.setTsk_location(Location.Meeting_Room);
                         break;
                 }
 
                 tmp_task.setDueDate(tmp.getDate("DueDate"));
                 tmp_task.setParse_task_id(tmp.getObjectId());
                 tmp_task.setEmp_name(tmp.getString("Employee"));
-              /*  long seq_tsk_id = dbM.addTask(tmp_task);
-                tmp_task.setTaskId(seq_tsk_id);
-                dbM.updateParseID(tmp_task);*/
                 syncTaskList(tmp_task);
             }
         } catch (ParseException e) {
@@ -226,8 +231,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (itemList.size() == 0) {
             emptylist_txt.setVisibility(View.VISIBLE);
+            total_tasks_text.setVisibility(View.GONE);
         } else {
             emptylist_txt.setVisibility(View.GONE);
+            total_tasks_text.setVisibility(View.VISIBLE);
+            total_tasks_text.setText("");
+            total_tasks_text.setText("Total " + itemList.size());
         }
         sorts = getResources().getStringArray(R.array.sort_array);
         sort_selector = (Spinner) findViewById(R.id.sortSpinner);
@@ -247,9 +256,48 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Toast.makeText(context, "Spinner1:no selection", Toast.LENGTH_SHORT).show();
             }
         });
+
+       /* refresh_timer = new Timer ();
+        TimerTask timerTask = new TimerTask () {
+            @Override
+            public void run () {
+                checkForUpdate();
+                Log.w("checkForUpdate","checkForUpdate");
+            }
+        };
+        refresh_timer.schedule (timerTask, 0l,Globals.refresh_minutes*60000);   // 1000*10*60 every 10 minut*/
+        startingUp();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void startingUp() {
+        Thread timer = new Thread() { //new thread
+            public void run() {
+                Boolean b = true;
+                try {
+                    do {
+                        sleep(Globals.refresh_minutes*60000);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                Log.w("checkForUpdate","checkForUpdate");
+                            }
+                        });
+
+
+                    }
+                    while (b == true);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                }
+            };
+        };
+        timer.start();
     }
 
     @Override
@@ -326,6 +374,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     itemList.add(returned_task);
                     emptylist_txt = (TextView) findViewById(R.id.emptylist);
                     emptylist_txt.setVisibility(View.GONE);
+                    total_tasks_text.setVisibility(View.VISIBLE);
+                    total_tasks_text.setText("");
+                    total_tasks_text.setText("Total " + itemList.size());
                     adapter = new TaskItemAdapter(context, itemList);
                     list.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
@@ -343,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                                 if (itemList.size() == 0) {
                                     emptylist_txt.setVisibility(View.VISIBLE);
+                                    total_tasks_text.setVisibility(View.GONE);
                                 }
 
                                 adapter = new TaskItemAdapter(context, itemList);
@@ -559,22 +611,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 position = tmp.getInt("Location");
                 switch (position) {
                     case 0:
-                        tmp_task.setTsk_location(Locations.Meeting_Room);
+                        tmp_task.setTsk_location(Location.Meeting_Room);
                         break;
                     case 1:
-                        tmp_task.setTsk_location(Locations.Office_245);
+                        tmp_task.setTsk_location(Location.Office_245);
                         break;
                     case 2:
-                        tmp_task.setTsk_location(Locations.Lobby);
+                        tmp_task.setTsk_location(Location.Lobby);
                         break;
                     case 3:
-                        tmp_task.setTsk_location(Locations.NOC);
+                        tmp_task.setTsk_location(Location.NOC);
                         break;
                     case 4:
-                        tmp_task.setTsk_location(Locations.VPsoffice);
+                        tmp_task.setTsk_location(Location.VPsoffice);
                         break;
                     default:
-                        tmp_task.setTsk_location(Locations.Meeting_Room);
+                        tmp_task.setTsk_location(Location.Meeting_Room);
                         break;
                 }
 
@@ -593,8 +645,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (itemList.size() == 0) {
             emptylist_txt.setVisibility(View.VISIBLE);
+            total_tasks_text.setVisibility(View.GONE);
         } else {
             emptylist_txt.setVisibility(View.GONE);
+            total_tasks_text.setVisibility(View.VISIBLE);
+            total_tasks_text.setText("");
+            total_tasks_text.setText("Total " + itemList.size());
         }
     }
 
@@ -615,11 +671,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         adapter = new TaskItemAdapter(context, itemList);
         list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
+        total_tasks_text = (TextView) findViewById(R.id.totalTask);
         if (itemList.size() == 0) {
             emptylist_txt.setVisibility(View.VISIBLE);
+            total_tasks_text.setVisibility(View.GONE);
         } else {
             emptylist_txt.setVisibility(View.GONE);
+            total_tasks_text.setVisibility(View.VISIBLE);
+            total_tasks_text.setText(" " + itemList.size());
         }
     }
 

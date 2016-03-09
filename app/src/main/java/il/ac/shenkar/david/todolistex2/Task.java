@@ -18,7 +18,7 @@ public class Task implements Serializable {
     private Boolean toDelete = false;
     private Category task_catg;
     private Task_Status task_sts;
-    private Locations tsk_location;
+    private Location tsk_location;
     private String emp_name;
 
     public Task ()
@@ -124,11 +124,11 @@ public class Task implements Serializable {
         this.task_sts = task_sts;
     }
 
-    public Locations getTsk_location() {
+    public Location getTsk_location() {
         return tsk_location;
     }
 
-    public void setTsk_location(Locations tsk_location) {
+    public void setTsk_location(Location tsk_location) {
         this.tsk_location = tsk_location;
     }
 

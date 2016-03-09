@@ -75,8 +75,8 @@
             android:label="Edit Task"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".select_location"
-            android:label="@string/title_activity_select_location"
+            android:name=".SelectLocation"
+            android:label="Select Location"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data

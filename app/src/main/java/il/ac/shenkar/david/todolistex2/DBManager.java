@@ -127,20 +127,20 @@ public class DBManager extends SQLiteOpenHelper
                     tsktsk.setPriority(Priority.URGENT);
 
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_LOCATION));
-                if(desc==Locations.Meeting_Room.toString())
-                    tsktsk.setTsk_location(Locations.Meeting_Room);
+                if(desc==Location.Meeting_Room.toString())
+                    tsktsk.setTsk_location(Location.Meeting_Room);
 
-                if(desc==Locations.Office_245.toString())
-                    tsktsk.setTsk_location(Locations.Office_245);
+                if(desc==Location.Office_245.toString())
+                    tsktsk.setTsk_location(Location.Office_245);
 
-                if(desc==Locations.Lobby.toString())
-                    tsktsk.setTsk_location(Locations.Lobby);
+                if(desc==Location.Lobby.toString())
+                    tsktsk.setTsk_location(Location.Lobby);
 
-                if(desc==Locations.NOC.toString())
-                    tsktsk.setTsk_location(Locations.NOC);
+                if(desc==Location.NOC.toString())
+                    tsktsk.setTsk_location(Location.NOC);
 
-                if(desc==Locations.VPsoffice.toString())
-                    tsktsk.setTsk_location(Locations.VPsoffice);
+                if(desc==Location.VPsoffice.toString())
+                    tsktsk.setTsk_location(Location.VPsoffice);
 
                 id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_CATEGORY));
                 if(id==0)
@@ -231,20 +231,20 @@ public class DBManager extends SQLiteOpenHelper
                     tsktsk.setPriority(Priority.URGENT);
 
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_LOCATION));
-                if(desc==Locations.Meeting_Room.toString())
-                    tsktsk.setTsk_location(Locations.Meeting_Room);
+                if(desc==Location.Meeting_Room.toString())
+                    tsktsk.setTsk_location(Location.Meeting_Room);
 
-                if(desc==Locations.Office_245.toString())
-                    tsktsk.setTsk_location(Locations.Office_245);
+                if(desc==Location.Office_245.toString())
+                    tsktsk.setTsk_location(Location.Office_245);
 
-                if(desc==Locations.Lobby.toString())
-                    tsktsk.setTsk_location(Locations.Lobby);
+                if(desc==Location.Lobby.toString())
+                    tsktsk.setTsk_location(Location.Lobby);
 
-                if(desc==Locations.NOC.toString())
-                    tsktsk.setTsk_location(Locations.NOC);
+                if(desc==Location.NOC.toString())
+                    tsktsk.setTsk_location(Location.NOC);
 
-                if(desc==Locations.VPsoffice.toString())
-                    tsktsk.setTsk_location(Locations.VPsoffice);
+                if(desc==Location.VPsoffice.toString())
+                    tsktsk.setTsk_location(Location.VPsoffice);
 
                 id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_CATEGORY));
                 if(id==0)

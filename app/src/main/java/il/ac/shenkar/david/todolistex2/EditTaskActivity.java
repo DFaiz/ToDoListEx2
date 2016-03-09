@@ -117,38 +117,38 @@ public class EditTaskActivity extends AppCompatActivity
         }
 
         loc_spin = (Spinner) findViewById(R.id.locationSpinner);
-        Locations selected_loc = tastToEdit.getTsk_location();
+        Location selected_loc = tastToEdit.getTsk_location();
         if(selected_loc==null)
         {
             Log.w("sdas","null");
         }
-        if(selected_loc==Locations.Meeting_Room)
+        if(selected_loc==Location.Meeting_Room)
         {
             Log.w("sdas",selected_loc.toString());
             loc_spin.setSelection(0);
         }
         else
         {
-            if(selected_loc==Locations.Office_245)
+            if(selected_loc==Location.Office_245)
             {
                 Log.w("sdas",selected_loc.toString());
                 loc_spin.setSelection(1);
             }
             else
             {
-                if(selected_loc==Locations.Lobby)
+                if(selected_loc==Location.Lobby)
                 {
                     loc_spin.setSelection(2);
                 }
                 else
                 {
-                    if(selected_loc==Locations.NOC)
+                    if(selected_loc==Location.NOC)
                     {
                         loc_spin.setSelection(3);
                     }
                     else
                     {
-                        if(selected_loc==Locations.VPsoffice)
+                        if(selected_loc==Location.VPsoffice)
                         {
                             loc_spin.setSelection(4);
                         }
@@ -291,19 +291,19 @@ public class EditTaskActivity extends AppCompatActivity
             switch(position)
             {
                 case 0:
-                    tastToEdit.setTsk_location(Locations.Meeting_Room);
+                    tastToEdit.setTsk_location(Location.Meeting_Room);
                     break;
                 case 1:
-                    tastToEdit.setTsk_location(Locations.Office_245);
+                    tastToEdit.setTsk_location(Location.Office_245);
                     break;
                 case 2:
-                    tastToEdit.setTsk_location(Locations.Lobby);
+                    tastToEdit.setTsk_location(Location.Lobby);
                     break;
                 case 3:
-                    tastToEdit.setTsk_location(Locations.NOC);
+                    tastToEdit.setTsk_location(Location.NOC);
                     break;
                 case 4:
-                    tastToEdit.setTsk_location(Locations.VPsoffice);
+                    tastToEdit.setTsk_location(Location.VPsoffice);
                     break;
             }
 
