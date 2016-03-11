@@ -18,7 +18,7 @@ import android.util.Log;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 21;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -76,7 +76,9 @@ public class DBManager extends SQLiteOpenHelper
         values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
         int myInt = (task.getCompleted()) ? 1 : 0;
         values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
-        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
+        //Log.w("loc", "task.getTsk_location().ordinal()" + task.getTsk_location().ordinal());
+        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location());
+        //Log.w("loc", "task.getTsk_location().ordinal()" + task.getTsk_location().ordinal());
         values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
         values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
         values.put(TaskItem.COLUMN_NAME_EMPLOYEE, task.getEmp_name());
@@ -128,19 +130,19 @@ public class DBManager extends SQLiteOpenHelper
 
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_LOCATION));
                 if(desc==Location.Meeting_Room.toString())
-                    tsktsk.setTsk_location(Location.Meeting_Room);
+                    tsktsk.setTsk_location(Location.Meeting_Room.ordinal());
 
                 if(desc==Location.Office_245.toString())
-                    tsktsk.setTsk_location(Location.Office_245);
+                    tsktsk.setTsk_location(Location.Office_245.ordinal());
 
                 if(desc==Location.Lobby.toString())
-                    tsktsk.setTsk_location(Location.Lobby);
+                    tsktsk.setTsk_location(Location.Lobby.ordinal());
 
                 if(desc==Location.NOC.toString())
-                    tsktsk.setTsk_location(Location.NOC);
+                    tsktsk.setTsk_location(Location.NOC.ordinal());
 
                 if(desc==Location.VPsoffice.toString())
-                    tsktsk.setTsk_location(Location.VPsoffice);
+                    tsktsk.setTsk_location(Location.VPsoffice.ordinal());
 
                 id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_CATEGORY));
                 if(id==0)
@@ -232,19 +234,19 @@ public class DBManager extends SQLiteOpenHelper
 
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_LOCATION));
                 if(desc==Location.Meeting_Room.toString())
-                    tsktsk.setTsk_location(Location.Meeting_Room);
+                    tsktsk.setTsk_location(Location.Meeting_Room.ordinal());
 
                 if(desc==Location.Office_245.toString())
-                    tsktsk.setTsk_location(Location.Office_245);
+                    tsktsk.setTsk_location(Location.Office_245.ordinal());
 
                 if(desc==Location.Lobby.toString())
-                    tsktsk.setTsk_location(Location.Lobby);
+                    tsktsk.setTsk_location(Location.Lobby.ordinal());
 
                 if(desc==Location.NOC.toString())
-                    tsktsk.setTsk_location(Location.NOC);
+                    tsktsk.setTsk_location(Location.NOC.ordinal());
 
                 if(desc==Location.VPsoffice.toString())
-                    tsktsk.setTsk_location(Location.VPsoffice);
+                    tsktsk.setTsk_location(Location.VPsoffice.ordinal());
 
                 id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_CATEGORY));
                 if(id==0)
@@ -291,6 +293,7 @@ public class DBManager extends SQLiteOpenHelper
         int myInt = (task.getCompleted()) ? 1 : 0;
         values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
         //values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
+        values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location());
         values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());
         values.put(TaskItem.COLUMN_NAME_STATUS, task.getTask_sts().ordinal());
         values.put(TaskItem.COLUMN_NAME_EMPLOYEE, task.getEmp_name());

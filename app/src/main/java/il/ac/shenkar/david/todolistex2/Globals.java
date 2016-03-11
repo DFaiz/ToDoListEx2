@@ -12,4 +12,5 @@ public class Globals
     public static int temp = -1;
     public static int last_sort = 0;
     public static boolean diffusr = false;
+    public static boolean isActivityRestarting = false;
 }

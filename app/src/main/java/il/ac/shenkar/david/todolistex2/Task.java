@@ -18,7 +18,8 @@ public class Task implements Serializable {
     private Boolean toDelete = false;
     private Category task_catg;
     private Task_Status task_sts;
-    private Location tsk_location;
+    //private Location tsk_location;
+    private int tsk_location;
     private String emp_name;
 
     public Task ()
@@ -44,6 +45,9 @@ public class Task implements Serializable {
         dueDate = null;
         task_priority = Priority.NORMAL;
         task_sts=Task_Status.WAITING;
+        task_catg = Category.GENERAL;
+        this.tsk_location = -1;
+        emp_name = null;
     }
 
     public String getDescription ()
@@ -124,12 +128,12 @@ public class Task implements Serializable {
         this.task_sts = task_sts;
     }
 
-    public Location getTsk_location() {
+    public int getTsk_location() {
         return tsk_location;
     }
 
-    public void setTsk_location(Location tsk_location) {
-        this.tsk_location = tsk_location;
+    public void setTsk_location(int new_tsk_location) {
+        tsk_location = new_tsk_location;
     }
 
     public String getParse_task_id() {

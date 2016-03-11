@@ -200,22 +200,17 @@ public class Login_activity extends AppCompatActivity
                 sharedpreferences.edit().putString("LoginPswd", usrpwd.getText().toString()).apply();
             }
 
+            //update team name
+            Globals.team_name=usrs.get(0).getString("TeamName");
+
             if(usrs.get(0).getNumber("IsManager")==1)
             {
                 Globals.IsManager=true;
-                Globals.team_name=usrs.get(0).getString("TeamName");
             }
             else {
-                //check is username & password exist
-                query = new ParseQuery<ParseObject>("Teams");
-                query.whereEqualTo("TeamName", Globals.team_name);
-                try {
-                    usrs = query.find();
-                    Toast.makeText(this, "You have been added to Team: " + usrs.get(0).getString("TeamName") +" by\n" +
-                            usrs.get(0).get("TeamManager"), Toast.LENGTH_LONG).show();
-                } catch (ParseException e) {}
-                Globals.IsManager = false;
-                Globals.team_name=usrs.get(0).getString("TeamName");
+                    Globals.IsManager = false;
+                    Toast.makeText(this, "You have been added to Team: " + usrs.get(0).getString("TeamName") +" by\n"
+                            + usrs.get(0).get("TeamManager"), Toast.LENGTH_LONG).show();
             }
 
             Intent returnIntent = new Intent(this,MainActivity.class);

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -117,19 +118,18 @@ public class EditTaskActivity extends AppCompatActivity
         }
 
         loc_spin = (Spinner) findViewById(R.id.locationSpinner);
-        Location selected_loc = tastToEdit.getTsk_location();
-        if(selected_loc==null)
-        {
-            Log.w("sdas","null");
-        }
-        if(selected_loc==Location.Meeting_Room)
+        int selected_loc = tastToEdit.getTsk_location();
+        Log.w("loc_spin", "" + selected_loc);
+                loc_spin.setSelection(selected_loc);
+        /*
+        if(selected_loc==Location.)
         {
             Log.w("sdas",selected_loc.toString());
             loc_spin.setSelection(0);
         }
         else
         {
-            if(selected_loc==Location.Office_245)
+            if(Loca==Location.Office_245)
             {
                 Log.w("sdas",selected_loc.toString());
                 loc_spin.setSelection(1);
@@ -155,7 +155,7 @@ public class EditTaskActivity extends AppCompatActivity
                     }
                 }
             }
-        }
+        }*/
 
         EditText date = (EditText)findViewById(R.id.editTaskDate);
         date.setInputType(InputType.TYPE_NULL);
@@ -288,7 +288,8 @@ public class EditTaskActivity extends AppCompatActivity
 
             loc_spin = (Spinner) findViewById(R.id.locationSpinner);
             position = loc_spin.getSelectedItemPosition();
-            switch(position)
+
+            /*switch(position)
             {
                 case 0:
                     tastToEdit.setTsk_location(Location.Meeting_Room);
@@ -305,7 +306,8 @@ public class EditTaskActivity extends AppCompatActivity
                 case 4:
                     tastToEdit.setTsk_location(Location.VPsoffice);
                     break;
-            }
+            }*/
+            tastToEdit.setTsk_location(position);
 
             Toast.makeText(this, "Changes Were Saved", Toast.LENGTH_SHORT).show();
             Intent returnIntent = new Intent();
@@ -315,7 +317,7 @@ public class EditTaskActivity extends AppCompatActivity
 
             //update the task in Parse
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
-            query.whereContains("objectID", tastToEdit.getParse_task_id());
+            query.whereEqualTo("objectId", tastToEdit.getParse_task_id());
 
             try {
                 tsks = query.find();
@@ -326,7 +328,7 @@ public class EditTaskActivity extends AppCompatActivity
                     tmp.put("Priority",tastToEdit.getPriority().ordinal());
                     position = (tastToEdit.getCompleted()) ? 1 : 0;
                     tmp.put("IsCompleted",position);
-                    tmp.put("Location",tastToEdit.getTsk_location().ordinal());
+                    tmp.put("Location",tastToEdit.getTsk_location());
                     tmp.put("Category", tastToEdit.getTask_catg().ordinal());
                     tmp.put("Status",tastToEdit.getTask_sts().ordinal());
                     tmp.put("Employee",tastToEdit.getEmp_name());
@@ -363,27 +365,20 @@ public class EditTaskActivity extends AppCompatActivity
         tastToEdit = (Task)i.getSerializableExtra("task");
         tastToEdit.setToDelete(true);
 
-        ParseObject parse_task = new ParseObject("Task");
-        parse_task.put("Description",tastToEdit.getDescription());
-        parse_task.put("DueDate",tastToEdit.getDueDate());
-        parse_task.put("Priority",tastToEdit.getPriority().ordinal());
-        int com_state = (tastToEdit.getCompleted()) ? 1 : 0;
-        parse_task.put("IsCompleted",com_state);
-        parse_task.put("Location", tastToEdit.getTsk_location().ordinal());
+        //Get the task we want to delete from Parse
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
+        query.whereEqualTo("objectId", tastToEdit.getParse_task_id());
 
-        parse_task.put("Category",tastToEdit.getTask_catg().ordinal());
-        parse_task.put("Status", tastToEdit.getTask_sts().ordinal());
-        parse_task.put("TeamName",Globals.team_name);
-        parse_task.put("Employee",tastToEdit.getEmp_name());
-
-        parse_task.deleteInBackground(new DeleteCallback() {
-            public void done(ParseException e) {
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
-                    Log.d("msg","deleted");
+                    for (ParseObject delete : parseObjects) {
+                        delete.deleteInBackground();
+                        Toast.makeText(getApplicationContext(), "Task Successfully Deleted", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Log.d("msg", "not deleted");
-                    e.printStackTrace();
-
+                    Toast.makeText(getApplicationContext(), "Error In Deleting Task", Toast.LENGTH_SHORT).show();
                 }
             }
         });

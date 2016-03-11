@@ -40,7 +40,7 @@ public class ListNodeActivity extends AppCompatActivity
     private Spinner empolyeeSpinner;
     private int task_id=1;
     private String time_Date_str = null;
-    private Location returned_selc_loc=null;
+    //private Location returned_selc_loc=null;
     private EditText loc;
 
     private ParseObject parse_task=null;
@@ -60,7 +60,6 @@ public class ListNodeActivity extends AppCompatActivity
 
         loc = (EditText)findViewById(R.id.taskLocation);
         loc.setClickable(false);
-        returned_selc_loc = Location.Meeting_Room;
 
         EditText date = (EditText)findViewById(R.id.taskDateEdit);
         date.setInputType(InputType.TYPE_NULL);
@@ -124,8 +123,6 @@ public class ListNodeActivity extends AppCompatActivity
 
         RadioButton rbprty = (RadioButton) findViewById(R.id.medRBtn);
         rbprty.setChecked(true);
-
-        returned_selc_loc = null;
     }
 
     public void addTaskBtn (View view)
@@ -175,7 +172,7 @@ public class ListNodeActivity extends AppCompatActivity
             state = false;
         }
 
-        if ((returned_selc_loc==null)&&(state))
+        if ((Globals.temp==(-1))&&(state))
         {
             new AlertDialog.Builder(this)
                     .setTitle("Select Location")
@@ -297,7 +294,8 @@ public class ListNodeActivity extends AppCompatActivity
                     t.setTask_catg(Category.OTHER);
                     break;
             }
-            t.setTsk_location(returned_selc_loc);
+            Log.w("dasda returned_selc_loc", "" + Globals.temp);
+            t.setTsk_location(Globals.temp);
             empolyeeSpinner = (Spinner) findViewById(R.id.employeeSpinner);
             emp_name = empolyeeSpinner.getSelectedItem().toString();
             t.setEmp_name(emp_name);
@@ -315,7 +313,8 @@ public class ListNodeActivity extends AppCompatActivity
             parse_task.put("Priority",t.getPriority().ordinal());
             position = (t.getCompleted()) ? 1 : 0;
             parse_task.put("IsCompleted",position);
-            parse_task.put("Location",t.getTsk_location().ordinal());
+            Log.w("getTsk_location", " " + t.getTsk_location());
+            parse_task.put("Location", t.getTsk_location());
             parse_task.put("Category", t.getTask_catg().ordinal());
             parse_task.put("Status", t.getTask_sts().ordinal());
             parse_task.put("TeamName",Globals.team_name);
@@ -332,7 +331,7 @@ public class ListNodeActivity extends AppCompatActivity
                     }
                 }
             });
-
+            Globals.temp=-1;
             returnIntent.putExtra("task", t);
             setResult(RESULT_OK, returnIntent);
             finish();
@@ -399,7 +398,7 @@ public class ListNodeActivity extends AppCompatActivity
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
-    public void gotoselectloc (View v)
+    public void goToSelectLoc (View v)
     {
         Intent intent = new Intent(this,SelectLocation.class);
         startActivityForResult(intent, ACTIVITY_SELECT_LOCATION);
@@ -412,41 +411,18 @@ public class ListNodeActivity extends AppCompatActivity
             switch (requestCode) {
                 case ACTIVITY_SELECT_LOCATION:
                 {
-                    /*returned_selc_loc = (Locations) data.getSerializableExtra("location");
-                    loc.setText(returned_selc_loc.toString());
-                    loc.setClickable(false);*/
-                    switch(Globals.temp)
-                    {
-                        case 0:
-                            returned_selc_loc=Location.Meeting_Room;
-                            loc.setText(returned_selc_loc.toString());
-                            loc.setClickable(false);
-                            break;
-                        case 1:
-                            returned_selc_loc=Location.Office_245;
-                            loc.setText(returned_selc_loc.toString());
-                            loc.setClickable(false);
-                            break;
-                        case 2:
-                            returned_selc_loc=Location.Lobby;
-                            loc.setText(returned_selc_loc.toString());
-                            loc.setClickable(false);
-                            break;
-                        case 3:
-                            returned_selc_loc=Location.NOC;
-                            loc.setText(returned_selc_loc.toString());
-                            loc.setClickable(false);
-                            break;
-                        case 4:
-                            returned_selc_loc=Location.VPsoffice;
-                            loc.setText(returned_selc_loc.toString());
-                            loc.setClickable(false);
-                            break;
-                    }
+                    Log.w("SELECT_LOCATION","Globals.temp"+Globals.temp);
+                    loc.setText(Location.fromInteger(Globals.temp).toString());
+                    loc.setClickable(false);
                     break;
+
                 }
                 default:
+                {
+                    loc.setText(Location.Meeting_Room.toString());
+                    loc.setClickable(false);
                     break;
+                }
             }
         }
     }

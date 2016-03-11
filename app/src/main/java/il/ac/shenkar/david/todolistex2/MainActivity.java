@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         dbM = DBManager.getInstance(context);
-
         total_tasks_text = (TextView) findViewById(R.id.totalTask);
 
         if(Globals.diffusr)
@@ -166,22 +165,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 position = tmp.getInt("Location");
                 switch (position) {
                     case 0:
-                        tmp_task.setTsk_location(Location.Meeting_Room);
+                        tmp_task.setTsk_location(position);
                         break;
                     case 1:
-                        tmp_task.setTsk_location(Location.Office_245);
+                        tmp_task.setTsk_location(position);
                         break;
                     case 2:
-                        tmp_task.setTsk_location(Location.Lobby);
+                        tmp_task.setTsk_location(position);
                         break;
                     case 3:
-                        tmp_task.setTsk_location(Location.NOC);
+                        tmp_task.setTsk_location(position);
                         break;
                     case 4:
-                        tmp_task.setTsk_location(Location.VPsoffice);
+                        tmp_task.setTsk_location(position);
                         break;
                     default:
-                        tmp_task.setTsk_location(Location.Meeting_Room);
+                        tmp_task.setTsk_location(position);
                         break;
                 }
 
@@ -204,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Task tt = (Task) ((TaskItemAdapter) parent.getAdapter()).getItem(position);
 
                 if (Globals.IsManager == true) {
+                    Globals.temp=tt.getTsk_location();
+                    Log.w("loc from global",""+Globals.temp);
                     //start the create activity again, now for editing
                     Intent i = new Intent(getApplicationContext(), EditTaskActivity.class);
                     i.putExtra("task", tt);
@@ -333,6 +334,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         if (id == R.id.action_Logout) {
+            Globals.isActivityRestarting = true;
+            Log.w("Globals.isActivityRestarting",""+Globals.isActivityRestarting);
             Intent returnIntent = new Intent(this, Login_activity.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
@@ -380,8 +383,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     adapter = new TaskItemAdapter(context, itemList);
                     list.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    break;
                 }
-                break;
 
                 case REQUEST_CODE_UPDATE_TASK: {
                     returned_task = (Task) data.getSerializableExtra("task");
@@ -432,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             adapter.notifyDataSetChanged();
                         }
                     }
+                    break;
                 }
 
                 default: {
@@ -494,12 +498,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onResume();
         //connect to SQLite
         dbM = DBManager.getInstance(context);
-        //get all tasks from db
-       // list = (ListView) findViewById(R.id.listView);
-        SortTaskList(Globals.last_sort);
-
-        //fill the list with tasks
-       // list.setAdapter(new TaskItemAdapter(context, itemList));
+        if(Globals.isActivityRestarting){
+            dbM.clearDB();
+            checkForUpdate();
+        }
+        else {
+            SortTaskList(Globals.last_sort);
+        }
     }
 
     private void syncTaskList(Task tmp_task) {
@@ -611,22 +616,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 position = tmp.getInt("Location");
                 switch (position) {
                     case 0:
-                        tmp_task.setTsk_location(Location.Meeting_Room);
+                        tmp_task.setTsk_location(position);
                         break;
                     case 1:
-                        tmp_task.setTsk_location(Location.Office_245);
+                        tmp_task.setTsk_location(position);
                         break;
                     case 2:
-                        tmp_task.setTsk_location(Location.Lobby);
+                        tmp_task.setTsk_location(position);
                         break;
                     case 3:
-                        tmp_task.setTsk_location(Location.NOC);
+                        tmp_task.setTsk_location(position);
                         break;
                     case 4:
-                        tmp_task.setTsk_location(Location.VPsoffice);
+                        tmp_task.setTsk_location(position);
                         break;
                     default:
-                        tmp_task.setTsk_location(Location.Meeting_Room);
+                        tmp_task.setTsk_location(position);
                         break;
                 }
 
@@ -678,14 +683,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             emptylist_txt.setVisibility(View.GONE);
             total_tasks_text.setVisibility(View.VISIBLE);
-            total_tasks_text.setText(" " + itemList.size());
+            total_tasks_text.setText("Total " + itemList.size());
         }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
@@ -721,4 +725,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
 }

@@ -50,12 +50,10 @@ public class SelectLocation extends AppCompatActivity
 
     public void doneLoc (View view)
     {
-        Location selc_location=null;
         int position = location_spinner.getSelectedItemPosition();
-
         Globals.temp=position;
+        Log.w("doneLoc",""+Globals.temp);
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("location",selc_location);
         setResult(RESULT_OK, returnIntent);
         finish();
     }
