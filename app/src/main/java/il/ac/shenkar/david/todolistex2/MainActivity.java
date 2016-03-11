@@ -335,7 +335,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (id == R.id.action_Logout) {
             Globals.isActivityRestarting = true;
-            Log.w("Globals.isActivityRestarting",""+Globals.isActivityRestarting);
             Intent returnIntent = new Intent(this, Login_activity.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
@@ -408,10 +407,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     } else {
                         for (int i = 0; i < itemList.size(); i++) {
                             if (itemList.get(i).getTaskId() == returned_task.getTaskId()) {
-                                itemList.set(i, returned_task);
-                                adapter = new TaskItemAdapter(context, itemList);
-                                list.setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
+                                    if(returned_task.getCompleted()==true)
+                                    {
+                                        itemList.remove(i);
+                                    }
+                                    else
+                                    {
+                                        itemList.set(i, returned_task);
+                                    }
+                                    //itemList.set(i, returned_task);
+                                    adapter = new TaskItemAdapter(context, itemList);
+                                    list.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
                             }
                         }
                     }
@@ -428,8 +435,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 case REQUEST_CODE_EMP_VIEW_TASK: {
                     returned_task = (Task) data.getSerializableExtra("task");
                     for (int i = 0; i < itemList.size(); i++) {
-                        if (itemList.get(i).getTaskId() == returned_task.getTaskId()) {
-                            itemList.set(i, returned_task);
+                        if (itemList.get(i).getTaskId() == returned_task.getTaskId())
+                        {
+                            //itemList.set(i, returned_task);
+                            if(returned_task.getCompleted()==true)
+                            {
+                                itemList.remove(i);
+                            }
+                            else
+                            {
+                                itemList.set(i, returned_task);
+                            }
                             adapter = new TaskItemAdapter(context, itemList);
                             list.setAdapter(adapter);
                             adapter.notifyDataSetChanged();

@@ -49,26 +49,6 @@ public class InviteMember extends AppCompatActivity
         String[] new_users = member_email.getText().toString().split(",");
         addNewUsers(new_users,member_phone.getText().toString());
 
-      /*  for (String str_usrname : new_users)
-        {
-            parse_usr = new ParseObject("OTSUser");
-            parse_usr.put("Username",str_usrname);
-            parse_usr.put("Password", member_phone.getText().toString());
-            parse_usr.put("Email",str_usrname);
-            parse_usr.put("IsManager",0);
-            parse_usr.put("TeamName",Globals.team_name);
-            parse_usr.saveInBackground(new SaveCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-                        // if null, it means the save has succeeded
-                        Log.d("new team member created", "good");
-                    } else {
-                        // the save call was not successful.
-                    }
-                }
-            });
-        }
-*/
         email.putExtra(Intent.EXTRA_EMAIL, new String[]{ member_email.getText().toString()});
         email.putExtra(Intent.EXTRA_SUBJECT, email_Subject);
         email.putExtra(Intent.EXTRA_TEXT, email_body);
@@ -131,6 +111,7 @@ public class InviteMember extends AppCompatActivity
             parse_otsusr.put("Email", usr);
             parse_otsusr.put("IsManager", 1);
             parse_usr.put("TeamName",Globals.team_name);
+            parse_usr.put("ManagerName",Globals.team_name);
             parse_otsusr.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {

@@ -80,7 +80,7 @@ public class TaskItemAdapter extends BaseAdapter
         viewHold.tv = (TextView)convertView.findViewById(R.id.taskDesc);
         viewHold.tv.setText(itemList.get(position).getDescription());
         viewHold.cb = (CheckBox)convertView.findViewById(R.id.doneCheckBox);
-        viewHold.cb.setChecked(itemList.get(position).getCompleted());
+       // viewHold.cb.setChecked(itemList.get(position).getCompleted());
         viewHold.cb.setTag(item);
 
         return convertView;

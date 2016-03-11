@@ -209,6 +209,21 @@ public class Login_activity extends AppCompatActivity
             }
             else {
                     Globals.IsManager = false;
+
+                    query = new ParseQuery<ParseObject>("Teams");
+                    query.whereEqualTo("TeamName", Globals.team_name);
+
+                    try {
+                        usrs = query.find();
+                        if (usrs.size() == 1){
+
+                        }
+                        else
+                        {
+
+                        }
+                    } catch (ParseException e) {}
+
                     Toast.makeText(this, "You have been added to Team: " + usrs.get(0).getString("TeamName") +" by\n"
                             + usrs.get(0).get("TeamManager"), Toast.LENGTH_LONG).show();
             }

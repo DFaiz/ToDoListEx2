@@ -14,6 +14,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -45,8 +46,8 @@ public class ReportTaskStatus extends AppCompatActivity
         label.append(" "+tastToEdit.getPriority().toString());
 
         label = (TextView)findViewById(R.id.locationlabel);
-//        label.append(" " + tastToEdit.getTsk_location().toString());
-        label.append(" " + "Somewhere");
+        label.append(" " + Location.fromInteger(tastToEdit.getTsk_location()).toString());
+        //label.append(" " + "Somewhere");
 
         label = (TextView)findViewById(R.id.duetimelabel);
 
@@ -92,31 +93,42 @@ public class ReportTaskStatus extends AppCompatActivity
             else
             {
                 tastToEdit.setTask_sts(Task_Status.DONE);
+                tastToEdit.setCompleted(true);
             }
         }
 
-        Toast.makeText(this, "Changes Were Saved", Toast.LENGTH_SHORT).show();
         Intent returnIntent = new Intent();
 
         DBManager dbm = DBManager.getInstance(this);
         dbm.updateTask(tastToEdit);
+        Toast.makeText(this, "Changes Were Saved", Toast.LENGTH_SHORT).show();
 
         //update the task in Parse
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
         query.whereEqualTo("objectId", tastToEdit.getParse_task_id());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    for (ParseObject tmp : objects)
-                    {
-                        tmp.put("Status",tastToEdit.getTask_sts().ordinal());
-                        tmp.saveInBackground();
-                    }
-                } else {
-                    // error
+
+        try {
+            tsks = query.find();
+            for (ParseObject tmp : tsks)
+            {
+                tmp.put("Status",tastToEdit.getTask_sts().ordinal());
+                if(tastToEdit.getTask_sts()==Task_Status.DONE)
+                {
+                    tmp.put("IsCompleted",1);
                 }
+                tmp.saveInBackground(new SaveCallback() {
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            // if null, it means the save has succeeded
+
+                        } else {
+                            // the save call was not successful.
+                        }
+                    }
+                });
+                tmp.saveInBackground();
             }
-        });
+        } catch (ParseException e) {}
 
         returnIntent.putExtra("task",tastToEdit);
         setResult(RESULT_OK, returnIntent);
