@@ -224,8 +224,10 @@ public class Login_activity extends AppCompatActivity
                         }
                     } catch (ParseException e) {}
 
+                    if(Globals.diffusr)
+                    {
                     Toast.makeText(this, "You have been added to Team: " + usrs.get(0).getString("TeamName") +" by\n"
-                            + usrs.get(0).get("TeamManager"), Toast.LENGTH_LONG).show();
+                            + usrs.get(0).get("TeamManager"), Toast.LENGTH_LONG).show();}
             }
 
             Intent returnIntent = new Intent(this,MainActivity.class);

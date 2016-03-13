@@ -25,7 +25,7 @@ public class InviteMember extends AppCompatActivity
                                 "You have been invited to be a team member in an OTS Team ->" + Globals.team_name + " created by me.\n" +
                                 "Your username is your email address and password is your phone number\n" +
                                 "Use this link to download and install the App from Google Play.\n\n" +
-                                "<LINK to Google Play download>\n\n" +
+                                "https://play.google.com/store/apps/details?id=il.ac.shenkar.david.todolistex2\n\n" +
                                 "Best Regards,\n" +
                                 "You OTS Manager.";
 

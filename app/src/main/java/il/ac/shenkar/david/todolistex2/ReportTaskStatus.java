@@ -1,12 +1,20 @@
 package il.ac.shenkar.david.todolistex2;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +36,9 @@ public class ReportTaskStatus extends AppCompatActivity
     private RadioButton statusrb;
     private TextView label;
     private List<ParseObject> tsks=null;
+    private ImageView imageView;
+//    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
+    public static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +49,7 @@ public class ReportTaskStatus extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
+
 
         tastToEdit = (Task)i.getSerializableExtra("task");
         label = (TextView)findViewById(R.id.categorylabel);
@@ -84,6 +96,24 @@ public class ReportTaskStatus extends AppCompatActivity
         }
         //Get a Tracker (should auto-report)
         ((MyApplication) getApplication()).getTracker(MyApplication.TrackerName.APP_TRACKER);
+
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.statusgroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                RadioButton rb = (RadioButton) findViewById(R.id.donestatusRBtn);
+                if(rb.isChecked())
+                {
+                    /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }*/
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+                }
+            }
+        });
     }
 
     public void saveChangesTaskBtn(View view)
@@ -158,5 +188,13 @@ public class ReportTaskStatus extends AppCompatActivity
         super.onStop();
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
+        }
     }
 }

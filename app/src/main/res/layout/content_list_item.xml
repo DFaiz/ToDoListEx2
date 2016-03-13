@@ -9,6 +9,22 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:id="@+id/TskRowlinearLayout1">
+
+        <TextView
+            android:id="@+id/tskdesc_label"
+            android:layout_gravity="left|center_vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="@android:color/primary_text_light"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Desc:"/>
+
         <TextView
         android:id="@+id/taskDesc"
         android:layout_gravity="left|center_vertical"
@@ -18,7 +34,13 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:layout_marginLeft="10dp"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:id="@+id/TskRowlinearLayout2">
         <TextView
             android:id="@+id/emp_name_label"
             android:layout_gravity="left|center_vertical"
@@ -38,6 +60,6 @@
             android:textColor="@android:color/primary_text_light"
             android:layout_height="wrap_content"
             android:textSize="18sp"/>
-
+    </LinearLayout>
     </LinearLayout>
 </FrameLayout >

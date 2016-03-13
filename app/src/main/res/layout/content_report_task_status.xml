@@ -160,6 +160,7 @@
         android:id="@+id/reporttasklinearLayout9">
 
         <RadioGroup
+            android:id="@+id/statusgroup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
