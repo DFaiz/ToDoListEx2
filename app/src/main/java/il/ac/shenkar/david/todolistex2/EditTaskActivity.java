@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -190,6 +191,9 @@ public class EditTaskActivity extends AppCompatActivity
 
         emp = (TextView)findViewById(R.id.employeeassignedname);
         emp.append(" "+tastToEdit.getEmp_name());
+
+        //Get a Tracker (should auto-report)
+        ((MyApplication) getApplication()).getTracker(MyApplication.TrackerName.APP_TRACKER);
     }
 
     public void saveChangesTaskBtn(View view)
@@ -326,8 +330,6 @@ public class EditTaskActivity extends AppCompatActivity
                     tmp.put("Description",tastToEdit.getDescription());
                     tmp.put("DueDate", tastToEdit.getDueDate());
                     tmp.put("Priority",tastToEdit.getPriority().ordinal());
-                    position = (tastToEdit.getCompleted()) ? 1 : 0;
-                    tmp.put("IsCompleted",position);
                     tmp.put("Location",tastToEdit.getTsk_location());
                     tmp.put("Category", tastToEdit.getTask_catg().ordinal());
                     tmp.put("Status",tastToEdit.getTask_sts().ordinal());
@@ -400,6 +402,19 @@ public class EditTaskActivity extends AppCompatActivity
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new EditTimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+
     }
 
 }

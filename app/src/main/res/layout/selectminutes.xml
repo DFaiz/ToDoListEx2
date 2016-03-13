@@ -17,13 +17,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="65dp" />
+            android:layout_marginTop="20dp" />
 
         <Button
             android:id="@+id/setnumberofminbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="40dp"
             android:layout_toRightOf="@+id/numberPicker"
             android:text="Set" />
 

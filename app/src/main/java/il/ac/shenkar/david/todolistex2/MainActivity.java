@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -88,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //check if any tasks exist in Parse DB
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
         query.whereEqualTo("TeamName", Globals.team_name);
-        query.whereEqualTo("IsCompleted", 0);
 
         if (Globals.IsManager == false) {
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
@@ -271,6 +271,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        //Get a Tracker (should auto-report)
+        ((MyApplication) getApplication()).getTracker(MyApplication.TrackerName.APP_TRACKER);
     }
 
     private void startingUp() {
@@ -407,15 +410,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     } else {
                         for (int i = 0; i < itemList.size(); i++) {
                             if (itemList.get(i).getTaskId() == returned_task.getTaskId()) {
-                                    if(returned_task.getCompleted()==true)
-                                    {
-                                        itemList.remove(i);
-                                    }
-                                    else
-                                    {
-                                        itemList.set(i, returned_task);
-                                    }
-                                    //itemList.set(i, returned_task);
+                                    itemList.set(i, returned_task);
                                     adapter = new TaskItemAdapter(context, itemList);
                                     list.setAdapter(adapter);
                                     adapter.notifyDataSetChanged();
@@ -437,15 +432,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     for (int i = 0; i < itemList.size(); i++) {
                         if (itemList.get(i).getTaskId() == returned_task.getTaskId())
                         {
-                            //itemList.set(i, returned_task);
-                            if(returned_task.getCompleted()==true)
-                            {
-                                itemList.remove(i);
-                            }
-                            else
-                            {
-                                itemList.set(i, returned_task);
-                            }
+                            itemList.set(i, returned_task);
                             adapter = new TaskItemAdapter(context, itemList);
                             list.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
@@ -512,6 +499,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onResume() {
         super.onResume();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
         //connect to SQLite
         dbM = DBManager.getInstance(context);
         if(Globals.isActivityRestarting){
@@ -563,7 +551,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //check if any tasks exist in Parse DB
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Task");
         query.whereEqualTo("TeamName", Globals.team_name);
-        query.whereEqualTo("IsCompleted", 0);
         if (Globals.IsManager == false) {
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
             query.whereEqualTo("Employee", sharedpreferences.getString("LoginUsr", null));
@@ -708,6 +695,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onStart();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
         client.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
@@ -725,7 +713,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onStop() {
         super.onStop();
-
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(

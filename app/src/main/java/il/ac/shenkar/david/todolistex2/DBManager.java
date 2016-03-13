@@ -18,7 +18,7 @@ import android.util.Log;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 26;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;
@@ -46,7 +46,6 @@ public class DBManager extends SQLiteOpenHelper
             + TaskItem.COLUMN_NAME_DESCRIPTION+ " TEXT NOT NULL, "
             + TaskItem.COLUMN_NAME_DUE_DATE+ " TEXT NOT NULL, "
             + TaskItem.COLUMN_NAME_PRIORITY+ " INTEGER NOT NULL, "
-            + TaskItem.COLUMN_NAME_COMPLETED+ " INTEGER, "
             + TaskItem.COLUMN_NAME_LOCATION+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_CATEGORY+ " INTEGER NOT NULL, "
             + TaskItem.COLUMN_NAME_STATUS+ " INTEGER NOT NULL, "
@@ -74,8 +73,6 @@ public class DBManager extends SQLiteOpenHelper
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         values.put(TaskItem.COLUMN_NAME_DUE_DATE, sdf.format(task.getDueDate()));
         values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
-        int myInt = (task.getCompleted()) ? 1 : 0;
-        values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
         //Log.w("loc", "task.getTsk_location().ordinal()" + task.getTsk_location().ordinal());
         values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location());
         //Log.w("loc", "task.getTsk_location().ordinal()" + task.getTsk_location().ordinal());
@@ -111,11 +108,6 @@ public class DBManager extends SQLiteOpenHelper
                 tsktsk.setParse_task_id(desc);
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DESCRIPTION));
                 tsktsk.setDescription(desc);
-                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_COMPLETED));
-                if(id==1)
-                    tsktsk.setCompleted(true);
-                else
-                    tsktsk.setCompleted(false);
 
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DUE_DATE));
                 tsktsk.setDueDate(desc);
@@ -215,11 +207,6 @@ public class DBManager extends SQLiteOpenHelper
                 tsktsk.setParse_task_id(desc);
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DESCRIPTION));
                 tsktsk.setDescription(desc);
-                id =  cursor.getInt(cursor.getColumnIndex(TaskItem.COLUMN_NAME_COMPLETED));
-                if(id==1)
-                    tsktsk.setCompleted(true);
-                else
-                    tsktsk.setCompleted(false);
 
                 desc = cursor.getString(cursor.getColumnIndex(TaskItem.COLUMN_NAME_DUE_DATE));
                 tsktsk.setDueDate(desc);
@@ -290,8 +277,6 @@ public class DBManager extends SQLiteOpenHelper
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         values.put(TaskItem.COLUMN_NAME_DUE_DATE, sdf.format(task.getDueDate()));
         values.put(TaskItem.COLUMN_NAME_PRIORITY, task.getPriority().ordinal());
-        int myInt = (task.getCompleted()) ? 1 : 0;
-        values.put(TaskItem.COLUMN_NAME_COMPLETED, myInt);
         //values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location().ordinal());
         values.put(TaskItem.COLUMN_NAME_LOCATION, task.getTsk_location());
         values.put(TaskItem.COLUMN_NAME_CATEGORY, task.getTask_catg().ordinal());

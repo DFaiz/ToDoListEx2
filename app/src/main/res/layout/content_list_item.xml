@@ -9,22 +9,35 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <CheckBox
-            android:id="@+id/doneCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:layout_margin="10dp"/>
+        <TextView
+        android:id="@+id/taskDesc"
+        android:layout_gravity="left|center_vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textColor="@android:color/primary_text_light"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"/>
 
         <TextView
-            android:id="@+id/taskDesc"
+            android:id="@+id/emp_name_label"
             android:layout_gravity="left|center_vertical"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textColor="@android:color/primary_text_light"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:layout_marginRight="10dp"/>
+            android:text="Assigned To:"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/employee_name"
+            android:layout_gravity="left|center_vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="@android:color/primary_text_light"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 </FrameLayout >

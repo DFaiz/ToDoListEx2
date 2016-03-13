@@ -12,7 +12,6 @@ public class Task implements Serializable {
     private long taskId;
     private String parse_task_id;
     private String description;
-    private Boolean completed = false;
     private Date dueDate;
     private Priority task_priority;
     private Boolean toDelete = false;
@@ -60,12 +59,6 @@ public class Task implements Serializable {
         description = d;
     }
 
-    public Boolean getCompleted() {
-        return completed;
-    }
-    public void setCompleted(Boolean completed) {
-        this.completed = completed;
-    }
     public long getTaskId() {
         return taskId;
     }

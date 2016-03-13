@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -75,7 +76,14 @@ public class ReportTaskStatus extends AppCompatActivity
         {
             statusrb = (RadioButton) findViewById(R.id.donestatusRBtn);
             statusrb.setChecked(true);
+           /* statusrb.setEnabled(false);
+            statusrb = (RadioButton) findViewById(R.id.inprogstatusRBtn);
+            statusrb.setEnabled(false);
+            statusrb = (RadioButton) findViewById(R.id.waitingstatusRBtn);
+            statusrb.setEnabled(false);*/
         }
+        //Get a Tracker (should auto-report)
+        ((MyApplication) getApplication()).getTracker(MyApplication.TrackerName.APP_TRACKER);
     }
 
     public void saveChangesTaskBtn(View view)
@@ -93,7 +101,6 @@ public class ReportTaskStatus extends AppCompatActivity
             else
             {
                 tastToEdit.setTask_sts(Task_Status.DONE);
-                tastToEdit.setCompleted(true);
             }
         }
 
@@ -112,10 +119,6 @@ public class ReportTaskStatus extends AppCompatActivity
             for (ParseObject tmp : tsks)
             {
                 tmp.put("Status",tastToEdit.getTask_sts().ordinal());
-                if(tastToEdit.getTask_sts()==Task_Status.DONE)
-                {
-                    tmp.put("IsCompleted",1);
-                }
                 tmp.saveInBackground(new SaveCallback() {
                     public void done(ParseException e) {
                         if (e == null) {
@@ -142,5 +145,18 @@ public class ReportTaskStatus extends AppCompatActivity
 
     public void onRadioButtonClicked(View view)
     {
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+
     }
 }

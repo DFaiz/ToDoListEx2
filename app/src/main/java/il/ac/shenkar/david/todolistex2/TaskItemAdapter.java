@@ -22,8 +22,6 @@ public class TaskItemAdapter extends BaseAdapter
     List<Task> itemList;
     private Context context;
     private LayoutInflater inflater;
-    private View.OnClickListener myClickListener;
-    private DBManager dbM;
 
     public TaskItemAdapter(Context context, List<Task> list) {
         this.itemList = list;
@@ -52,7 +50,6 @@ public class TaskItemAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent)
     {
         final ViewHolder viewHold;
-        Task item = (Task)getItem(position);
 
         if(convertView == null)
         {
@@ -60,28 +57,17 @@ public class TaskItemAdapter extends BaseAdapter
             viewHold = new ViewHolder();
             convertView.setTag(viewHold);
 
-            viewHold.tv = (TextView) convertView.findViewById(R.id.taskDesc);
-            viewHold.cb = (CheckBox) convertView.findViewById(R.id.doneCheckBox);
-
-            viewHold.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-                {
-                   @Override
-                   public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                       Task item = (Task) viewHold.cb.getTag();
-                       item.setCompleted(viewHold.cb.isChecked());
-                   }
-                }
-            );
+            viewHold.desc = (TextView) convertView.findViewById(R.id.taskDesc);
+            viewHold.emp_name = (TextView) convertView.findViewById(R.id.employee_name);
         }
 
     else {
             viewHold = (ViewHolder) convertView.getTag();}
 
-        viewHold.tv = (TextView)convertView.findViewById(R.id.taskDesc);
-        viewHold.tv.setText(itemList.get(position).getDescription());
-        viewHold.cb = (CheckBox)convertView.findViewById(R.id.doneCheckBox);
-       // viewHold.cb.setChecked(itemList.get(position).getCompleted());
-        viewHold.cb.setTag(item);
+        viewHold.desc = (TextView)convertView.findViewById(R.id.taskDesc);
+        viewHold.desc.setText(itemList.get(position).getDescription());
+        viewHold.emp_name = (TextView) convertView.findViewById(R.id.employee_name);
+        viewHold.emp_name.setText(itemList.get(position).getEmp_name());
 
         return convertView;
     }
@@ -89,7 +75,7 @@ public class TaskItemAdapter extends BaseAdapter
 
     public static class ViewHolder
     {
-        TextView tv;
-        CheckBox cb;
+        TextView desc;
+        TextView emp_name;
     }
 }

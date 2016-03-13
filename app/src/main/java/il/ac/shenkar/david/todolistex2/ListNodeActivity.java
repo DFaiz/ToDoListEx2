@@ -19,6 +19,7 @@ import android.app.DialogFragment;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -123,6 +124,9 @@ public class ListNodeActivity extends AppCompatActivity
 
         RadioButton rbprty = (RadioButton) findViewById(R.id.medRBtn);
         rbprty.setChecked(true);
+
+        //Get a Tracker (should auto-report)
+        ((MyApplication) getApplication()).getTracker(MyApplication.TrackerName.APP_TRACKER);
     }
 
     public void addTaskBtn (View view)
@@ -254,20 +258,6 @@ public class ListNodeActivity extends AppCompatActivity
                             myDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(time_Date_str);
                             t.setDueDate(myDate);
 
-                            Intent alarmNotificationIntent = new Intent(this, ReminderNotification.class);
-                            alarmNotificationIntent.putExtra("task", t);
-
-                            PendingIntent pendingIntent =
-                                    PendingIntent.getBroadcast(this, (int) task_id, alarmNotificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-                            AlarmManager alarmManager = (AlarmManager)getSystemService(this.ALARM_SERVICE);
-
-                            Calendar calendar = Calendar.getInstance();
-
-                            calendar.setTimeInMillis(t.getDueDate().getTime());
-
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                            Toast.makeText(this, "Alarm Set", Toast.LENGTH_LONG).show();
                         }catch(Exception e){myDate=null;}
 
                         t.setTask_sts(Task_Status.WAITING);
@@ -311,8 +301,6 @@ public class ListNodeActivity extends AppCompatActivity
             parse_task.put("Description",t.getDescription());
             parse_task.put("DueDate", t.getDueDate());
             parse_task.put("Priority",t.getPriority().ordinal());
-            position = (t.getCompleted()) ? 1 : 0;
-            parse_task.put("IsCompleted",position);
             Log.w("getTsk_location", " " + t.getTsk_location());
             parse_task.put("Location", t.getTsk_location());
             parse_task.put("Category", t.getTask_catg().ordinal());
@@ -425,5 +413,18 @@ public class ListNodeActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+
     }
 }
