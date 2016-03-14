@@ -1,6 +1,8 @@
 package il.ac.shenkar.david.todolistex2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,8 +30,6 @@ public class InviteMember extends AppCompatActivity
                                 "https://play.google.com/store/apps/details?id=il.ac.shenkar.david.todolistex2\n\n" +
                                 "Best Regards,\n" +
                                 "You OTS Manager.";
-
-    private ParseObject parse_usr = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -102,6 +102,8 @@ public class InviteMember extends AppCompatActivity
 
     private void addNewUsers (String[] newUsers, String usrpwd)
     {
+        SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+
         ParseObject parse_otsusr = null;
         for (String usr : newUsers)
         {
@@ -109,9 +111,9 @@ public class InviteMember extends AppCompatActivity
             parse_otsusr.put("Username", usr);
             parse_otsusr.put("Password",usrpwd);
             parse_otsusr.put("Email", usr);
-            parse_otsusr.put("IsManager", 1);
-            parse_usr.put("TeamName",Globals.team_name);
-            parse_usr.put("ManagerName",Globals.team_name);
+            parse_otsusr.put("IsManager", 0);
+            parse_otsusr.put("TeamName",Globals.team_name);
+            parse_otsusr.put("ManagerName",sharedpreferences.getString("LoginUsr", null));
             parse_otsusr.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {

@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private DBManager dbM;
 
     private TextView emptylist_txt;
-    private TextView minutes_text;
     private TextView total_tasks_text;
     private Task tmp_task;
     private Timer refresh_timer;
@@ -61,11 +60,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     public final int REQUEST_CODE_NEW_TASK = 1;
     public final int REQUEST_CODE_UPDATE_TASK = 2;
-    public final int REQUEST_CODE_REMOVE_TASK = 3;
-    public final int REQUEST_CODE_INVITE_MEMBER = 4;
-    public final int REQUEST_CODE_EMP_VIEW_TASK = 5;
-
-    private static Dialog minute_diag;
+    public final int REQUEST_CODE_INVITE_MEMBER = 3;
+    public final int REQUEST_CODE_EMP_VIEW_TASK = 4;
 
     private List<ParseObject> tsks = null;
     private Spinner sort_selector = null;
@@ -86,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         dbM = DBManager.getInstance(context);
         total_tasks_text = (TextView) findViewById(R.id.totalTask);
 
-        locationpermission();
+        //locationpermission();
 
         if(Globals.diffusr)
         {
@@ -211,7 +207,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (Globals.IsManager == true) {
                     Globals.temp=tt.getTsk_location();
-                    Log.w("loc from global",""+Globals.temp);
                     //start the create activity again, now for editing
                     Intent i = new Intent(getApplicationContext(), EditTaskActivity.class);
                     i.putExtra("task", tt);
@@ -763,31 +758,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults)     {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 

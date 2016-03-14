@@ -230,7 +230,8 @@ public class Login_activity extends AppCompatActivity
                             + usrs.get(0).get("TeamManager"), Toast.LENGTH_LONG).show();}
             }
 
-            Intent returnIntent = new Intent(this,MainActivity.class);
+            //Intent returnIntent = new Intent(this,MainActivity.class);
+            Intent returnIntent = new Intent(this,Main2Activity.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
         }

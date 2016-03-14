@@ -4,20 +4,68 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="No Tasks to Display"
-        android:layout_marginTop="60dp"
-        android:id="@+id/emptylist"
-        android:layout_alignTop="@+id/loginLayout2"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
+        android:layout_marginTop="8dp"
+        android:id="@+id/Main2ActivitylinearLayout3">
 
-    <ListView
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:text=""
+            android:id="@+id/allt_tab_totalTask"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="25dp"
+        android:id="@+id/Main2ActivitylinearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="8dp"
+            android:text="Sort:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/sort_array"
+            android:id="@+id/all_tasks_sortSpinner"
+            android:gravity="center"
+            android:textAlignment="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:id="@+id/Main2ActivitylinearLayout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="No Tasks to Display"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="60dp"
+            android:id="@+id/alltab_emptylist"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/alltasks_listView"
+            android:layout_centerHorizontal="true" />
+    </LinearLayout>
 </RelativeLayout>

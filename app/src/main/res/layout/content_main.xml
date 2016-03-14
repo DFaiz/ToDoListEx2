@@ -59,10 +59,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center"
         android:text="No Tasks to Display"
         android:layout_marginTop="60dp"
         android:id="@+id/emptylist"
-        android:layout_alignTop="@+id/loginLayout2"
         android:layout_centerHorizontal="true"
         android:textStyle="bold" />
 

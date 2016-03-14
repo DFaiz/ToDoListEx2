@@ -5,26 +5,26 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -32,13 +32,14 @@ public class ReportTaskStatus extends AppCompatActivity
 {
 
     private Task tastToEdit;
-    private RadioButton acceptrb;
     private RadioButton statusrb;
     private TextView label;
     private List<ParseObject> tsks=null;
-    private ImageView imageView;
-//    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
-    public static final int REQUEST_IMAGE_CAPTURE = 1;
+    private ParseFile imgFile;
+
+    private int CAMERA_REQUEST = 100;
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
+    private Bitmap photo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class ReportTaskStatus extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
-
+        Camerapermission();
 
         tastToEdit = (Task)i.getSerializableExtra("task");
         label = (TextView)findViewById(R.id.categorylabel);
@@ -60,7 +61,6 @@ public class ReportTaskStatus extends AppCompatActivity
 
         label = (TextView)findViewById(R.id.locationlabel);
         label.append(" " + Location.fromInteger(tastToEdit.getTsk_location()).toString());
-        //label.append(" " + "Somewhere");
 
         label = (TextView)findViewById(R.id.duetimelabel);
 
@@ -88,11 +88,6 @@ public class ReportTaskStatus extends AppCompatActivity
         {
             statusrb = (RadioButton) findViewById(R.id.donestatusRBtn);
             statusrb.setChecked(true);
-           /* statusrb.setEnabled(false);
-            statusrb = (RadioButton) findViewById(R.id.inprogstatusRBtn);
-            statusrb.setEnabled(false);
-            statusrb = (RadioButton) findViewById(R.id.waitingstatusRBtn);
-            statusrb.setEnabled(false);*/
         }
         //Get a Tracker (should auto-report)
         ((MyApplication) getApplication()).getTracker(MyApplication.TrackerName.APP_TRACKER);
@@ -100,17 +95,10 @@ public class ReportTaskStatus extends AppCompatActivity
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.statusgroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) findViewById(R.id.donestatusRBtn);
-                if(rb.isChecked())
-                {
-                    /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                    }*/
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+                if (rb.isChecked()) {
+                    openCamera();
                 }
             }
         });
@@ -138,6 +126,18 @@ public class ReportTaskStatus extends AppCompatActivity
 
         DBManager dbm = DBManager.getInstance(this);
         dbm.updateTask(tastToEdit);
+
+        if(tastToEdit.getTask_sts()==Task_Status.DONE)
+        {
+            // Convert photo - bitmap to byte
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            // Compress image to lower quality scale 1 - 100
+            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] image = stream.toByteArray();
+
+            imgFile = new ParseFile(tastToEdit.getParse_task_id()+".png", image);
+        }
+
         Toast.makeText(this, "Changes Were Saved", Toast.LENGTH_SHORT).show();
 
         //update the task in Parse
@@ -149,13 +149,16 @@ public class ReportTaskStatus extends AppCompatActivity
             for (ParseObject tmp : tsks)
             {
                 tmp.put("Status",tastToEdit.getTask_sts().ordinal());
+                if(tastToEdit.getTask_sts()==Task_Status.DONE)
+                {
+                    tmp.put("Photo",imgFile);
+                }
+
                 tmp.saveInBackground(new SaveCallback() {
                     public void done(ParseException e) {
                         if (e == null) {
                             // if null, it means the save has succeeded
-
                         } else {
-                            // the save call was not successful.
                         }
                     }
                 });
@@ -190,11 +193,75 @@ public class ReportTaskStatus extends AppCompatActivity
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
+    private void Camerapermission() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(ReportTaskStatus.this
+                ,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ReportTaskStatus.this,
+                    Manifest.permission.CAMERA)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(ReportTaskStatus.this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
         }
+    }
+
+    private void openCamera() {
+        try {
+            Intent cameraIntent = new Intent(
+            android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            photo = (Bitmap) data.getExtras().get("data");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch ( requestCode ) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                for( int i = 0; i < permissions.length; i++ ) {
+                    if( grantResults[i] == PackageManager.PERMISSION_GRANTED ) {
+                        Log.d( "Permissions", "Permission Granted: " + permissions[i] );
+                    } else if( grantResults[i] == PackageManager.PERMISSION_DENIED ) {
+                        Log.d( "Permissions", "Permission Denied: " + permissions[i] );
+                    }
+                }
+            }
+            break;
+            default: {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
+    }
+
+    public String dateToString(Date date, String format) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        return df.format(date);
     }
 }
