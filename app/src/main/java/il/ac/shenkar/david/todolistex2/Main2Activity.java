@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -358,8 +359,6 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
 
         itemListWaitingTasks = dbM.getSortedTasks(Sorting.fromInteger(Sorting.WAITING.ordinal()));
         TaskHashList.resetTaskList(2, itemListWaitingTasks);
-        Intent intent = new Intent("AllTasksFragmentUpdate");
-        this.sendBroadcast(intent);
     }
 
     @Override
@@ -392,7 +391,8 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
 
         if (id == R.id.action_refresh) {
             checkForUpdate();
-
+            Intent intent = new Intent(ReceiverIntent.AllTab);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
 
         if (id == R.id.action_Logout) {
@@ -510,9 +510,63 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
 
+                case REQUEST_CODE_NEW_TASK: {
+                    Toast.makeText(context, "New Task Added", Toast.LENGTH_SHORT).show();
+                    returned_task = (Task) data.getSerializableExtra("task");
+
+                    updateLists(returned_task, REQUEST_CODE_NEW_TASK);
+
+                    Intent intent = new Intent(ReceiverIntent.AllTab);
+                    intent.putExtra("origin", REQUEST_CODE_NEW_TASK);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                    intent = new Intent(ReceiverIntent.WaitTab);
+                    intent.putExtra("origin", REQUEST_CODE_NEW_TASK);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                    break;
+                }
+
+                case REQUEST_CODE_UPDATE_TASK:
+                {
+                    returned_task = (Task) data.getSerializableExtra("task");
+                    updateLists(returned_task,REQUEST_CODE_UPDATE_TASK);
+
+                    Intent intent = new Intent(ReceiverIntent.AllTab);
+                    intent.putExtra("origin", REQUEST_CODE_UPDATE_TASK);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                    intent = new Intent(ReceiverIntent.WaitTab);
+                    intent.putExtra("origin", REQUEST_CODE_UPDATE_TASK);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                    break;
+                }
+
+                case REQUEST_CODE_EMP_VIEW_TASK:
+                {
+                    returned_task = (Task) data.getSerializableExtra("task");
+                    updateLists(returned_task,REQUEST_CODE_EMP_VIEW_TASK);
+
+                    Intent intent = new Intent(ReceiverIntent.AllTab);
+                    intent.putExtra("origin", REQUEST_CODE_EMP_VIEW_TASK);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                    intent = new Intent(ReceiverIntent.WaitTab);
+                    intent.putExtra("origin", REQUEST_CODE_EMP_VIEW_TASK);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                    break;
+                }
+
                 case REQUEST_CODE_INVITE_MEMBER: {
-                    //super.onActivityResult(requestCode,resultCode,data);
                     Toast.makeText(context, "New Users Were Invited", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ReceiverIntent.AllTab);
+                    intent.putExtra("origin",REQUEST_CODE_INVITE_MEMBER);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                    intent = new Intent(ReceiverIntent.WaitTab);
+                    intent.putExtra("origin", REQUEST_CODE_INVITE_MEMBER);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
                     break;
                 }
                 default:
@@ -525,5 +579,83 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
     public void newTaskButtonClick(View view) {
         Intent intent = new Intent(context, ListNodeActivity.class);
         startActivityForResult(intent, REQUEST_CODE_NEW_TASK);
+    }
+
+    private void updateLists (Task t,int origin)
+    {
+        switch (origin)
+        {
+            case REQUEST_CODE_NEW_TASK:
+            {
+                itemListAllTasks = TaskHashList.getTaskList(ReceiverIntent.AllTsks);
+                itemListAllTasks.add(t);
+                TaskHashList.resetTaskList(ReceiverIntent.AllTsks,itemListAllTasks);
+
+                itemListWaitingTasks = TaskHashList.getTaskList(ReceiverIntent.WaitTsks);
+                itemListWaitingTasks.add(t);
+                TaskHashList.resetTaskList(ReceiverIntent.WaitTsks,itemListWaitingTasks);
+                break;
+            }
+            case REQUEST_CODE_UPDATE_TASK:
+            {
+                itemListAllTasks = TaskHashList.getTaskList(ReceiverIntent.AllTsks);
+                itemListWaitingTasks = TaskHashList.getTaskList(ReceiverIntent.WaitTsks);
+                if (t.getToDelete()) {
+
+                    for (int i = 0; i < itemListAllTasks.size(); i++) {
+                        if (itemListAllTasks.get(i).getTaskId() == t.getTaskId()) {
+                            dbM.deleteTask(t);
+                            itemListAllTasks.remove(i);
+                            TaskHashList.resetTaskList(ReceiverIntent.AllTsks, itemListAllTasks);
+                        }
+                    }
+
+                    for (int i = 0; i < itemListWaitingTasks.size(); i++) {
+                        if (itemListWaitingTasks.get(i).getTaskId() == t.getTaskId()) {
+                            itemListWaitingTasks.remove(i);
+                            TaskHashList.resetTaskList(ReceiverIntent.WaitTsks, itemListWaitingTasks);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < itemListAllTasks.size(); i++) {
+                        if (itemListAllTasks.get(i).getTaskId() == t.getTaskId()) {
+                            itemListAllTasks.set(i, t);
+                            TaskHashList.resetTaskList(ReceiverIntent.WaitTsks, itemListWaitingTasks);
+                        }
+                    }
+                    for (int i = 0; i < itemListWaitingTasks.size(); i++) {
+                        if (itemListWaitingTasks.get(i).getTaskId() == t.getTaskId()) {
+                            itemListWaitingTasks.set(i, t);
+                            TaskHashList.resetTaskList(ReceiverIntent.WaitTsks, itemListWaitingTasks);
+                        }
+                    }
+                }
+                break;
+            }
+            case  REQUEST_CODE_EMP_VIEW_TASK:
+            {
+                itemListAllTasks = TaskHashList.getTaskList(ReceiverIntent.AllTsks);
+                itemListWaitingTasks = TaskHashList.getTaskList(ReceiverIntent.WaitTsks);
+                for (int i = 0; i < itemListAllTasks.size(); i++) {
+                    if (itemListAllTasks.get(i).getTaskId() == t.getTaskId()) {
+                        itemListAllTasks.set(i, t);
+                        TaskHashList.resetTaskList(ReceiverIntent.WaitTsks, itemListWaitingTasks);
+                    }
+                }
+                for (int i = 0; i < itemListWaitingTasks.size(); i++) {
+                    if (itemListWaitingTasks.get(i).getTaskId() == t.getTaskId()) {
+                        itemListWaitingTasks.set(i, t);
+                        TaskHashList.resetTaskList(ReceiverIntent.WaitTsks, itemListWaitingTasks);
+                    }
+                }
+                break;
+            }
+
+            default:
+            {
+                break;
+            }
+        }
     }
 }

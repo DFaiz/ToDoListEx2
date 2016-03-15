@@ -235,7 +235,6 @@ public class Signup_Activity extends AppCompatActivity {
                 valid_inputs = true;}
             else{
                 valid_inputs = false;
-                Log.d("login", "invalid");
                 new AlertDialog.Builder(this)
                         .setTitle("Invalid Credentials")
                         .setMessage("Username or password do not exist")

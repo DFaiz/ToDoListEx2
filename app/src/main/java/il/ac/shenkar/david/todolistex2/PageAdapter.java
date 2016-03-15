@@ -23,8 +23,10 @@ public class PageAdapter extends FragmentStatePagerAdapter {
        switch (position) {
             case 0:
                 fragment = new AllTasksTabFragment();
+                break;
             case 1:
                 fragment = new WaitingTasksTabFragment();
+                break;
             default:
                 fragment = new AllTasksTabFragment();
         }

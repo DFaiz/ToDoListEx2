@@ -118,7 +118,6 @@ public class InviteMember extends AppCompatActivity
                 public void done(ParseException e) {
                     if (e == null) {
                         // if null, it means the save has succeeded
-                        Log.d("addded user", "good");
                     } else {
                         // the save call was not successful.
                     }

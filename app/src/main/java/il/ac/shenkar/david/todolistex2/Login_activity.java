@@ -173,7 +173,6 @@ public class Login_activity extends AppCompatActivity
                 valid_inputs = true;}
             else{
                 valid_inputs = false;
-                Log.d("login", "invalid");
                 new AlertDialog.Builder(this)
                         .setTitle("Invalid Credentials")
                         .setMessage("Username or password incorrect")

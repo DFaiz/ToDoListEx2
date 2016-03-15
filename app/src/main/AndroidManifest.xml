@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="il.ac.shenkar.david.todolistex2"
-    android:versionCode="3"
-    android:versionName="3.0">
+    android:versionCode="4"
+    android:versionName="4.0">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -48,19 +48,19 @@
         </activity>
         <activity
             android:name=".Signup_Activity"
-            android:label="@string/app_name"
+            android:label="@string/title_signup"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreateTeam"
-            android:label="Create new task team"
+            android:label="@string/title_create_team"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".InviteMember"
-            android:label="Invite Members Your Team"
+            android:label="@string/title_invite_members"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Login_activity"
-            android:label="Login to Wiggle"
+            android:label="@string/title_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SplashScreen"
@@ -73,12 +73,22 @@
         </activity>
         <activity
             android:name=".EditTaskActivity"
-            android:label="Edit Task"
+            android:label="@string/title_edit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SelectLocation"
-            android:label="Select Location"
+            android:label="@string/title_select_location"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".ReportTaskStatus"
+            android:label="@string/title_tsk_status"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="com.parse.APPLICATION_ID"
@@ -87,15 +97,6 @@
             android:name="com.parse.CLIENT_KEY"
             android:value="fAkWiu6GXGQkxEve7MaixZZj5P0bGjAywCXFPj46" />
 
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
-            android:name=".ReportTaskStatus"
-            android:label="Report Task Status"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

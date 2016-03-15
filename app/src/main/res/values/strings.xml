@@ -17,6 +17,13 @@
     <string name="btn_load_fragment">Fragment Tracking</string>
     <string name="title_activity_list_node">Create New Task</string>
     <string name="title_activity_list_edit">Edit Task</string>
+    <string name="title_signup">Signup</string>
+    <string name="title_create_team">Create New Team</string>
+    <string name="title_invite_members">Invite Members Your Team</string>
+    <string name="title_login">Login To Wiggle</string>
+    <string name="title_edit">Edit Task</string>
+    <string name="title_select_location">Select Location</string>
+    <string name="title_tsk_status">Report Task Status</string>
     <string name="string">Enter task description</string>
     <string name="priority_prompt" translatable="false">Choose Priority</string>
     <string name="priority_low" translatable="false">Low</string>
