@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +30,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.parse.ParseException;
@@ -65,6 +68,7 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
     public final int REQUEST_CODE_REMOVE_TASK = 3;
     public final int REQUEST_CODE_INVITE_MEMBER = 4;
     public final int REQUEST_CODE_EMP_VIEW_TASK = 5;
+    public final int BROADCAST_CODE_ON_RESUME = 6;
 
     private List<ParseObject> tsks = null;
 
@@ -656,6 +660,63 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
             {
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://il.ac.shenkar.david.todolistex2/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://il.ac.shenkar.david.todolistex2/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+        //connect to SQLite
+        dbM = DBManager.getInstance(context);
+        if(Globals.isActivityRestarting){
+            dbM.clearDB();
+            checkForUpdate();
+        }
+        else {
+            Intent intent = new Intent(ReceiverIntent.AllTab);
+            intent.putExtra("origin",BROADCAST_CODE_ON_RESUME);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
 }

@@ -19,6 +19,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,7 @@ public class AllTasksTabFragment extends Fragment
 
     public final int REQUEST_CODE_UPDATE_TASK = 2;
     public final int REQUEST_CODE_EMP_VIEW_TASK = 5;
+    public final int BROADCAST_CODE_ON_RESUME = 6;
     private DBManager dbM;
 
     private Spinner sort_selector = null;
@@ -177,8 +181,16 @@ public class AllTasksTabFragment extends Fragment
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            Log.w("origin",""+intent.getSerializableExtra("origin"));
-            updateList();
+            Log.w("origin", "" + intent.getSerializableExtra("origin"));
+            int org = (int) intent.getSerializableExtra("origin");
+            if(org!=BROADCAST_CODE_ON_RESUME)
+            {
+                updateList();
+            }
+            else
+            {
+                SortTaskList(Globals.last_sort);
+            }
         }
     };
 
@@ -186,5 +198,18 @@ public class AllTasksTabFragment extends Fragment
     public void onDestroyView()
     {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(AllTasksBroadcastReceiver);
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        final Tracker tracker = ((MyApplication)getActivity().getApplication()).getTracker(MyApplication.TrackerName.APP_TRACKER);
+        if(tracker != null){
+
+            tracker.setScreenName(getClass().getSimpleName());
+            tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        }
     }
 }
