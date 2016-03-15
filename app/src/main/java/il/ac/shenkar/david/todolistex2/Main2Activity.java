@@ -396,6 +396,7 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
         if (id == R.id.action_refresh) {
             checkForUpdate();
             Intent intent = new Intent(ReceiverIntent.AllTab);
+            intent.putExtra("origin", BROADCAST_CODE_ON_RESUME);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
 

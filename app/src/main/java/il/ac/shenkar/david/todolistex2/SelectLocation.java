@@ -40,8 +40,8 @@ public class SelectLocation extends AppCompatActivity
         final TextView msg = new TextView(context);
         final SpannableString s = new SpannableString("https://play.google.com/store/apps/details?id=com.google.zxing.client.android");
         Linkify.addLinks(s, Linkify.WEB_URLS);
-        msg.setText("In order to use the QR scan, the BradcodeScanner app must be installed on your phone\n" +
-                   "If the app is not installed, click on the link below.\n\n" +s);
+        msg.setText(Html.fromHtml("<br>In order to use the QR scan, the BradcodeScanner app must be installed on your phone\n" +
+                "If the app is not installed, click on the link below.<br><br><a href=\"" + s + "\">Download Barcode Scanner</a>"));
         msg.setMovementMethod(LinkMovementMethod.getInstance());
 
         info_img = (ImageView) findViewById(R.id.qr_info);
