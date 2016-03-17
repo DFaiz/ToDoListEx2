@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

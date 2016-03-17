@@ -1,21 +1,24 @@
 package il.ac.shenkar.david.todolistex2;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InviteMember extends AppCompatActivity
@@ -31,6 +34,11 @@ public class InviteMember extends AppCompatActivity
                                 "Best Regards,\n" +
                                 "You OTS Manager.";
 
+    private ArrayList<String> emp_List;
+    ListView all_emp_list;
+    private ImageView person_img;
+    EmployeeItemAdapter emp_item_adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -38,6 +46,21 @@ public class InviteMember extends AppCompatActivity
         setContentView(R.layout.activity_invite_member);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getEmployeeList();
+
+        person_img = (ImageView) findViewById(R.id.person_icon);
+        person_img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(InviteMember.this);
+                dialog.setContentView(R.layout.employeelist);
+                dialog.setTitle("Employee List");
+                all_emp_list = (ListView) dialog.findViewById(R.id.emplist_listView);
+                emp_item_adapter = new EmployeeItemAdapter (InviteMember.this,emp_List);
+                all_emp_list.setAdapter(emp_item_adapter);
+                dialog.show();
+            }
+        });
     }
 
     public void onInviteMember (View view)
@@ -49,7 +72,7 @@ public class InviteMember extends AppCompatActivity
         String[] new_users = member_email.getText().toString().split(",");
         addNewUsers(new_users,member_phone.getText().toString());
 
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{ member_email.getText().toString()});
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{member_email.getText().toString()});
         email.putExtra(Intent.EXTRA_SUBJECT, email_Subject);
         email.putExtra(Intent.EXTRA_TEXT, email_body);
 
@@ -81,8 +104,7 @@ public class InviteMember extends AppCompatActivity
         }
     }
 
-    public void onExitbtn(View view)
-    {
+    public void onExitbtn(View view) {
         Intent i = getIntent();
         Intent returnIntent = null;
 
@@ -124,5 +146,26 @@ public class InviteMember extends AppCompatActivity
                 }
             });
         }
+    }
+
+    private void getEmployeeList ()
+    {
+        emp_List = new ArrayList<>();
+
+        //check is username & password exist
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
+        query.whereContains("TeamName", Globals.team_name);
+        query.whereEqualTo("IsManager", 0);
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> usrs, ParseException e) {
+                if (e == null) {
+                    for (ParseObject prso : usrs) {
+                        emp_List.add(new String(prso.getString("Username")));
+                    }
+                } else {//handle the error
+                }
+            }
+        });
     }
 }
