@@ -27,6 +27,9 @@ public class CreateTeam extends AppCompatActivity
     private String blockCharacterSet = "~#^|$%&*!";
 
     private ParseObject parse_team_name=null;
+    private ParseObject ots_User=null;
+    private ParseQuery<ParseObject> query=null;
+    private List<ParseObject> usrs=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -83,7 +86,7 @@ public class CreateTeam extends AppCompatActivity
 
         //check is team name already exists
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Teams");
-        query.whereContains("TeamName", editTextTeamname.getText().toString());
+        query.whereEqualTo("TeamName", editTextTeamname.getText().toString());
         List<ParseObject> team_names;
 
         try {
@@ -111,8 +114,8 @@ public class CreateTeam extends AppCompatActivity
             sharedpreferences.edit().putString("TeamName", editTextTeamname.getText().toString()).apply();
 
             parse_team_name = new ParseObject("Teams");
-            parse_team_name.put("TeamName",Globals.team_name);
-            parse_team_name.put("TeamManager",sharedpreferences.getString("LoginUsr", null));
+            parse_team_name.put("TeamName", Globals.team_name);
+            parse_team_name.put("TeamManager", sharedpreferences.getString("LoginUsr", null));
             parse_team_name.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
@@ -122,6 +125,27 @@ public class CreateTeam extends AppCompatActivity
                     }
                 }
             });
+
+            query = new ParseQuery<ParseObject>("OTSUser");
+            query.whereEqualTo("Username",(sharedpreferences.getString("LoginUsr", null)));
+
+            try {
+                usrs = query.find();
+                for (ParseObject tmp : usrs)
+                {
+                    tmp.put("TeamName",Globals.team_name);
+
+                    tmp.saveInBackground(new SaveCallback() {
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                // if null, it means the save has succeeded
+                            } else {
+                            }
+                        }
+                    });
+                    tmp.saveInBackground();
+                }
+            } catch (ParseException e) {}
 
             Intent returnIntent = new Intent(this,InviteMember.class);
             setResult(RESULT_OK, returnIntent);

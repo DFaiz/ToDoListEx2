@@ -98,7 +98,7 @@ public class InviteMember extends AppCompatActivity
 
         else
         {
-            returnIntent = new Intent(this,MainActivity.class);
+            returnIntent = new Intent(this,Main2Activity.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
         }
@@ -154,9 +154,8 @@ public class InviteMember extends AppCompatActivity
 
         //check is username & password exist
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
-        query.whereContains("TeamName", Globals.team_name);
+        query.whereEqualTo("TeamName", Globals.team_name);
         query.whereEqualTo("IsManager", 0);
-
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> usrs, ParseException e) {
                 if (e == null) {

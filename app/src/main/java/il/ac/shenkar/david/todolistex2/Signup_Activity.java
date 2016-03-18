@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -31,11 +30,9 @@ public class Signup_Activity extends AppCompatActivity {
 
     private EditText editTextUsername;
     private EditText editTextPassword;
-    private EditText editTextPhone;
     private String blockCharacterSet = "~#^|$%&*!";
     private TextView usrname_title;
     private TextView usrpswd_title;
-    private TextView usrphone_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,6 +43,7 @@ public class Signup_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         editTextUsername = (EditText) findViewById(R.id.editTextusername);
+        editTextPassword = (EditText) findViewById(R.id.userpsswrd);
         editTextUsername.setFilters(new InputFilter[] { special_filter });
 
         editTextUsername.setOnKeyListener(new View.OnKeyListener() {
@@ -71,7 +69,6 @@ public class Signup_Activity extends AppCompatActivity {
                         && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on Enter key press
                     editTextPassword.clearFocus();
-                    editTextPhone.requestFocus();
                     return true;
                 }
                 return false;
@@ -90,10 +87,8 @@ public class Signup_Activity extends AppCompatActivity {
     {
         editTextUsername = (EditText) findViewById(R.id.editTextusername);
         editTextPassword = (EditText) findViewById(R.id.userpsswrd);
-        editTextPhone = (EditText) findViewById(R.id.userphonenumber);
         usrname_title = (TextView) findViewById(R.id.usernametextView);
         usrpswd_title = (TextView) findViewById(R.id.passwstextView);
-        usrphone_title = (TextView) findViewById(R.id.phonetextView);
 
         boolean valid_inputs=true;
 
@@ -178,42 +173,9 @@ public class Signup_Activity extends AppCompatActivity {
             valid_inputs = false;
         }
 
-        if(editTextPhone.getText().toString().matches(""))
-        {
-            new AlertDialog.Builder(this)
-                    .setTitle("Enter Password")
-                    .setMessage("Password field is empty.\nPlease enter a valid password")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            return;
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-            usrphone_title.setTextColor(Color.RED);
-            valid_inputs = false;
-        }
-
-        if((editTextPhone.getText().toString().length()!=10)&&(valid_inputs))
-        {
-            new AlertDialog.Builder(this)
-                    .setTitle("Enter Phone Number")
-                    .setMessage("Phone Number must be 10 digits.\nPlease enter a valid Phone Number")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            return;
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-            usrphone_title.setTextColor(Color.RED);
-            valid_inputs = false;
-        }
-
         //check is username & password exist
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
-        query.whereContains("Username", editTextUsername.getText().toString());
+        query.whereEqualTo("Username", editTextUsername.getText().toString());
         List<ParseObject> usrs=null;
 
         try {
@@ -261,7 +223,7 @@ public class Signup_Activity extends AppCompatActivity {
             }
             else
             {
-                Intent returnIntent = new Intent(this,MainActivity.class);
+                Intent returnIntent = new Intent(this,Main2Activity.class);
                 setResult(RESULT_OK, returnIntent);
                 startActivity(returnIntent);
             }

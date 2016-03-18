@@ -99,7 +99,7 @@ public class ListNodeActivity extends AppCompatActivity
 
         //check is username & password exist
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("OTSUser");
-        query.whereContains("TeamName", Globals.team_name);
+        query.whereEqualTo("TeamName", Globals.team_name);
         query.whereEqualTo("IsManager", 0);
 
         query.findInBackground(new FindCallback<ParseObject>() {
