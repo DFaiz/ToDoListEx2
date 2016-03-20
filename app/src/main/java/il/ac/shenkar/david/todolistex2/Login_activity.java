@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
@@ -17,11 +16,9 @@ import android.app.AlertDialog;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -228,6 +225,9 @@ public class Login_activity extends AppCompatActivity
                     Toast.makeText(this, "You have been added to Team: " + usrs.get(0).getString("TeamName") +" by\n"
                             + usrs.get(0).get("TeamManager"), Toast.LENGTH_LONG).show();}
             }
+
+            SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
+            sharedpreferences.edit().putBoolean("LoginState", true).apply();
 
             //Intent returnIntent = new Intent(this,MainActivity.class);
             Intent returnIntent = new Intent(this,Main2Activity.class);

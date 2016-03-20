@@ -402,7 +402,7 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
 
         if (id == R.id.action_Logout) {
             Globals.isActivityRestarting = true;
-            Intent returnIntent = new Intent(this, Login_activity.class);
+            Intent returnIntent = new Intent(this, Welcome.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
         }

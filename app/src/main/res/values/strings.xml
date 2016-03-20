@@ -65,4 +65,5 @@
         <item>NOC</item>
         <item>VPs office</item>
     </string-array>
+    <string name="title_activity_welcome">Welcome</string>
 </resources>
