@@ -18,7 +18,7 @@ import android.util.Log;
  */
 public class DBManager extends SQLiteOpenHelper
 {
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 28;
 
     private static final String DATABASE_NAME = "tasks_app";
     private static DBManager instance;

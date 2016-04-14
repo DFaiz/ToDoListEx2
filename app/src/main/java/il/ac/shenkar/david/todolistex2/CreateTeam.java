@@ -148,6 +148,7 @@ public class CreateTeam extends AppCompatActivity
             } catch (ParseException e) {}
 
             Intent returnIntent = new Intent(this,InviteMember.class);
+            returnIntent.putExtra("from", "from_create_team");
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
         }

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class Signup_Activity extends AppCompatActivity {
     private String blockCharacterSet = "~#^|$%&*!";
     private TextView usrname_title;
     private TextView usrpswd_title;
+    private ParseObject parse_otsusr = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -181,11 +183,11 @@ public class Signup_Activity extends AppCompatActivity {
         try {
             usrs = query.find();
 
-            if (usrs.size() == 0){
+            if (usrs.size() == 1){
                 valid_inputs = false;
                 new AlertDialog.Builder(this)
                         .setTitle("Invalid Credentials")
-                        .setMessage("Username or password do not exist")
+                        .setMessage("Manager info already exists")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 return;
@@ -193,7 +195,7 @@ public class Signup_Activity extends AppCompatActivity {
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();}
-            else if (usrs.size() == 1){
+            else if (usrs.size() == 0){
                 valid_inputs = true;}
             else{
                 valid_inputs = false;
@@ -213,20 +215,28 @@ public class Signup_Activity extends AppCompatActivity {
         {
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
             sharedpreferences.edit().putBoolean("LoginState", true).apply();
+            sharedpreferences.edit().putString("LoginUsr", editTextUsername.getText().toString()).apply();
+            sharedpreferences.edit().putString("LoginPswd", editTextPassword.getText().toString()).apply();
             Globals.signed_uped=true;
 
-            if(usrs.get(0).getNumber("IsManager")==1)
-            {
-                Intent returnIntent = new Intent(this,CreateTeam.class);
-                setResult(RESULT_OK, returnIntent);
-                startActivity(returnIntent);
-            }
-            else
-            {
-                Intent returnIntent = new Intent(this,Main2Activity.class);
-                setResult(RESULT_OK, returnIntent);
-                startActivity(returnIntent);
-            }
+            parse_otsusr = new ParseObject("OTSUser");
+            parse_otsusr.put("Username", editTextUsername.getText().toString());
+            parse_otsusr.put("Password",editTextPassword.getText().toString());
+            parse_otsusr.put("Email", editTextUsername.getText().toString());
+            parse_otsusr.put("IsManager", 1);
+            parse_otsusr.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // if null, it means the save has succeeded
+                    } else {
+                        // the save call was not successful.
+                    }
+                }
+            });
+
+            Intent returnIntent = new Intent(this,CreateTeam.class);
+            setResult(RESULT_OK, returnIntent);
+            startActivity(returnIntent);
         }
     }
 

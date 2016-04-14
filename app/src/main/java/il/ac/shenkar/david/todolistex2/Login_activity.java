@@ -229,7 +229,6 @@ public class Login_activity extends AppCompatActivity
             SharedPreferences sharedpreferences = getSharedPreferences("il.ac.shenkar.david.todolistex2", Context.MODE_PRIVATE);
             sharedpreferences.edit().putBoolean("LoginState", true).apply();
 
-            //Intent returnIntent = new Intent(this,MainActivity.class);
             Intent returnIntent = new Intent(this,Main2Activity.class);
             setResult(RESULT_OK, returnIntent);
             startActivity(returnIntent);
@@ -238,7 +237,10 @@ public class Login_activity extends AppCompatActivity
 
     public void onExitbtn (View v)
     {
-        finish();
-        System.exit(0);
+        /*finish();
+        System.exit(0);*/
+        Intent returnIntent = new Intent(this,Welcome.class);
+        setResult(RESULT_OK, returnIntent);
+        startActivity(returnIntent);
     }
 }
